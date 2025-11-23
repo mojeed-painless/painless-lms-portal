@@ -40,6 +40,9 @@ const RegisterScreen = () => {
       // 2. Call the register function from AuthContext
       await register(username, email, password, role);
       // Redirection handled by useEffect on successful state update
+      alert('Registration successful! Please log in to check your account status.');
+      navigate('/login');
+      
     } catch (err) {
       // Error handling from backend is managed by AuthContext and displayed below
       console.error(err); 

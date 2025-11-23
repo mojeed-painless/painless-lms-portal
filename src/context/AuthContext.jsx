@@ -72,17 +72,14 @@ export const AuthProvider = ({ children }) => {
         },
       };
 
-      const { data } = await axios.post(
+      await axios.post(
         `${API_URL}/register`,
-        { username, email, password, role },
+        { username, email, password, role }, 
         config
       );
 
-      // Registration is often followed by automatic login
-      setUser(data);
-      localStorage.setItem('userInfo', JSON.stringify(data));
       setIsLoading(false);
-      return data;
+      return { success: true };
 
     } catch (err) {
       const errorMessage = err.response && err.response.data.message
