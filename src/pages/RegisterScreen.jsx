@@ -21,7 +21,7 @@ const RegisterScreen = () => {
   // --- Redirection Effect ---
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/login'); // Redirect to dashboard after successful registration/login
+      navigate('/login');
     }
   }, [isAuthenticated, navigate]);
 

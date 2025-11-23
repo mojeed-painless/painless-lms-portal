@@ -46,7 +46,7 @@ const LoginScreen = () => {
 
         <h2 className='auth-title'>Login to your account</h2>
         
-        {error && ( <div className="auth-error" role="alert"> {error} </div> )}
+        {error && ( <div className={ errorType === 'approval_pending' ? "pending-state": "auth-error"} role="alert"> {error} </div> )}
 
         <form className="auth-form" onSubmit={submitHandler}>
         <div className="auth-form-group">
