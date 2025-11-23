@@ -85,7 +85,7 @@ const RegisterScreen = () => {
 
           <div className="auth-form-group">
             <div>
-              <label htmlFor="username" className="sr-only">Username</label>
+              <label htmlFor="username">Username</label>
               <input
                 id="username"
                 type="text"
@@ -98,7 +98,7 @@ const RegisterScreen = () => {
           
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="sr-only">Email address</label>
+              <label htmlFor="email">Email address</label>
               <input
                 id="email"
                 type="email"
@@ -125,7 +125,7 @@ const RegisterScreen = () => {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="sr-only">Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 id="password"
                 type="password"
@@ -138,7 +138,7 @@ const RegisterScreen = () => {
           
             {/* Confirm Password Input */}
             <div>
-              <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+              <label htmlFor="confirmPassword">Confirm Password</label>
               <input
                 id="confirmPassword"
                 type="password"
