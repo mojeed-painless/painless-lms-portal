@@ -64,7 +64,7 @@ const AdminDashboardScreen = () => {
 
     if (user.role !== 'admin') {
         return (
-            <div className="error-state">
+            <div className="pending-state">
                 ACCESS DENIED: You must be an Administrator to view this page.
             </div>
         );

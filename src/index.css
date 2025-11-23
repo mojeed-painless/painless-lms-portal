@@ -240,7 +240,7 @@ img {
     
 }
 
-.auth-error {
+.auth-error, .pending-state {
     padding: 0.75rem; 
     font-size: 0.875rem; 
     font-weight: 600;
@@ -250,6 +250,12 @@ img {
     border-radius: 0.5rem; 
     border-left: 7px solid #b91c1c;
     margin-bottom: 1rem;
+}
+
+.pending-state {
+    color: #78350f; 
+    background-color: #ffedd5;
+    border-left: 7px solid #78350f;
 }
 
 .auth-form {
