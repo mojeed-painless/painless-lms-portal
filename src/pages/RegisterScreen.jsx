@@ -1,0 +1,185 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { FcGoogle } from "react-icons/fc";
+import pcalogo from '../assets/pcalogo.png';
+import codeIllustration from '../assets/code-illustration.png';
+
+const RegisterScreen = () => {
+  // Local state for form inputs
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('student');
+  const [message, setMessage] = useState(null); // Local validation message
+  
+  // Auth context for registration logic and state
+  const { register, isLoading, error, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // --- Redirection Effect ---
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/login'); // Redirect to dashboard after successful registration/login
+    }
+  }, [isAuthenticated, navigate]);
+
+  // --- Form Submission Handler ---
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setMessage(null); // Clear local messages
+
+    // 1. Client-Side Validation
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match.');
+      return;
+    }
+
+    try {
+      // 2. Call the register function from AuthContext
+      await register(username, email, password, role);
+      // Redirection handled by useEffect on successful state update
+    } catch (err) {
+      // Error handling from backend is managed by AuthContext and displayed below
+      console.error(err); 
+    }
+  };
+
+  return (
+    <div className="auth-container register-container">
+      <div className="right-info">
+              <div className="info-logo">
+                <img src={pcalogo} alt="academy logo" />
+              </div>
+      
+              <div className="register-image">
+                <img src={codeIllustration} alt="code illustration" />
+              </div>
+      </div>
+
+      <div className="auth-card">
+        <h2 className="auth-title">
+          Create your account
+        </h2>
+        
+        {/* Error/Validation Message Display */}
+        {(error || message) && (
+          <div className="auth-error" role="alert">
+            {error || message}
+          </div>
+        )}
+
+        <form className="auth-form" onSubmit={submitHandler}>
+          <div className="auth-with-google register-auth">
+            <button type="button" className="google-btn" >
+              <FcGoogle size={20} style={{ marginRight: '8px' }} />
+              Continue with Google
+            </button>
+            
+            <div className="separator">
+              <hr />
+              <span>or</span>
+            </div>
+          </div>
+
+          <div className="auth-form-group">
+            <div>
+              <label htmlFor="username" className="sr-only">Username</label>
+              <input
+                id="username"
+                type="text"
+                required
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+          
+            {/* Email Input */}
+            <div>
+              <label htmlFor="email" className="sr-only">Email address</label>
+              <input
+                id="email"
+                type="email"
+                required
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            {/* Role Select Input (New Addition) */}
+          <div className="auth-form-group">
+            <label htmlFor="role" className="auth-label">Joining as:</label>
+            <select
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="auth-select"
+            >
+              <option value="student">Student</option>
+              <option value="instructor">Instructor</option>
+            </select>
+          </div>
+
+            {/* Password Input */}
+            <div>
+              <label htmlFor="password" className="sr-only">Password</label>
+              <input
+                id="password"
+                type="password"
+                required
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          
+            {/* Confirm Password Input */}
+            <div>
+              <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                required
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`auth-submit-btn ${isLoading ? 'disabled' : ''}`}
+            >
+              {isLoading ? (
+                <svg className="auth-spinner" viewBox="0 0 24 24">
+                  {/* Tailwind Spinner SVG */}
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : (
+                'Register'
+              )}
+            </button>
+          </div>
+        </form>
+
+        {/* Link to Login */}
+        <div className="auth-link">
+          Already have an account?{' '}
+          <Link to="/login" className="auth-link-text">
+            Sign In
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RegisterScreen;

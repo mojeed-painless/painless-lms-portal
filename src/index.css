@@ -1,0 +1,734 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    text-decoration: none;
+}
+
+html {
+    font-family: "Quicksand", sans-serif;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+}
+
+body {
+    /* background: greenyellow; */
+
+}
+
+img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+
+.not-found {
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    gap: 2rem;
+    min-height: 100vh; 
+    font-size: 0.875rem; 
+    color: #b91c1c; 
+    background-color: #fee2e2; 
+}
+
+.not-found-link {
+    width: fit-content; 
+    padding: 0.75rem 2rem; 
+    background-color: #6366f1; 
+    color: #ffffff; 
+    font-size: 1rem; 
+    font-weight: 600; 
+    border: none; 
+    border-radius: 0.375rem; 
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+}
+
+.not-found-link:hover {
+    background: #383aac;
+}
+
+ .auth-container {
+    display: flex; 
+    align-items: center; 
+    min-height: 100vh; 
+}
+
+.auth-card {
+    width: 100%; 
+    max-width: 400px; 
+    padding: 2rem; 
+    background-color: #ffffff; 
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    height: 100vh;
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #7925d3;
+    
+}
+
+.auth-error {
+    padding: 0.75rem; 
+    font-size: 0.875rem; 
+    font-weight: 600;
+    text-align: center;
+    color: #b91c1c; 
+    background-color: #fee2e2; 
+    border-radius: 0.5rem; 
+    border-left: 7px solid #b91c1c;
+    margin-bottom: 1rem;
+}
+
+.auth-form {
+    margin-top: 2rem; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 1.5rem;
+}
+
+.auth-form-group {
+    display: flex; 
+    flex-direction: column; 
+    gap: 1rem;
+}
+
+.auth-form-group label {
+    font-size: 0.8rem; 
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    display: inline-block;
+    color: #4b5563; 
+}
+
+.auth-form-group input, .auth-form-group select {
+    width: 100%; 
+    padding: 0.7rem 0.75rem; 
+    border: 1px solid #d1d5db; 
+    border-radius: 0.375rem; 
+    font-size: 0.9rem; 
+    color: #1f2937; 
+    outline: none;
+}
+
+.auth-form-group input:focus {
+    outline: 2px solid #8964b0;
+    outline-offset: 2px;
+}
+
+.auth-submit-btn {
+    width: 100%; 
+    padding: 0.75rem; 
+    background-color: #7925d3; 
+    color: #ffffff; 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    border: none; 
+    border-radius: 0.375rem; 
+    cursor: pointer; 
+    transition: all 400ms ease;
+}
+
+.auth-submit-btn-disabled {
+    background-color: #8964b0; 
+    cursor: not-allowed; 
+}
+
+.auth-submit-btn:hover:not(.disabled) {
+    background-color: #8964b0; 
+}
+
+.auth-link {
+    text-align: center; 
+    font-size: 0.875rem; 
+    color: #6b7280; 
+    margin-top: 1.5rem;
+}
+
+.auth-link-text {
+    color: #484ad8;  
+    text-decoration: none; 
+}
+
+.auth-link-text:hover {
+    text-decoration: underline; 
+}
+
+@keyframes auth-spin {
+  to { transform: rotate(360deg); }
+}
+
+.auth-spinner {
+    height: 1.25rem; 
+    width: 1.25rem; 
+    display: inline-block;
+    vertical-align: middle;
+    animation: auth-spin 0.9s linear infinite;
+    color: #ffffff;
+}
+
+.auth-spinner circle {
+    fill: none;
+    stroke: rgba(0,0,0,0.12);
+    stroke-width: 4;
+}
+
+.auth-spinner path {
+    opacity: 0.9;
+    fill: currentColor;
+}
+
+.separator {
+    position: relative;
+    text-align: center;
+    margin-bottom: 1rem ;
+}
+
+.separator span {
+    position: relative;
+    background: #fff;
+    padding: 0 0.8rem;
+    color: #6b7280;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.separator hr {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+}
+
+.google-btn {
+    width: 100%; 
+    padding: 0.75rem; 
+    background-color: #ffffff; 
+    color: #1f2937; 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    border: 1px solid #d1d5db; 
+    border-radius: 0.375rem; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 0.5rem;
+    transition: all 400ms ease;
+}
+
+.google-btn:hover {
+    background-color: #f3f4f6; 
+}
+
+.register-container {
+    align-items: start;
+}
+
+.register-auth .separator {
+    margin: 1rem 0 0;
+}
+
+.right-info {
+    background: radial-gradient(#280a48, #20043d);
+    width: 100%;
+    height: 100vh;
+    color: white;
+    padding: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-container .right-info {
+    width: 40%;
+}
+
+.register-container .auth-card {
+    width: 400px;
+}
+
+.register-container .info-text {
+    max-width: 100%;
+}
+
+.register-image {
+    width: 25rem;
+    margin: auto;
+    margin-top: 2rem;
+    transform-origin: center;
+    animation: pulsy 2.2s ease-in-out infinite;
+    will-change: transform, opacity, filter;
+}
+
+@keyframes pulsy {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02) rotate(-0.5deg);
+    opacity: 0.98;
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.14));
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
+  }
+}
+
+.info-logo {
+    width: 9rem;
+    overflow: hidden;
+}
+
+.info-text {
+    max-width: 40%;
+    margin-top: 4rem;
+}
+
+.info-text h1 {
+    margin-bottom: 1rem;
+    color: greenyellow;
+}
+
+.illustration-image {
+    width: 45rem;
+    position: absolute;
+    bottom: -10rem;
+    right: -10rem;
+    transform-origin: center;
+    animation: pulsy 2.2s ease-in-out infinite;
+    will-change: transform, opacity, filter;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- General Layout --- */
+.main-layout {
+    min-height: 100vh;
+    background-color: #f4f4f9;
+}
+
+/* --- Header & Navigation --- */
+.app-header {
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4f46e5; /* Indigo color */
+}
+
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-greeting {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* --- Dashboard Content --- */
+.dashboard-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+
+/* --- Card Styles (Reused from Auth.css if possible, or new) --- */
+.progress-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.progress-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* --- Button Styles --- */
+.primary-btn {
+    background-color: #4f46e5;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary-btn:hover {
+    background-color: #4338ca;
+}
+
+/* --- Logout Button Specific --- */
+.logout-btn {
+    background-color: #ef4444; /* Red */
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #dc2626;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* lms-react-app/src/assets/styles/Courses.css */
+
+.card-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-image-wrapper {
+    width: 100%;
+    /* Use a fixed height or aspect ratio for consistency */
+    height: 180px; 
+    overflow: hidden;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 1rem;
+    flex-grow: 1; /* Allows content area to fill space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+    /* Basic multi-line text truncation */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-instructor {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.card-progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.card-progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background-color: #4f46e5; /* Indigo */
+    transition: width 0.3s;
+}
+
+/* Inherit primary-btn styling from Layout.css for consistency */
+.card-action-btn {
+    width: 100%;
+    text-align: center;
+}
+
+/* lms-react-app/src/assets/styles/Courses.css (Appended) */
+
+.course-grid {
+    display: grid;
+    /* Use responsive grid for catalog display */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding-top: 10px;
+}
+
+/* State Messages */
+.loading-message, .error-message, .empty-message {
+    padding: 15px;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.error-message {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.loading-message {
+    color: #4f46e5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.creation-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+.creation-form {
+    display: flex; 
+    flex-direction: column; 
+    gap: 1.5rem;
+    width: 75%;
+}
+
+.creation-form input, .creation-form textarea {
+    width: 100%; 
+    padding: 0.5rem 0.75rem; 
+    border: 1px solid #d1d5db; 
+    border-radius: 0.375rem; 
+    font-size: 1rem; 
+    color: #1f2937; 
+    outline: none;
+}
+
+.management-row {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1rem;
+    background: greenyellow;
+    padding: 1rem;
+}
+
+.course-row {
+    display: flex; 
+    justify-content: space-between;
+    width: 60%;
+}
+
+
+
+
+
+
+
+
+/* lms-react-app/src/assets/styles/CoursePlayer.css */
+
+.player-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f7f7f7;
+}
+
+.player-header {
+    /* Reuse app-header styles from Layout.css, but simplified */
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player-main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden; /* Important for scrollable content */
+}
+
+/* --- A. Lesson Sidebar --- */
+.lesson-sidebar {
+    width: 300px;
+    background-color: #fff;
+    border-right: 1px solid #e0e0e0;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1f2937;
+    padding: 0 20px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.lesson-item {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    transition: background-color 0.15s, border-left-color 0.15s;
+    font-size: 0.95rem;
+}
+
+.lesson-item:hover {
+    background-color: #f0f0f5;
+}
+
+.lesson-item.active {
+    background-color: #e6e6ff; /* Light purple/indigo */
+    border-left-color: #4f46e5;
+    font-weight: 600;
+}
+
+.lesson-index {
+    color: #6b7280;
+}
+
+.lesson-status {
+    margin-left: auto;
+    color: #10b981; /* Green checkmark */
+}
+
+
+/* --- B. Content Viewer --- */
+.content-area {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.content-viewer {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.lesson-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 10px;
+}
+
+.lesson-type-tag {
+    display: inline-block;
+    background-color: #eef2ff;
+    color: #4f46e5;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+.lesson-media-placeholder {
+    background-color: #333;
+    color: #fff;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.lesson-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
