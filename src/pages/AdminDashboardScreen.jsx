@@ -1,11 +1,8 @@
-// lms-react-app/src/pages/AdminDashboardScreen.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import LogoutButton from '../components/common/LogoutButton';
-import '../../assets/styles/Layout.css';
-import '../../assets/styles/Admin.css'; 
+import '../assets/styles/Admin.css'; 
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
 const API_URL = `${API_BASE}/api/users/admin`;
