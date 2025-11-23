@@ -44,7 +44,21 @@ const CourseCatalogScreen = () => {
         <h2 className="section-title">Explore Courses</h2>
         
         {/* Loading and Error States */}
-        {loading && <div className="loading-message">Loading courses...</div>}
+        {loading && 
+                <div className="loading-overlay" aria-live="polite" aria-busy="true">
+                  <div className="spinner" role="status" aria-label="Loading">
+                    <div className="ring ring1" />
+                    <div className="ring ring2" />
+                    <div className="ring ring3" />
+                    <div className="dots">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+        }
         {error && <div className="error-message">{error}</div>}
         {courses.length === 0 && !loading && !error && (
             <div className="empty-message">No courses available yet.</div>

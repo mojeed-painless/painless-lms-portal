@@ -13,8 +13,18 @@ const PrivateRoute = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-indigo-600"></div>
+            <div className="loading-overlay" aria-live="polite" aria-busy="true">
+        <div className="spinner" role="status" aria-label="Loading">
+          <div className="ring ring1" />
+          <div className="ring ring2" />
+          <div className="ring ring3" />
+          <div className="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
       </div>
     );
   }

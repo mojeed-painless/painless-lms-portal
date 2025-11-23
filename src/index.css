@@ -23,6 +23,46 @@ img {
     object-fit: cover;
 }
 
+/* --- Key frames --- */
+@keyframes pulsy {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02) rotate(-0.5deg);
+    opacity: 0.98;
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.14));
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
+  }
+}
+
+@keyframes spin { 
+    to { transform: rotate(360deg); } 
+}
+
+@keyframes spin-rev { 
+    to { transform: rotate(-360deg); } 
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(var(--r)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--r)) rotate(-360deg); }
+}
+
+
+
+
+
+
+
+
+/* --- 404 Not Found Page --- */
 .not-found {
     display: flex; 
     flex-direction: column;
@@ -54,6 +94,127 @@ img {
     background: #383aac;
 }
 
+
+
+
+
+
+
+
+
+/* ---  Loading Spinner --- */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 6, 23, 0.45);
+  z-index: 9999;
+}
+
+.spinner {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  display: block;
+}
+
+/* Concentric rings */
+.ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  box-sizing: border-box;
+}
+
+.ring1 {
+  border-top-color: #6366F1;
+  filter: drop-shadow(0 8px 18px rgba(99,102,241,0.16));
+  animation: spin 1.4s linear infinite;
+}
+
+.ring2 {
+  transform: scale(0.74);
+  border-right-color: #06B6D4;
+  border-width: 5px;
+  animation: spin-rev 2s linear infinite;
+  opacity: 0.95;
+}
+
+.ring3 {
+  transform: scale(0.5);
+  border-bottom-color: #F97316;
+  border-width: 4px;
+  animation: spin 2.6s linear infinite;
+  opacity: 0.9;
+}
+
+/* Orbiting dots */
+.dots {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.dots span {
+  --r: 44px;
+  --size: 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2);
+  border-radius: 50%;
+  background: linear-gradient(135deg,#F472B6,#F97316);
+  box-shadow: 0 6px 14px rgba(244,114,182,0.16);
+  transform-origin: center;
+  animation: orbit 1.6s linear infinite;
+}
+
+/* initial positions and staggered delays */
+.dots span:nth-child(1){ transform: rotate(0deg)   translateX(var(--r)); animation-delay: 0s;    }
+.dots span:nth-child(2){ transform: rotate(90deg)  translateX(var(--r)); animation-delay: -0.24s; }
+.dots span:nth-child(3){ transform: rotate(180deg) translateX(var(--r)); animation-delay: -0.48s; }
+.dots span:nth-child(4){ transform: rotate(270deg) translateX(var(--r)); animation-delay: -0.72s; }
+
+/* subtle center core */
+.spinner::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,0.6));
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(15,23,42,0.6);
+}
+
+
+
+/* @media (prefers-reduced-motion: reduce) {
+  .ring, .dots span { animation: none !important; }
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---  Login & Registration style --- */
 .auth-container {
     display: flex; 
     align-items: center; 
@@ -165,16 +326,12 @@ img {
     text-decoration: underline; 
 }
 
-@keyframes auth-spin {
-  to { transform: rotate(360deg); }
-}
-
 .auth-spinner {
     height: 1.25rem; 
     width: 1.25rem; 
     display: inline-block;
     vertical-align: middle;
-    animation: auth-spin 0.9s linear infinite;
+    animation: spin 0.9s linear infinite;
     color: #ffffff;
 }
 
@@ -269,24 +426,6 @@ img {
     transform-origin: center;
     animation: pulsy 2.2s ease-in-out infinite;
     will-change: transform, opacity, filter;
-}
-
-@keyframes pulsy {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
-  }
-  50% {
-    transform: translateY(-8px) scale(1.02) rotate(-0.5deg);
-    opacity: 0.98;
-    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.14));
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
-  }
 }
 
 .info-logo {

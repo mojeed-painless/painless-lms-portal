@@ -45,7 +45,21 @@ const CoursePlayerScreen = () => {
 
     // --- Loading and Error States ---
     if (loading) {
-        return <div className="loading-state">Loading Course...</div>;
+        return (
+            <div className="loading-overlay" aria-live="polite" aria-busy="true">
+                <div className="spinner" role="status" aria-label="Loading">
+                <div className="ring ring1" />
+                <div className="ring ring2" />
+                <div className="ring ring3" />
+                <div className="dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                </div>
+            </div>
+        );
     }
 
     if (error) {
