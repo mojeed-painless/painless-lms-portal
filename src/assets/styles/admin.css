@@ -1,0 +1,74 @@
+/* lms-react-app/src/assets/styles/Admin.css */
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    padding-top: 10px;
+}
+
+.pending-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #1f2937;
+}
+
+.user-info p {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.role-request {
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.role-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 10px;
+    font-size: 0.8rem;
+}
+
+.role-tag.role-instructor {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.role-tag.role-student {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.approval-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.approve-btn {
+    flex-grow: 1;
+}
+
+.reject-btn {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+}
+
+/* Ensure existing primary-btn and delete-btn styles are used */
