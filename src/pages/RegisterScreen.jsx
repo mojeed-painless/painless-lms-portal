@@ -15,7 +15,7 @@ const RegisterScreen = () => {
   const [role, setRole] = useState('student');
   const [message, setMessage] = useState(null);
   const [success, setSuccess] = useState(null);
-
+  
   // Auth context for registration logic and state
   const { register, isLoading, error, isAuthenticated } = useAuth();
   const navigate = useNavigate();
