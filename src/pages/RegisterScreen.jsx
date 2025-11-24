@@ -6,7 +6,8 @@ import pcalogo from '../assets/pcalogo.png';
 import codeIllustration from '../assets/code-illustration.png';
 
 const RegisterScreen = () => {
-  // Local state for form inputs
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -40,10 +41,12 @@ const RegisterScreen = () => {
 
     try {
       // 2. Call the register function from AuthContext
-      await register(username, email, password, role);
+      await register(firstName, lastName, username, email, password, role);
       // Redirection handled by useEffect on successful state update
       setSuccess('Registration successful! Please wait while your account status is being approved by an admin.');
 
+      setFirstName('');
+      setLastName('');
       setUsername('');
       setEmail('');
       setPassword('');
@@ -105,45 +108,66 @@ const RegisterScreen = () => {
 
           <div className="auth-form-group">
             <div>
+              <label htmlFor="firstName">First Name</label>
+              <input
+                id="firstName"
+                type="text"
+                required
+                placeholder="Enter your First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                id="lastName"
+                type="text"
+                required
+                placeholder="Enter your Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+
+            <div>
               <label htmlFor="username">Username</label>
               <input
                 id="username"
                 type="text"
                 required
-                placeholder="Username"
+                placeholder="Enter your Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
           
-            {/* Email Input */}
             <div>
               <label htmlFor="email">Email address</label>
               <input
                 id="email"
                 type="email"
                 required
-                placeholder="Email address"
+                placeholder="Enter your Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
-            {/* Role Select Input (New Addition) */}
-          <div className="auth-form-group">
-            <label htmlFor="role" className="auth-label">Joining as:</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="auth-select"
-            >
-              <option value="student">Student</option>
-              <option value="instructor">Instructor</option>
-            </select>
-          </div>
+            <div className="auth-form-group">
+              <label htmlFor="role" className="auth-label">Joining as:</label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="auth-select"
+              >
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+              </select>
+            </div>
 
-            {/* Password Input */}
             <div>
               <label htmlFor="password">Password</label>
               <input
@@ -156,7 +180,6 @@ const RegisterScreen = () => {
               />
             </div>
           
-            {/* Confirm Password Input */}
             <div>
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input
@@ -170,7 +193,6 @@ const RegisterScreen = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
           <div>
             <button
               type="submit"

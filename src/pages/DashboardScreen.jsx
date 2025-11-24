@@ -15,7 +15,7 @@ const DashboardScreen = () => {
         <h1 className="logo-text">LMS Dashboard</h1>
         <div className="user-controls">
           {/* Display user info and the Logout button */}
-          <span className="user-greeting">Welcome, {user.username}! ({user.role})</span>
+          <span className="user-greeting">Welcome, {user.firstName}!</span>
           <LogoutButton />
         </div>
       </header>
