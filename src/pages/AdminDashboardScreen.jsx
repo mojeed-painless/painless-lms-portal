@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import LogoutButton from '../components/common/LogoutButton';
+import ApprovedUserListItem from '../components/common/ApprovedUserListItem';
 import '../assets/styles/admin.css'; 
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
@@ -14,64 +15,65 @@ const AdminDashboardScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // --- Data Fetching ---
-    const fetchPendingUsers = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-            // GET /api/users/admin/pending
-            const { data } = await axios.get(`${API_URL}/pending`, config); 
-            setPendingUsers(data);
-            setLoading(false);
-        } catch (err) {
-            setError(err.response?.data?.message || 'Failed to fetch pending users.');
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (user && user.role === 'admin') {
-            fetchPendingUsers();
-        }
-    }, [user]);
-    
     const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
+        headers: {
+            Authorization: `Bearer ${user.token}`,
+        },
+    };
+            
+    // --- Data Fetching ---
+  const fetchUsers = async () => {
+    if (!user || user.role !== 'admin') return;
+    setLoading(true);
+    try {
+      // 1. Fetch Pending Users
+      const { data: pendingData } = await axios.get(`${API_URL}/pending`, config);
+      setPendingUsers(pendingData);
+
+      // 2. Fetch ALL Users
+      const { data: allData } = await axios.get(`${API_URL}/all`, config);
+      
+      // Filter 'all' data to include only approved users (and exclude the logged-in admin)
+      const approvedUsers = allData.filter(u => u.isApproved && u._id !== user._id);
+      
+      setAllUsers(approvedUsers);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching users:', err);
+      setError(err.response?.data?.message || 'Failed to fetch user data.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
     // --- Action Handler: Approve/Reject/Change Role ---
-    const handleUpdateUser = async (userId, isApproved, newRole) => {
-        setError(null);
-        
-        try {
+  const handleUpdateUser = async (userId, isApproved, newRole) => {
+    setLoading(true);
+    try {
+      const body = { isApproved };
+      if (newRole) {
+        body.role = newRole;
+      }
+      
+      await axios.put(`${API_URL}/${userId}`, body, config);
+      
+      // Refresh both lists after update (user moves from pending to all)
+      fetchUsers();
+      
+    } catch (err) {
+      console.error('Error updating user status:', err);
+      setError(err.response?.data?.message || 'Failed to update user status.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            
-            // PUT /api/users/admin/:id
-            const body = {};
-            if (isApproved !== undefined) {
-                body.isApproved = isApproved;
-            }
-            if (newRole) { // Only send role if it's explicitly set (e.g., 'student' or 'instructor')
-                body.role = newRole;
-            }
-            await axios.put(`${API_URL}/${userId}`, body, config);
-
-            // Refetch or update state immediately
-            fetchPendingUsers(); 
-
-        } catch (err) {
-            setError(err.response?.data?.message || 'Error updating user status.');
-        }
-    };
-
+   useEffect(() => {
+    if (user && user.role === 'admin') {
+      fetchUsers();
+    }
+  }, [user]);
+  
 const handleDeleteUser = async (userId) => {
     // IMPORTANT: Replacing window.confirm() with a custom modal is required in production environments.
     if (!window.confirm("Are you sure you want to permanently delete this user? This action cannot be undone.")) {
@@ -84,7 +86,7 @@ const handleDeleteUser = async (userId) => {
         await axios.delete(`${API_URL}/${userId}`, config);
         
         // Refresh the list immediately to remove the deleted user from the UI
-        fetchPendingUsers(); 
+        fetchUsers(); 
         
     } catch (err) {
         console.error('Error deleting user:', err);
@@ -157,6 +159,25 @@ const handleDeleteUser = async (userId) => {
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div>
+                    <h2 className="section-title">All Approved Users ({allUsers.length})</h2>
+
+                    {allUsers.length === 0 && !loading && (
+                        <p className="empty-message">No approved users found (excluding yourself).</p>
+                    )}
+
+                    <ul className="approved-users-list">
+                        {allUsers.map((userItem) => (
+                        <ApprovedUserListItem 
+                            key={userItem._id} 
+                            userItem={userItem} 
+                            handleUpdateUser={handleUpdateUser}
+                            handleDeleteUser={handleDeleteUser}
+                        />
+                        ))}
+                    </ul>
                 </div>
             </main>
         </div>
