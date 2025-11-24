@@ -155,7 +155,7 @@ const RegisterScreen = () => {
               />
             </div>
 
-            <div className="auth-form-group">
+            <div>
               <label htmlFor="role" className="auth-label">Joining as:</label>
               <select
                 id="role"

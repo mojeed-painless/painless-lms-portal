@@ -431,6 +431,10 @@ img {
     max-width: 100%;
 }
 
+.register-container .auth-form-group {
+    gap: 0.5rem;
+}
+
 .register-image {
     width: 25rem;
     margin: auto;
