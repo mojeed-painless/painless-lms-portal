@@ -60,7 +60,7 @@
 }
 
 .approve-btn {
-    
+    flex-grow: 1;
 }
 
 .reject-btn {
