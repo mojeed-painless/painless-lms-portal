@@ -60,16 +60,23 @@
 }
 
 .approve-btn {
-    flex-grow: 1;
+    
 }
 
 .reject-btn {
     color: #fef3c7;
     background: #b45309;
 }
+.reject-btn:hover {
+    background: #92400e;
+}
 
 .delete-btn {
     color: #fef3c7;
     background: #dc2626;
+    flex-grow: 1;
+}
+.delete-btn:hover {
+    background: #b91c1c;
 }
 /* Ensure existing primary-btn and delete-btn styles are used */
