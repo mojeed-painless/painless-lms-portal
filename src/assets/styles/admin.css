@@ -1,5 +1,3 @@
-/* lms-react-app/src/assets/styles/Admin.css */
-
 .admin-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -66,9 +64,12 @@
 }
 
 .reject-btn {
-    background-color: #f3f4f6;
-    color: #4b5563;
-    border: 1px solid #d1d5db;
+    color: #fef3c7;
+    background: #b45309;
 }
 
+.delete-btn {
+    color: #fef3c7;
+    background: #dc2626;
+}
 /* Ensure existing primary-btn and delete-btn styles are used */

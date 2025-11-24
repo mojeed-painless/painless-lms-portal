@@ -12,7 +12,7 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('student');
-  const [message, setMessage] = useState(null); // Local validation message
+  const [message, setMessage] = useState(null);
   
   // Auth context for registration logic and state
   const { register, isLoading, error, isAuthenticated } = useAuth();
@@ -42,7 +42,7 @@ const RegisterScreen = () => {
       // Redirection handled by useEffect on successful state update
       alert('Registration successful! Please log in to check your account status.');
       navigate('/login');
-      
+
     } catch (err) {
       // Error handling from backend is managed by AuthContext and displayed below
       console.error(err); 

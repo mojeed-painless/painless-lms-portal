@@ -98,7 +98,7 @@ const AdminDashboardScreen = () => {
                                 <p>Email: {userItem.email}</p>
                             </div>
                             <div className="role-request">
-                                **Requested Role:** <span className={`role-tag role-${userItem.role}`}>
+                                Requested Role: <span className={`role-tag role-${userItem.role}`}>
                                     {userItem.role.toUpperCase()}
                                 </span>
                             </div>
@@ -111,13 +111,13 @@ const AdminDashboardScreen = () => {
                                     Approve as {userItem.role}
                                 </button>
                                 <button 
-                                    className="secondary-btn reject-btn"
+                                    className="primary-btn reject-btn"
                                     onClick={() => handleUpdateUser(userItem._id, true, 'student')}
                                 >
                                     Approve as Student
                                 </button>
                                 <button 
-                                    className="delete-btn"
+                                    className="primary-btn delete-btn"
                                     onClick={() => handleUpdateUser(userItem._id, false)}
                                 >
                                     Deny & Delete
