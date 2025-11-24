@@ -38,18 +38,20 @@ const AdminDashboardScreen = () => {
             fetchPendingUsers();
         }
     }, [user]);
-
-    // --- Action Handler: Approve/Reject/Change Role ---
-    const handleUpdateUser = async (userId, isApproved, newRole) => {
-        setError(null);
-        
-        try {
-            const config = {
+    
+    const config = {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${user.token}`,
                 },
             };
+            
+    // --- Action Handler: Approve/Reject/Change Role ---
+    const handleUpdateUser = async (userId, isApproved, newRole) => {
+        setError(null);
+        
+        try {
+
             
             // PUT /api/users/admin/:id
             const body = {};
@@ -68,6 +70,28 @@ const AdminDashboardScreen = () => {
             setError(err.response?.data?.message || 'Error updating user status.');
         }
     };
+
+const handleDeleteUser = async (userId) => {
+    // IMPORTANT: Replacing window.confirm() with a custom modal is required in production environments.
+    if (!window.confirm("Are you sure you want to permanently delete this user? This action cannot be undone.")) {
+        return;
+    }
+    
+    setLoading(true);
+    try {
+        // Send a DELETE request to /api/users/admin/:id
+        await axios.delete(`${API_URL}/${userId}`, config);
+        
+        // Refresh the list immediately to remove the deleted user from the UI
+        fetchPendingUsers(); 
+        
+    } catch (err) {
+        console.error('Error deleting user:', err);
+        setError(err.response?.data?.message || 'Failed to delete user.');
+    } finally {
+        setLoading(false);
+    }
+  };
 
     if (user.role !== 'admin') {
         return (
@@ -125,7 +149,7 @@ const AdminDashboardScreen = () => {
                                 </button>
                                 <button 
                                     className="primary-btn delete-btn"
-                                    onClick={() => handleUpdateUser(userItem._id, false)}
+                                    onClick={() => handleDeleteUser(userItem._id)}
                                 >
                                     Deny & Delete
                                 </button>
