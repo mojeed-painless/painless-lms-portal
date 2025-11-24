@@ -43,8 +43,8 @@
 }
 
 .role-tag.role-instructor {
-    background-color: #b45309;
-    color: #fef3c7;
+    background-color: #fef3c7;
+    color: #b45309;
 }
 
 .role-tag.role-student {
@@ -64,11 +64,12 @@
 }
 
 .reject-btn {
-    color: #fef3c7;
-    background: #b45309;
+    background-color: #fef3c7;
+    color: #b45309;
 }
 .reject-btn:hover {
-    background: #92400e;
+    background-color: #f7e9b4;
+    color: #92400e;
 }
 
 .delete-btn {
