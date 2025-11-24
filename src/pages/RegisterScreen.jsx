@@ -42,7 +42,7 @@ const RegisterScreen = () => {
       // 2. Call the register function from AuthContext
       await register(username, email, password, role);
       // Redirection handled by useEffect on successful state update
-      setSuccess('Registration successful! Please log in to check your account status.');
+      setSuccess('Registration successful! Please wait while your account status is being approved by an admin.');
 
       setUsername('');
       setEmail('');
@@ -52,7 +52,7 @@ const RegisterScreen = () => {
 
       setTimeout(() => {
           navigate('/login'); 
-      }, 3000);
+      }, 5000);
 
     } catch (err) {
       // Error handling from backend is managed by AuthContext and displayed below
@@ -82,7 +82,7 @@ const RegisterScreen = () => {
             {success}
           </div>
         )}
-        
+
         {/* Error/Validation Message Display */}
         {(error || message) && (
           <div className="auth-error" role="alert">
