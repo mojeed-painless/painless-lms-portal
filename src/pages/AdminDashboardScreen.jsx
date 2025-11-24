@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from '../../context/AuthContext'; // ⬅️ FIX: Trying path with two levels up
+import { useAuth } from '../context/AuthContext';
+// import LogoutButton from '../components/common/LogoutButton';
+// import '../assets/styles/admin.css'; 
 
 const API_URL = '/api/users/admin'; // Base API URL for admin routes
 
