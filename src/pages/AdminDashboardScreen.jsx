@@ -52,7 +52,14 @@ const AdminDashboardScreen = () => {
             };
             
             // PUT /api/users/admin/:id
-            await axios.put(`${API_URL}/${userId}`, { isApproved, role: newRole }, config);
+            const body = {};
+            if (isApproved !== undefined) {
+                body.isApproved = isApproved;
+            }
+            if (newRole) { // Only send role if it's explicitly set (e.g., 'student' or 'instructor')
+                body.role = newRole;
+            }
+            await axios.put(`${API_URL}/${userId}`, body, config);
 
             // Refetch or update state immediately
             fetchPendingUsers(); 
