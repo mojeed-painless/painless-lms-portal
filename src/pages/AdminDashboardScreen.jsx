@@ -108,7 +108,7 @@ const handleDeleteUser = async (userId) => {
     
 
 
-      const ApprovedUserListItem = ({ userItem }) => (
+   const ApprovedUserListItem = ({ userItem }) => (
     <li className="approved-list-item">
       <div className="list-user-info">
         <span className="user-name">{userItem.username}</span> 

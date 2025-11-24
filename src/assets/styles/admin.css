@@ -80,4 +80,105 @@
 .delete-btn:hover {
     background: #b91c1c;
 }
-/* Ensure existing primary-btn and delete-btn styles are used */
+
+
+
+          /* --- APPROVED USER LIST STYLES --- */
+          .approved-users-list {
+            list-style: none;
+            padding: 0;
+          }
+          
+          .approved-list-item {
+            background-color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #28a745; /* Success green for approved */
+          }
+          
+          .list-user-info {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px 15px;
+              font-size: 15px;
+          }
+          
+          .list-role {
+              font-style: italic;
+          }
+          
+          .approved-role {
+              color: #28a745;
+          }
+
+          /* --- Buttons and Controls --- */
+          .button-group, .button-group-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+          }
+          @media (min-width: 640px) {
+              .button-group, .button-group-list {
+                  margin-top: 0;
+              }
+          }
+
+          .btn {
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s, opacity 0.2s;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+          }
+
+          .btn-approve {
+            background-color: #28a745; /* Green */
+            color: white;
+          }
+          .btn-approve:hover {
+            background-color: #218838; 
+          }
+          
+          .btn-approve-instructor {
+            background-color: #007bff; /* Blue */
+            color: white;
+          }
+          .btn-approve-instructor:hover {
+            background-color: #0056b3; 
+          }
+
+          .btn-delete {
+            background-color: #dc3545; /* Red */
+            color: white;
+          }
+          .btn-delete:hover {
+            background-color: #c82333; 
+          }
+          
+          .btn-delete-small {
+              background-color: #dc3545; /* Red */
+              color: white;
+              padding: 6px 10px;
+              font-size: 12px;
+          }
+          .btn-delete-small:hover {
+              background-color: #c82333; 
+          }
+          
+          .role-select {
+              padding: 6px;
+              border: 1px solid #ced4da;
+              border-radius: 4px;
+              font-size: 13px;
+              background-color: white;
+              cursor: pointer;
+              height: 32px; /* Align with buttons */
+          }
