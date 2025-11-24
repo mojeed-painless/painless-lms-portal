@@ -13,7 +13,8 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('student');
   const [message, setMessage] = useState(null);
-  
+  const [success, setSuccess] = useState(null);
+
   // Auth context for registration logic and state
   const { register, isLoading, error, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const RegisterScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setMessage(null); // Clear local messages
+    setSuccess(null);
 
     // 1. Client-Side Validation
     if (password !== confirmPassword) {
@@ -40,8 +42,17 @@ const RegisterScreen = () => {
       // 2. Call the register function from AuthContext
       await register(username, email, password, role);
       // Redirection handled by useEffect on successful state update
-      alert('Registration successful! Please log in to check your account status.');
-      navigate('/login');
+      setSuccess('Registration successful! Please log in to check your account status.');
+
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setRole('student');
+
+      setTimeout(() => {
+          navigate('/login'); 
+      }, 3000);
 
     } catch (err) {
       // Error handling from backend is managed by AuthContext and displayed below
@@ -65,6 +76,12 @@ const RegisterScreen = () => {
         <h2 className="auth-title">
           Create your account
         </h2>
+        
+        {success && (
+          <div className="success-message" role="alert">
+            {success}
+          </div>
+        )}
         
         {/* Error/Validation Message Display */}
         {(error || message) && (
