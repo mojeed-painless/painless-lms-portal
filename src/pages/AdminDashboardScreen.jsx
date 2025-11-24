@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import LogoutButton from '../components/common/LogoutButton';
-import ApprovedUserListItem from '../components/common/ApprovedUserListItem';
+// import ApprovedUserListItem from '../components/common/ApprovedUserListItem';
 import '../assets/styles/admin.css'; 
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
 const API_URL = `${API_BASE}/api/users/admin`;
+
+
 
 const AdminDashboardScreen = () => {
     const { user } = useAuth();
@@ -73,7 +75,7 @@ const AdminDashboardScreen = () => {
       fetchUsers();
     }
   }, [user]);
-  
+
 const handleDeleteUser = async (userId) => {
     // IMPORTANT: Replacing window.confirm() with a custom modal is required in production environments.
     if (!window.confirm("Are you sure you want to permanently delete this user? This action cannot be undone.")) {
@@ -104,6 +106,39 @@ const handleDeleteUser = async (userId) => {
         );
     }
     
+
+
+      const ApprovedUserListItem = ({ userItem }) => (
+    <li className="approved-list-item">
+      <div className="list-user-info">
+        <span className="user-name">{userItem.username}</span> 
+        <span className="user-email">({userItem.email})</span>
+        <span className="list-role approved-role role-value">{userItem.role}</span>
+      </div>
+
+      <div className="button-group-list">
+        {/* Role Change Dropdown */}
+        <select
+            className="role-select"
+            value={userItem.role}
+            onChange={(e) => handleUpdateUser(userItem._id, true, e.target.value)}
+        >
+            <option value="student">Set Student</option>
+            <option value="instructor">Set Instructor</option>
+            {/* Admin role change should typically be done via a separate secure process */}
+        </select>
+        
+        {/* Delete Button */}
+        <button 
+          className="btn btn-delete-small"
+          onClick={() => handleDeleteUser(userItem._id)} 
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  );
+
     return (
         <div className="main-layout"> 
             <header className="app-header">
@@ -172,9 +207,7 @@ const handleDeleteUser = async (userId) => {
                         {allUsers.map((userItem) => (
                         <ApprovedUserListItem 
                             key={userItem._id} 
-                            userItem={userItem} 
-                            handleUpdateUser={handleUpdateUser}
-                            handleDeleteUser={handleDeleteUser}
+                            userItem={userItem}
                         />
                         ))}
                     </ul>
