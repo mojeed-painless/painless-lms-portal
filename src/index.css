@@ -519,6 +519,10 @@ img {
         flex-direction: column-reverse;
     }
 
+    .auth-error, .pending-state, .success-message {
+        right: 1rem;
+    }
+
     .auth-card {
         max-width: 100%;
         position: relative;

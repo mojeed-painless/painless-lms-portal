@@ -15,6 +15,8 @@ const RegisterScreen = () => {
   const [role, setRole] = useState('student');
   const [message, setMessage] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [displayError, setDisplayError] = useState('');
+  const [displaySuccess, setDisplaySuccess] = useState('');
   
   // Auth context for registration logic and state
   const { register, isLoading, error, isAuthenticated } = useAuth();
@@ -26,6 +28,28 @@ const RegisterScreen = () => {
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);
+
+    useEffect(() => {
+      if (error || message) {
+        setDisplayError(error || message);
+        const timer = setTimeout(() => {
+          setDisplayError('');
+        }, 5000);
+  
+        return () => clearTimeout(timer);
+      }
+    }, [error, message]);
+
+    useEffect(() => {
+      if (success) {
+        setDisplaySuccess(success);
+        const timer = setTimeout(() => {
+          setDisplaySuccess('');
+        }, 5000);
+
+        return () => clearTimeout(timer);
+      }
+    }, [success]);
 
   // --- Form Submission Handler ---
   const submitHandler = async (e) => {
@@ -78,18 +102,13 @@ const RegisterScreen = () => {
           Create your account
         </h2>
         
-        {/* {success && (
-          <div className="success-message" role="alert">
-            {success}
-          </div>
-        )} */}
 
-        <div className={ success ? "success-message" : ".auth-error-top"} role="alert">
-            {success}
+        <div className={ displaySuccess ? "success-message" : ".auth-error-top"} role="alert">
+            {displaySuccess}
         </div>
 
-        <div className={ (error || message) ? "auth-error" : ".auth-error-top"} role="alert">
-            {error || message}
+        <div className={ displayError ? "auth-error" : ".auth-error-top"} role="alert">
+            {displayError}
         </div>
 
 

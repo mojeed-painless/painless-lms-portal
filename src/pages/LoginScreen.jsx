@@ -11,6 +11,7 @@ const LoginScreen = () => {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [screenContent, setScreenContent] = useState('');
+  const [displayError, setDisplayError] = useState('');
 
   // Auth context for login logic and state
   const { login, isLoading, error, isAuthenticated } = useAuth();
@@ -57,6 +58,17 @@ const LoginScreen = () => {
       };
     }, []);
 
+  useEffect(() => {
+    if (error) {
+      setDisplayError(error);
+      const timer = setTimeout(() => {
+        setDisplayError('');
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   // --- Form Submission Handler ---
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -76,9 +88,7 @@ const LoginScreen = () => {
 
         <h2 className='auth-title'>Login to your account</h2>
         
-        <div className={error ? "auth-error" : "auth-error-top"} role="alert"> {error} </div>
-
-        {/* {error && ( <div className="auth-error" role="alert"> {error} </div> )} */}
+        <div className={displayError ? "auth-error" : "auth-error-top"} role="alert"> {displayError} </div>
 
         <form className="auth-form" onSubmit={submitHandler}>
         <div className="auth-form-group">
