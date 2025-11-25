@@ -14,7 +14,7 @@ const LoginScreen = () => {
   const [displayError, setDisplayError] = useState('');
 
   // Auth context for login logic and state
-  const { login, isLoading, error, isAuthenticated } = useAuth();
+  const { login, isLoading, error, clearError, isAuthenticated } = useAuth();
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,11 +63,12 @@ const LoginScreen = () => {
       setDisplayError(error);
       const timer = setTimeout(() => {
         setDisplayError('');
+        if (typeof clearError === 'function') clearError();
       }, 5000);
 
       return () => clearTimeout(timer);
     }
-  }, [error]);
+  }, [error, clearError]);
 
   // --- Form Submission Handler ---
   const submitHandler = async (e) => {

@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   // --- API Handlers ---
+  const clearError = () => setError(null);
 
   const login = async (identifier, password) => {
     setIsLoading(true);
@@ -103,6 +104,7 @@ export const AuthProvider = ({ children }) => {
     user,
     isLoading,
     error,
+    clearError,
     login,
     register,
     logout,
