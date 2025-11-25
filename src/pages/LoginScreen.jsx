@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FcGoogle } from "react-icons/fc";
+import { FaArrowRightLong } from "react-icons/fa6";
 import pcalogo from '../assets/pcalogo.png';
 import codeIllustration from '../assets/code-illustration.png';
 
@@ -9,7 +10,8 @@ const LoginScreen = () => {
   // Local state for form inputs
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [screenContent, setScreenContent] = useState('');
+
   // Auth context for login logic and state
   const { login, isLoading, error, isAuthenticated } = useAuth();
   
@@ -26,6 +28,34 @@ const LoginScreen = () => {
     }
   }, [isAuthenticated, navigate, redirectPath]);
 
+    useEffect(() => {
+      const updateContent = () => {
+        if (window.innerWidth < 600) {
+          setScreenContent(
+            <p>
+              Enter your credentials below to access your account and 
+              start/continue your learning journey with us.
+              <a href="#login-form" className='login-form'>
+                <span>Login here</span>
+                <FaArrowRightLong />
+              </a>
+            </p>
+          );
+        } else {
+          setScreenContent(
+            <p>Enter your credentials to access your account and start/continue your learning journey with us.</p>
+          );
+        }
+      };
+
+      updateContent();
+
+      window.addEventListener('resize', updateContent);
+
+      return () => {
+        window.removeEventListener('resize', updateContent);
+      };
+    }, []);
 
   // --- Form Submission Handler ---
   const submitHandler = async (e) => {
@@ -42,11 +72,13 @@ const LoginScreen = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <div className="auth-card" id="login-form">
 
         <h2 className='auth-title'>Login to your account</h2>
         
-        {error && ( <div className="auth-error" role="alert"> {error} </div> )}
+        <div className={error ? "auth-error" : "auth-error-top"} role="alert"> {error} </div>
+
+        {/* {error && ( <div className="auth-error" role="alert"> {error} </div> )} */}
 
         <form className="auth-form" onSubmit={submitHandler}>
         <div className="auth-form-group">
@@ -129,7 +161,7 @@ const LoginScreen = () => {
 
         <div className="info-text">
           <h1>Welcome to Painless Code Academy</h1>
-          <p>Enter your credentials to access your account and start/continue your learning journey with us.</p>
+          {screenContent}
         </div>
 
         <div className="illustration-image">

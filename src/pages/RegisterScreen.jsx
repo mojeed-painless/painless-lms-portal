@@ -40,9 +40,8 @@ const RegisterScreen = () => {
     }
 
     try {
-      // 2. Call the register function from AuthContext
       await register(firstName, lastName, username, email, password, role);
-      // Redirection handled by useEffect on successful state update
+
       setSuccess('Registration successful! Please wait while your account status is being approved by an admin.');
 
       setFirstName('');
@@ -58,7 +57,6 @@ const RegisterScreen = () => {
       }, 5000);
 
     } catch (err) {
-      // Error handling from backend is managed by AuthContext and displayed below
       console.error(err); 
     }
   };
@@ -80,18 +78,20 @@ const RegisterScreen = () => {
           Create your account
         </h2>
         
-        {success && (
+        {/* {success && (
           <div className="success-message" role="alert">
             {success}
           </div>
-        )}
+        )} */}
 
-        {/* Error/Validation Message Display */}
-        {(error || message) && (
-          <div className="auth-error" role="alert">
+        <div className={ success ? "success-message" : ".auth-error-top"} role="alert">
+            {success}
+        </div>
+
+        <div className={ (error || message) ? "auth-error" : ".auth-error-top"} role="alert">
             {error || message}
-          </div>
-        )}
+        </div>
+
 
         <form className="auth-form" onSubmit={submitHandler}>
           <div className="auth-with-google register-auth">
