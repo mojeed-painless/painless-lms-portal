@@ -55,7 +55,7 @@ const DashboardScreen = () => {
               <span>{item.text}</span>
             </Link>
           ))}
-          <LogoutButton />
+          <LogoutButton className="dashboard__logout-btn"/>
         </aside>
 
         <section className="dashboard-content">
