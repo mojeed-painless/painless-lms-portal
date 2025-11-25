@@ -1,5 +1,3 @@
-// lms-react-app/src/context/AuthContext.js
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -10,7 +8,17 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 // Define the base URL for your backend API
 const API_URL = `${API_BASE}/api/users`;
 
+const capitalizeFirst = (s) => (typeof s === 'string' && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
+const capitalizeUser = (u) => {
+  if (!u) return u;
+  return {
+    ...u,
+    firstName: capitalizeFirst(u.firstName),
+    lastName: capitalizeFirst(u.lastName),
+    // leave username/email as returned, or add username: capitalizeFirst(u.username) if desired
+  };
+};
 
 // 2. Custom hook for easy access to the context
 export const useAuth = () => {
@@ -22,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   // Check localStorage for stored user info on initial load
   const [user, setUser] = useState(() => {
     const userInfo = localStorage.getItem('userInfo');
-    return userInfo ? JSON.parse(userInfo) : null;
+    return userInfo ? capitalizeUser(JSON.parse(userInfo)) : null;
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -47,10 +55,11 @@ export const AuthProvider = ({ children }) => {
       );
 
       // Save user data to state and local storage
-      setUser(data);
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      const formatted = capitalizeUser(data);
+      setUser(formatted);
+      localStorage.setItem('userInfo', JSON.stringify(formatted));
       setIsLoading(false);
-      return data; // Return data on success
+      return data;
       
     } catch (err) {
       const errorMessage = err.response && err.response.data.message
