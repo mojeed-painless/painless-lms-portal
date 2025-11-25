@@ -98,6 +98,7 @@ aside > :last-child {
     outline: none;
     border: none;
     width: fit-content;
+    padding: 0;
 }
 
 .dashboard-content {
