@@ -69,7 +69,7 @@ aside > :last-child {
     margin-top: auto;
 }
 
-.sidebar__links, .logout-btn {
+.sidebar__links, .dashboard__logout-btn {
     display: flex;
     align-items: center;
     gap: 1.3rem;
@@ -82,18 +82,18 @@ aside > :last-child {
 }
 
 .sidebar__links:hover, 
-.logout-btn:hover {
+.dashboard__logout-btn:hover {
     color: greenyellow;
     transform: translateX(10px);
 }
 
 .sidebar__links span:first-child, 
-.logout-btn span:first-child {
+.dashboard__logout-btn span:first-child {
     font-size: 1.5rem;
     display: flex;
 }
 
-.logout-btn {
+.dashboard__logout-btn {
     background: transparent;
     outline: none;
     border: none;
