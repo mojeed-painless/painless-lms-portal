@@ -525,11 +525,15 @@ img {
     }
 
     .right-info {
-        padding: 2rem;
+        padding: 2rem 1rem;
     }
 
     .info-text {
-        margin-top: 2rem;
+        margin: 2rem 0 1.5rem;
+    }
+
+    .info-logo {
+        width: 7rem;
     }
 
     .info-text {
@@ -553,7 +557,7 @@ img {
     }
 
     .illustration-image {
-        width: 23rem;
+        width: 21rem;
         position: unset;
         margin-inline: auto;
     }
