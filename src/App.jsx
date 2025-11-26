@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 import './App.css'
 
-// Placeholder Page Components (We'll build these soon)
+import MainLayout from './pages/MainLayout';
 import LoginScreen from './pages/LoginScreen'; 
 import RegisterScreen from './pages/RegisterScreen';
 import CourseCatalogScreen from './pages/CourseCatalogScreen';
@@ -26,20 +26,23 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterScreen />} />
-          <Route path="*" element={<NotFoundScreen />} />
-
+          
           <Route path="/" element={<PrivateRoute />}>
-            <Route index element={<RoleBasedDashboard />} />
-            <Route path="/catalog" element={<CourseCatalogScreen />} />
-            <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
-            <Route path="/content" element={<CourseContentScreen />} />
-            <Route path="/assignments" element={<AssignmentScreen />} />
-            <Route path="/quizzes" element={<QuizScreen />} />
-            <Route path="/grades" element={<GradeScreen />} />
-            <Route path="/transcript" element={<TranscriptScreen />} />
-            <Route path="/settings" element={<SettingsScreen />} />
+            <Route element={<MainLayout />}>
+              <Route index element={<RoleBasedDashboard />} />
+              <Route path="/catalog" element={<CourseCatalogScreen />} />
+              <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
+              <Route path="/content" element={<CourseContentScreen />} />
+              <Route path="/assignments" element={<AssignmentScreen />} />
+              <Route path="/quizzes" element={<QuizScreen />} />
+              <Route path="/grades" element={<GradeScreen />} />
+              <Route path="/transcript" element={<TranscriptScreen />} />
+              <Route path="/settings" element={<SettingsScreen />} />
+            </Route>
           </Route>
         </Routes>
+        
+        <Route path="*" element={<NotFoundScreen />} />
       </div>
     </Router>
   )
