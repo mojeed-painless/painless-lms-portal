@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import LogoutButton from '../components/common/LogoutButton';
 import { Link } from 'react-router-dom';
@@ -25,15 +26,26 @@ const listTexts = [
   { id: 7, text: 'Settings', icon: <IoSettingsOutline />, to: '/settings' },
 ]
 
+
+
 const DashboardScreen = () => {
   const { user } = useAuth();
-  
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  function toggleSidebar() {
+    setIsCollapsed(prevState => !prevState);
+  }
+
   return (
     <div className="container">
       <nav>
         <div className="nav__left">
-          {/* <TbLayoutSidebarRightCollapse /> */}
-          <TbLayoutSidebarLeftCollapse className='collapse-btn'/>
+          <span className='collapse-btn' onClick={toggleSidebar}>
+            { isCollapsed ? 
+                <TbLayoutSidebarRightCollapse /> : 
+                <TbLayoutSidebarLeftCollapse />}
+          </span>
           <div className="nav-logo">
             <img src={pcalogo} alt="academy logo" />
           </div>
@@ -48,14 +60,17 @@ const DashboardScreen = () => {
       </nav>
 
       <main>
-        <aside>
-         { listTexts.map(item => (
+        <aside className={ isCollapsed && 'collapsed-sidebar' }>
+         {(listTexts.map(item => (
             <Link to={item.to} key={item.id} className="sidebar__links">
               <span>{item.icon}</span>
-              <span>{item.text}</span>
+              {!isCollapsed && <span>{item.text}</span>}
             </Link>
-          ))}
-          <LogoutButton className="dashboard__logout-btn"/>
+          )))}
+          <LogoutButton 
+            className="dashboard__logout-btn" 
+            isCollapsed={isCollapsed}
+          />
         </aside>
 
         <section className="dashboard-content">

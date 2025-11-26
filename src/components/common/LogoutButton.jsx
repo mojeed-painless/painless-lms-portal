@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../assets/styles/logoutBtn.css'; 
 import { TbLogout2 } from "react-icons/tb";
 
-const LogoutButton = ( { className } ) => {
+const LogoutButton = ( { className, isCollapsed } ) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const LogoutButton = ( { className } ) => {
   return (
     <button onClick={handleLogout} className={`logout-btn ${className}`}>
       <span><TbLogout2 /></span>
-      <span>Logout</span>
+      {!isCollapsed && <span>Logout</span>}
     </button>
   );
 };
