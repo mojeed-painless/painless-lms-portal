@@ -57,6 +57,7 @@ img {
 
 
 
+
 /* ---  Loading Spinner --- */
 .loading-overlay {
   position: fixed;
@@ -398,7 +399,7 @@ img {
 
 .info-text h1 {
     margin-bottom: 1rem;
-    color: #adff2f;
+    color: greenyellow;
 }
 
 .showMore {

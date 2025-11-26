@@ -103,9 +103,7 @@ const MainLayout = () => {
           </div>
         </aside>
 
-        <section className="main-content">
-          <Outlet />
-        </section>
+        <Outlet />
       </main>
 
     </div>

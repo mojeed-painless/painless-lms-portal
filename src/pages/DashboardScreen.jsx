@@ -12,7 +12,7 @@ const DashboardScreen = () => {
 
   return (
 
-        <>
+        <section className="main-content">
           <div className="content__greetings">
             <div className="greetings__profile-image">
               <img src={profileImage} alt="user profile" />
@@ -25,7 +25,7 @@ const DashboardScreen = () => {
           </div>
           
           <Link to="/catalog" className="not-found-link" >Go to Course Catalog</Link>
-        </>
+        </section>
   );
 };
 

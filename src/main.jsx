@@ -5,6 +5,19 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext';
 
+  const setVh = () => {
+  const height = window.visualViewport?.height ?? window.innerHeight;
+    document.documentElement.style.setProperty('--vh', `${height * 0.01}px`);
+  };
+
+  setVh();
+  window.addEventListener('resize', setVh);
+  window.addEventListener('orientationchange', setVh);
+  // If visualViewport API exists, keep its resize in sync
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', setVh);
+  }
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
