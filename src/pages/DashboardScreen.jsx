@@ -32,7 +32,7 @@ const DashboardScreen = () => {
   const { user } = useAuth();
 
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [isHiden, setIsHiden] = useState(true);
+  const [isHiden, setIsHiden] = useState(false);
 
   function toggleSidebar() {
     setIsCollapsed(prevState => !prevState);
