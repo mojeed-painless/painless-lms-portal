@@ -18,6 +18,8 @@ import GradeScreen from './pages/GradeScreen';
 import TranscriptScreen from './pages/TranscriptScreen';
 import SettingsScreen from './pages/SettingsScreen';
 
+import WelcomeScreen from './pages/html-pages/WelcomeScreen'
+
 function App() {
 
   return (
@@ -38,6 +40,8 @@ function App() {
               <Route path="/grades" element={<GradeScreen />} />
               <Route path="/transcript" element={<TranscriptScreen />} />
               <Route path="/settings" element={<SettingsScreen />} />
+
+              <Route path="/welcome" element={<WelcomeScreen />} />
             </Route>
           </Route>
           
