@@ -32,20 +32,34 @@ const DashboardScreen = () => {
   const { user } = useAuth();
 
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isHiden, setIsHiden] = useState(true);
 
   function toggleSidebar() {
     setIsCollapsed(prevState => !prevState);
+  }
+
+  function toggleSmallScreenSidebar() {
+    setIsHiden(prevState => !prevState);
   }
 
   return (
     <div className="container">
       <nav>
         <div className="nav__left">
-          <span className='collapse-btn' onClick={toggleSidebar}>
+          {/* Works for WINDOWS screen only  */}
+          <span className='collapse-btn large-collapse-btn' onClick={toggleSidebar}>
             { isCollapsed ? 
                 <TbLayoutSidebarRightCollapse /> : 
                 <TbLayoutSidebarLeftCollapse />}
           </span>
+
+          {/* Works for MOBILE screen only */}
+          <span className='collapse-btn small-collapse-btn' onClick={toggleSmallScreenSidebar}>
+            { isHiden ? 
+                <TbLayoutSidebarLeftCollapse /> : 
+                <TbLayoutSidebarRightCollapse />}
+          </span>
+
           <div className="nav-logo">
             <img src={pcalogo} alt="academy logo" />
           </div>
@@ -71,6 +85,33 @@ const DashboardScreen = () => {
             className="dashboard__logout-btn" 
             isCollapsed={isCollapsed}
           />
+        </aside>
+
+        {/* for MOBILE screen */}
+
+        <aside className={ `small-screen__sidebar ${ isHiden && 'show-sidebar' } ` }>
+         <div className="sidebar-header">
+            <span className='collapse-btn' onClick={toggleSmallScreenSidebar}>
+              { isHiden ? 
+                  <TbLayoutSidebarLeftCollapse /> : 
+                  <TbLayoutSidebarRightCollapse />}
+            </span>
+            <div className="nav-logo">
+              <img src={pcalogo} alt="academy logo" />
+            </div>
+         </div>
+
+         <div className='sidebar-body'>
+            {(listTexts.map(item => (
+              <Link to={item.to} key={item.id} className="sidebar__links">
+                <span>{item.icon}</span>
+                <span>{item.text}</span>
+              </Link>
+            )))}
+            <LogoutButton 
+              className="dashboard__logout-btn"
+            />
+          </div>
         </aside>
 
         <section className="dashboard-content">
