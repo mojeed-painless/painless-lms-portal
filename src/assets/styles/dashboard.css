@@ -101,6 +101,11 @@ aside > :last-child {
     transform: translateX(10px);
 }
 
+.collapsed-sidebar .sidebar__links:hover, 
+.collapsed-sidebar .dashboard__logout-btn:hover {
+    transform: translateX(7px);
+}
+
 .sidebar__links span:first-child, 
 .dashboard__logout-btn span:first-child {
     font-size: 1.5rem;
