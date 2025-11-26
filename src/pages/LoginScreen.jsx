@@ -5,12 +5,13 @@ import { FcGoogle } from "react-icons/fc";
 import { FaArrowRightLong } from "react-icons/fa6";
 import pcalogo from '../assets/pcalogo.png';
 import codeIllustration from '../assets/code-illustration.png';
+import { GiNotebook } from "react-icons/gi";
 
 const LoginScreen = () => {
   // Local state for form inputs
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  const [screenContent, setScreenContent] = useState('');
+  // const [screenContent, setScreenContent] = useState('');
   const [displayError, setDisplayError] = useState('');
 
   // Auth context for login logic and state
@@ -28,35 +29,6 @@ const LoginScreen = () => {
       navigate(redirectPath, { replace: true });
     }
   }, [isAuthenticated, navigate, redirectPath]);
-
-    useEffect(() => {
-      const updateContent = () => {
-        if (window.innerWidth < 600) {
-          setScreenContent(
-            <p>
-              Enter your credentials below to access your account and 
-              start/continue your learning journey with us.
-              <a href="#login-form" className='login-form'>
-                <span>Login here</span>
-                <FaArrowRightLong />
-              </a>
-            </p>
-          );
-        } else {
-          setScreenContent(
-            <p>Enter your credentials to access your account and start/continue your learning journey with us.</p>
-          );
-        }
-      };
-
-      updateContent();
-
-      window.addEventListener('resize', updateContent);
-
-      return () => {
-        window.removeEventListener('resize', updateContent);
-      };
-    }, []);
 
   useEffect(() => {
     if (error) {
@@ -90,6 +62,11 @@ const LoginScreen = () => {
         <h2 className='auth-title'>Login to your account</h2>
         
         <div className={displayError ? "auth-error" : "auth-error-top"} role="alert"> {displayError} </div>
+
+        <div className="smallNote">
+          <span><GiNotebook /></span>
+          Username and Password are case-sensitive
+        </div>
 
         <form className="auth-form" onSubmit={submitHandler}>
         <div className="auth-form-group">
@@ -172,7 +149,19 @@ const LoginScreen = () => {
 
         <div className="info-text">
           <h1>Welcome to Painless Code Academy</h1>
-          {screenContent}
+          <p>
+            Enter your credentials <span className='showMore'>below</span> to access your account and 
+            start/continue your learning journey with us.
+            <a href="#login-form" className='login-form showMore'>
+              <span>Login here</span>
+              <FaArrowRightLong />
+            </a>
+          </p>
+
+          <div className="note">
+            <span><GiNotebook /></span>
+            Username and Password are case-sensitive
+          </div>
         </div>
 
         <div className="illustration-image">

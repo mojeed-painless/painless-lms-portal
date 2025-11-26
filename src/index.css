@@ -27,18 +27,12 @@ img {
 @keyframes pulsy {
   0% {
     transform: translateY(0) scale(1);
-    opacity: 1;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
   }
   50% {
     transform: translateY(-8px) scale(1.02) rotate(-0.5deg);
-    opacity: 0.98;
-    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.14));
   }
   100% {
     transform: translateY(0) scale(1);
-    opacity: 1;
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
   }
 }
 
@@ -410,6 +404,17 @@ img {
     background-color: #f3f4f6; 
 }
 
+
+
+
+
+
+
+
+
+
+
+
 .right-info {
     background: radial-gradient(#280a48, #20043d);
     width: 100%;
@@ -433,6 +438,40 @@ img {
 .info-text h1 {
     margin-bottom: 1rem;
     color: greenyellow;
+}
+
+.showMore {
+    display: none;
+}
+
+.note, .smallNote {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    text-align: center;
+    background: rgba(51, 50, 36, 0.8);
+    color: #FFEE5B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.6rem;
+    width: 22rem;
+    border-radius: 0.5rem;
+    animation: pulsy 2.2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+.note span, .smallNote span {
+    font-size: 1.5rem;
+    display: flex;
+}
+
+.smallNote {
+    width: 100%;
+    font-size: 0.79rem;
+    padding: 0.75rem;
+    display: none;
 }
 
 .illustration-image {
@@ -532,10 +571,6 @@ img {
         padding: 2rem 1rem;
     }
 
-    .info-text {
-        margin: 2rem 0 1.5rem;
-    }
-
     .info-logo {
         width: 7rem;
     }
@@ -543,7 +578,11 @@ img {
     .info-text {
         max-width: 20rem;
         text-align: center;
-        margin-inline: auto;
+        margin: 3rem auto 1.5rem;
+    }
+
+    .showMore {
+        display: inline;
     }
 
     .info-text a {
@@ -558,6 +597,14 @@ img {
 
     .info-text a:hover {
         transform: translateX(4px);
+    }
+
+    .note {
+        display: none;
+    }
+
+    .smallNote {
+        display: flex;
     }
 
     .illustration-image {
