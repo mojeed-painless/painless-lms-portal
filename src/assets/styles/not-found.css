@@ -2,6 +2,7 @@
 .not-found {
     width: 100%;
     font-size: 0.875rem; 
+    text-align: center;
     color: #7925d3; 
 }
 
@@ -40,4 +41,11 @@
 
 .not-found-link:hover {
     text-decoration: underline;
+}
+
+
+@media screen and (max-width: 600px) {
+    .not-found-body {
+        padding: 0 2rem;
+    }
 }
