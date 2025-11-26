@@ -565,6 +565,7 @@ img {
     .auth-card {
         max-width: 100%;
         position: relative;
+        padding: 1rem;
     }
 
     .right-info {
