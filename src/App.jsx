@@ -40,9 +40,11 @@ function App() {
               <Route path="/settings" element={<SettingsScreen />} />
             </Route>
           </Route>
+          
+          <Route path="*" element={<NotFoundScreen />} />
         </Routes>
         
-        <Route path="*" element={<NotFoundScreen />} />
+        
       </div>
     </Router>
   )
