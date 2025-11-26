@@ -17,8 +17,8 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { CgTranscript } from "react-icons/cg";
 
 const listTexts = [
-  { id: 1, text: 'Home', icon: <FiHome  />, to: '/dashboard' },
-  { id: 2, text: 'Course Contents', icon: <MdOutlineMenuBook />, to: '/courses' },
+  { id: 1, text: 'Home', icon: <FiHome  />, to: 'index' },
+  { id: 2, text: 'Course Contents', icon: <MdOutlineMenuBook />, to: '/content' },
   { id: 3, text: 'Assignments', icon: <MdOutlineAssignment />, to: '/assignments' },
   { id: 4, text: 'Quizzes', icon: <GiBrain />, to: '/quizzes' },
   { id: 5, text: 'Grades', icon: <IoPodiumOutline />, to: '/grades' },
