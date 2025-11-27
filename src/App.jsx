@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 import './App.css'
 
+// import DashboardScreen from './pages/DashboardScreen';
+
 import MainLayout from './pages/MainLayout';
 import LoginScreen from './pages/LoginScreen'; 
 import RegisterScreen from './pages/RegisterScreen';
@@ -46,6 +48,17 @@ function App() {
           </Route>
           
           <Route path="*" element={<NotFoundScreen />} />
+
+
+
+
+
+
+
+          {/* <Route element={<MainLayout />}>
+            <Route path="/dashboard" element={<DashboardScreen />} />
+            <Route path="/welcomeTest" element={<WelcomeScreen />} />
+          </Route> */}
         </Routes>
         
         

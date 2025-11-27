@@ -63,7 +63,8 @@ main {
 aside {
     width: 18rem;
     height: 100%;
-    background: radial-gradient(#280a48, #20043d);;
+    background: radial-gradient(#280a48, #20043d);
+    border-right: 1px solid grey;
     padding: 2rem 3rem;
     display: flex;
     flex-direction: column;
@@ -149,7 +150,8 @@ aside > :last-child {
 
 @media screen and (max-width: 1024px) {
     aside {
-        width: 15rem;
+        width: 14rem;
+        padding-inline: 1.5rem;
     }
 
     .sidebar__links, .dashboard__logout-btn {

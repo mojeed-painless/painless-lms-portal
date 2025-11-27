@@ -15,7 +15,7 @@ import { CgTranscript } from "react-icons/cg";
 
 const listTexts = [
   { id: 1, text: 'Home', icon: <FiHome  />, to: '/' },
-  { id: 2, text: 'Course Contents', icon: <MdOutlineMenuBook />, to: '/content' },
+  { id: 2, text: 'Course Contents', icon: <MdOutlineMenuBook />, to: '/welcome' },
   { id: 3, text: 'Assignments', icon: <MdOutlineAssignment />, to: '/assignments' },
   { id: 4, text: 'Quizzes', icon: <GiBrain />, to: '/quizzes' },
   { id: 5, text: 'Grades', icon: <IoPodiumOutline />, to: '/grades' },
@@ -55,7 +55,8 @@ const MainLayout = () => {
         </div>
 
         <div className="nav__right">
-          <div className="nav__username">{user.firstName || "User"}</div>
+          {/* <div className="nav__username">{user.firstName || "User"}</div> */}
+          <div className="nav__username">Mojeed</div>
           <div className="nav__user-image">
             <img src={profileImage} alt="user profile" />
           </div>
@@ -102,7 +103,7 @@ const MainLayout = () => {
             />
           </div>
         </aside>
-
+        
         <Outlet />
       </main>
 
