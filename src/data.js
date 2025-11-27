@@ -1,9 +1,10 @@
-
+import { FaDoorOpen, FaCode, FaPaintbrush  } from "react-icons/fa6";
+import { LuBrainCircuit } from "react-icons/lu";
 
 export const topics = [
     {
         id: 1,
-        icon: "<FaDoorOpen />",
+        icon: FaDoorOpen,
         section: "INTRODUCTION",
         description: "Learn the basics of web structure",
         subjects: [
@@ -15,7 +16,7 @@ export const topics = [
     },
     {
         id: 2,
-        icon: "<FaCode />",
+        icon: FaCode,
         section: "HTML",
         description: "Learn the basics of web structure",
         subjects: [
@@ -31,7 +32,7 @@ export const topics = [
     },
     {
         id: 3,
-        icon: "<FaPaintbrush />",
+        icon: FaPaintbrush,
         section: "CSS",
         description: "Learn the basics of web structure",
         subjects: [
@@ -67,6 +68,18 @@ export const topics = [
             {name: 'Styling Forms', path: '/css_form'},
             {name: 'Navigation Bar', path: '/css_navbar'},
             {name: 'Portfolio Project', path: '/css_portfolio'}
+        ]
+    },
+    {
+        id: 4,
+        icon: LuBrainCircuit,
+        section: "Javascript",
+        description: "Make your websites interactive and dynamic.",
+        subjects: [
+            {name: 'General Overview', path: '/general-overview'},
+            {name: 'Why should I learn Coding', path: '/why'},
+            {name: 'Course Overview', path: '/course-overview'},
+            {name: 'Code Editors', path: '/editor'}
         ]
     },
 ]

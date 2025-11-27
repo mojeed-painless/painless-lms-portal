@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 import './App.css'
 
-// import DashboardScreen from './pages/DashboardScreen';
+import DashboardScreen from './pages/DashboardScreen';
 
 import MainLayout from './pages/MainLayout';
 import LoginScreen from './pages/LoginScreen'; 

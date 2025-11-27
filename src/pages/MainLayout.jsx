@@ -55,8 +55,8 @@ const MainLayout = () => {
         </div>
 
         <div className="nav__right">
-          {/* <div className="nav__username">{user.firstName || "User"}</div> */}
-          <div className="nav__username">Mojeed</div>
+          <div className="nav__username">{user.firstName || "User"}</div>
+          {/* <div className="nav__username">Mojeed</div> */}
           <div className="nav__user-image">
             <img src={profileImage} alt="user profile" />
           </div>

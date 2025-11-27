@@ -19,11 +19,11 @@ const DashboardScreen = () => {
             </div>
 
             <div className="greetings__text">
-              {/* <h2 className="section-title">Welcome back, {user.firstName}</h2>
-              <p>{user.role}</p> */}
+              <h2 className="section-title">Welcome back, {user.firstName}</h2>
+              <p>{user.role}</p>
 
-              <h2 className="section-title">Welcome back, Mojeed</h2>
-              <p>student</p>
+              {/* <h2 className="section-title">Welcome back, Mojeed</h2>
+              <p>student</p> */}
             </div>
           </div>
           
