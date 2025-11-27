@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import '../../assets/styles/course-content.css';
 import { topics } from '../../data.js';
 import welcomImg from '../../assets/welcome-img.png';
