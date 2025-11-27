@@ -11,7 +11,7 @@ import { GiNotebook } from "react-icons/gi";
 
 export default function WelcomeScreen() {
 
-    const user = useAuth();
+    const { user } = useAuth();
 
     return (
         <section className="main-content">
