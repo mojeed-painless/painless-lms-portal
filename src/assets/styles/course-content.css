@@ -134,6 +134,17 @@ header {
     font-size: 1.2rem;
 }
 
+.hide {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 400ms ease;
+}
+
+.hide.active {
+    max-height: 1000px;
+    /* transition: all 400ms ease; */
+}
+
 
 
 @media screen and (max-width: 1024px) {

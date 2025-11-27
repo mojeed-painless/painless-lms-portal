@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import '../../assets/styles/course-content.css';
 import { topics } from '../../data.js';
 import welcomImg from '../../assets/welcome-img.png';
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GiNotebook } from "react-icons/gi";
 
 
@@ -12,6 +12,8 @@ import { GiNotebook } from "react-icons/gi";
 export default function WelcomeScreen() {
 
     const { user } = useAuth();
+
+    const [ isHidden, setIsHidden ] = useState(true);
 
     return (
         <section className="main-content">
@@ -36,17 +38,17 @@ export default function WelcomeScreen() {
             <section>
                 {topics.map(topic => (
                     <div key={topic.id} className="welcome__container">
-                        <div className="head">
+                        <div className="head" onClick={() => setIsHidden(prev => !prev)}>
                             <div className="head__left">
                                 <i><topic.icon /></i>
                                 <p><span>{topic.section}:</span> {topic.description}</p>
                             </div>
                             <div className="head__right">
-                                <i><IoIosArrowDown /></i>
+                                <i>{!isHidden ? <IoIosArrowDown /> : <IoIosArrowUp />}</i>
                             </div>
                         </div>
 
-                        <div className="body hide" >
+                        <div className={`body hide ${isHidden ? 'active' : ''}`} >
                             {topic.subjects.map((subject) => (
                                 <Link key={subject.path} to={subject.path} target="_self">
                                     <div>

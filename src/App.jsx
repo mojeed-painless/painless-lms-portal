@@ -55,10 +55,10 @@ function App() {
 
 
 
-          {/* <Route element={<MainLayout />}>
-            <Route path="/dashboard" element={<DashboardScreen />} />
+          <Route element={<MainLayout />}>
+            {/* <Route path="/dashboard" element={<DashboardScreen />} /> */}
             <Route path="/welcomeTest" element={<WelcomeScreen />} />
-          </Route> */}
+          </Route>
         </Routes>
         
         
