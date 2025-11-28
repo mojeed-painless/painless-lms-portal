@@ -52,7 +52,7 @@ export default function WelcomeScreen() {
                             </div>
                         </div>
 
-                        <div className={`body hide ${(isHidden && selectedHead === topic.section) ? 'active' : ''}`} >
+                        <div className={`body hide ${(isHidden) ? 'active' : ''}`} >
                             {topic.subjects.map((subject) => (
                                 <Link key={subject.path} to={subject.path} target="_self">
                                     <div>
