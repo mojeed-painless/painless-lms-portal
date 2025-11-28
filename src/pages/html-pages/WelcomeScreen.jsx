@@ -15,7 +15,7 @@ export default function WelcomeScreen() {
 
     const [ isHidden, setIsHidden ] = useState(false);
     
-    function handleSelect() {
+    function handleSelect(selectedHead) {
         setIsHidden(prev => !prev);
     }
 
@@ -42,7 +42,7 @@ export default function WelcomeScreen() {
             <section>
                 {topics.map(topic => (
                     <div key={topic.id} className="welcome__container">
-                        <div className="head" onClick={() => handleSelect()}>
+                        <div className="head" onClick={() => handleSelect(topic.section)}>
                             <div className="head__left">
                                 <i><topic.icon /></i>
                                 <p><span>{topic.section}:</span> {topic.description}</p>
