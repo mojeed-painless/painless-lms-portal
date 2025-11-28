@@ -13,7 +13,7 @@ export default function WelcomeScreen() {
 
     const { user } = useAuth();
 
-    const [ isHidden, setIsHidden ] = useState(true);
+    const [ isHidden, setIsHidden ] = useState(false);
 
     return (
         <section className="main-content">
