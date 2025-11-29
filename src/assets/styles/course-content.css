@@ -74,6 +74,29 @@
     list-style-type: circle;
 }
 
+blockquote {
+    font-style: italic; 
+    border-left: 3px solid greenyellow; 
+    padding: 0.5rem; 
+    margin-left: 0;
+    background: #8964b0;
+}
+
+hr {
+    margin: 1.5rem 0;
+}
+
+.visit_link {
+    color: rgb(66, 66, 255);
+    font-style: italic;
+    font-size: 13px;
+}
+
+.visit_link:hover {
+    text-decoration: underline;
+}
+
+
 
 
 
@@ -125,7 +148,8 @@
 
 
     .course-content__header{
-        flex-direction: column;
+        flex-direction: column-reverse;
+        gap: 0.7rem;
         align-items: start;
     }
 

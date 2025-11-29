@@ -7,7 +7,7 @@ export default function GeneralOverview() {
         <section className="course-content">
             <div className="course-content__header">
                 <h1>General Overview</h1>
-                <p>Intruduction</p>
+                <p>Introduction</p>
             </div>
 
             <section>

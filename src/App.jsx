@@ -22,7 +22,9 @@ import SettingsScreen from './pages/SettingsScreen';
 
 import WelcomeScreen from './pages/html-pages/WelcomeScreen';
 import GeneralOverview from './pages/html-pages/GeneralOverview';
-import WhyLearn from './pages/html-pages/WhyLearn'
+import WhyLearn from './pages/html-pages/WhyLearn';
+import CourseOverview from './pages/html-pages/CourseOverview';
+import CodeEditors from './pages/html-pages/CodeEditors';
 
 function App() {
 
@@ -45,9 +47,12 @@ function App() {
               <Route path="/transcript" element={<TranscriptScreen />} />
               <Route path="/settings" element={<SettingsScreen />} />
 
+              {/* Introduction pages */}
               <Route path="/welcome" element={<WelcomeScreen />} />
               <Route path="/general-overview" element={<GeneralOverview />} />
               <Route path="/why" element={<WhyLearn />} />
+              <Route path="/course-overview" element={<CourseOverview />} />
+              <Route path="/editor" element={<CodeEditors />} />
             </Route>
           </Route>
           
@@ -60,9 +65,12 @@ function App() {
 
 
           <Route element={<MainLayout />}>
-            {/* <Route path="/dashboard" element={<DashboardScreen />} /> */}
-            {/* <Route path="/welcomeTest" element={<WelcomeScreen />} />
+            {/* <Route path="/dashboard" element={<DashboardScreen />} />
+            <Route path="/welcomeTest" element={<WelcomeScreen />} />
             <Route path="/generalOverview" element={<GeneralOverview />} /> */}
+            {/* <Route path="/whyLearn" element={<WhyLearn />} />
+            <Route path="/courseOverview" element={<CourseOverview />} />
+            <Route path="/codeEditor" element={<CodeEditors />} /> */}
           </Route>
         </Routes>
         
