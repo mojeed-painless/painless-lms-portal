@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import '../../assets/styles/course-content.css';
+import '../../assets/styles/welcome-content.css';
 import { topics } from '../../data.js';
 import welcomImg from '../../assets/welcome-img.png';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -12,15 +12,18 @@ import { GiNotebook } from "react-icons/gi";
 export default function WelcomeScreen() {
 
     const { user } = useAuth();
-
-    const [ isHidden, setIsHidden ] = useState(false);
+    
+    const [ isSelected, setIsSelected ] = useState('')
     
     function handleSelect(selectedHead) {
-        setIsHidden(prev => !prev);
+        setIsSelected(prev => (
+            (prev === selectedHead) ? '' : selectedHead
+        ))
+        console.log(selectedHead);
     }
 
     return (
-        <section className="main-content">
+        <section className="welcome__main-content">
             <header>
                 <div className="header__image">
                   <img src={welcomImg} alt="Welcome" />
@@ -39,7 +42,7 @@ export default function WelcomeScreen() {
                 </div>
             </header>
 
-            <section>
+            <section className='welcome'>
                 {topics.map(topic => (
                     <div key={topic.id} className="welcome__container">
                         <div className="head" onClick={() => handleSelect(topic.section)}>
@@ -48,13 +51,13 @@ export default function WelcomeScreen() {
                                 <p><span>{topic.section}:</span> {topic.description}</p>
                             </div>
                             <div className="head__right">
-                                <i>{!isHidden ? <IoIosArrowDown /> : <IoIosArrowUp />}</i>
+                                <i>{isSelected === topic.section ? <IoIosArrowUp /> : <IoIosArrowDown />}</i>
                             </div>
                         </div>
 
-                        <div className={`body hide ${(isHidden) ? 'active' : ''}`} >
+                        <div className={`body hide ${(isSelected === topic.section) ? 'active' : ''}`} >
                             {topic.subjects.map((subject) => (
-                                <Link key={subject.path} to={subject.path} target="_self">
+                                <Link key={subject.path} to={subject.path}>
                                     <div>
                                         <i><GiNotebook /></i>
                                         <p>{subject.name}</p>
@@ -64,6 +67,8 @@ export default function WelcomeScreen() {
                         </div>
                     </div>
                 ))}
+
+                
             </section>
         </section>
     );

@@ -1,0 +1,32 @@
+section#navigators {
+    border-top: 1px solid #2f1d43;
+    padding-top: 2rem;
+}
+
+.navigators {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navigator {
+    background: #a18aba;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.2rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    transition: all 400ms ease;
+}
+
+.navigator:hover {
+    background: #806999;
+}
+
+.navigator i {
+    display: flex;
+}
+
+
+
+

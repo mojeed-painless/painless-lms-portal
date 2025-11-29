@@ -18,7 +18,7 @@ export const topics = [
         id: 2,
         icon: FaCode,
         section: "HTML",
-        description: "Learn the basics of web structure",
+        description: "Understand the building blocks of every webpage.",
         subjects: [
             {name: 'HTML Page Structure', path: '/html-structure'},
             {name: 'Lists', path: '/html-list'},
@@ -34,7 +34,7 @@ export const topics = [
         id: 3,
         icon: FaPaintbrush,
         section: "CSS",
-        description: "Learn the basics of web structure",
+        description: "Discover how to transform plain structures into visually appealing designs.",
         subjects: [
             {name: 'Introduction to CSS', path: '/css_introduction'},
             {name: 'Inserting CSS', path: '/css_insert'},

@@ -61,10 +61,10 @@ main {
 }
 
 aside {
-    width: 18rem;
+    width: 16rem;
     height: 100%;
     background: radial-gradient(#280a48, #20043d);
-    border-right: 1px solid grey;
+    border-right: 1px solid #2f1d43;
     padding: 2rem 3rem;
     display: flex;
     flex-direction: column;
@@ -88,7 +88,7 @@ aside > :last-child {
     align-items: center;
     gap: 1.3rem;
     color: #fff;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 400ms ease;
@@ -109,7 +109,7 @@ aside > :last-child {
 
 .sidebar__links span:first-child, 
 .dashboard__logout-btn span:first-child {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     display: flex;
 }
 
@@ -152,15 +152,6 @@ aside > :last-child {
     aside {
         width: 14rem;
         padding-inline: 1.5rem;
-    }
-
-    .sidebar__links, .dashboard__logout-btn {
-        font-size: 0.9rem;
-    }
-
-    .sidebar__links span:first-child, 
-    .dashboard__logout-btn span:first-child {
-        font-size: 1.3rem;
     }
 
 }

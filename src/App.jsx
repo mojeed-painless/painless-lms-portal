@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 import './App.css'
 
-import DashboardScreen from './pages/DashboardScreen';
+// import DashboardScreen from './pages/DashboardScreen';
 
 import MainLayout from './pages/MainLayout';
 import LoginScreen from './pages/LoginScreen'; 
@@ -20,7 +20,9 @@ import GradeScreen from './pages/GradeScreen';
 import TranscriptScreen from './pages/TranscriptScreen';
 import SettingsScreen from './pages/SettingsScreen';
 
-import WelcomeScreen from './pages/html-pages/WelcomeScreen'
+import WelcomeScreen from './pages/html-pages/WelcomeScreen';
+import GeneralOverview from './pages/html-pages/GeneralOverview';
+import WhyLearn from './pages/html-pages/WhyLearn'
 
 function App() {
 
@@ -44,6 +46,8 @@ function App() {
               <Route path="/settings" element={<SettingsScreen />} />
 
               <Route path="/welcome" element={<WelcomeScreen />} />
+              <Route path="/general-overview" element={<GeneralOverview />} />
+              <Route path="/why" element={<WhyLearn />} />
             </Route>
           </Route>
           
@@ -57,7 +61,8 @@ function App() {
 
           <Route element={<MainLayout />}>
             {/* <Route path="/dashboard" element={<DashboardScreen />} /> */}
-            <Route path="/welcomeTest" element={<WelcomeScreen />} />
+            {/* <Route path="/welcomeTest" element={<WelcomeScreen />} />
+            <Route path="/generalOverview" element={<GeneralOverview />} /> */}
           </Route>
         </Routes>
         
