@@ -2,13 +2,12 @@ import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import '../assets/styles/layout.css';
 import { listTexts } from '../data.js';
 import pcalogo from '../assets/pcalogo.png';
 import profileImage from '../assets/profile-image.jpg';
 import LogoutButton from '../components/common/LogoutButton';
 import { TbLayoutSidebarRightCollapse, TbLayoutSidebarLeftCollapse } from "react-icons/tb";
-
+import '../assets/styles/layout.css';
 
 const MainLayout = () => {
   const { user } = useAuth();
