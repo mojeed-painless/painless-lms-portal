@@ -20,11 +20,15 @@ import GradeScreen from './pages/GradeScreen';
 import TranscriptScreen from './pages/TranscriptScreen';
 import SettingsScreen from './pages/SettingsScreen';
 
+{/* Introduction pages */}
 import WelcomeScreen from './pages/html-pages/WelcomeScreen';
 import GeneralOverview from './pages/html-pages/GeneralOverview';
 import WhyLearn from './pages/html-pages/WhyLearn';
 import CourseOverview from './pages/html-pages/CourseOverview';
 import CodeEditors from './pages/html-pages/CodeEditors';
+
+{/* HTML pages */}
+import HTMLTransition from './pages/html-pages/HTMLTransition'
 
 function App() {
 
@@ -53,6 +57,9 @@ function App() {
               <Route path="/why" element={<WhyLearn />} />
               <Route path="/course-overview" element={<CourseOverview />} />
               <Route path="/editor" element={<CodeEditors />} />
+
+              {/* HTML pages */}
+              <Route path="/html-transition" element={<HTMLTransition />} />
             </Route>
           </Route>
           
@@ -68,9 +75,10 @@ function App() {
             {/* <Route path="/dashboard" element={<DashboardScreen />} />
             <Route path="/welcomeTest" element={<WelcomeScreen />} />
             <Route path="/generalOverview" element={<GeneralOverview />} /> */}
-            <Route path="/whyLearn" element={<WhyLearn />} />
+            {/* <Route path="/whyLearn" element={<WhyLearn />} />
             <Route path="/courseOverview" element={<CourseOverview />} />
-            // <Route path="/codeEditor" element={<CodeEditors />} />
+            <Route path="/codeEditor" element={<CodeEditors />} />
+            <Route path="/htmlTransition" element={<HTMLTransition />} /> */}
           </Route>
         </Routes>
         
