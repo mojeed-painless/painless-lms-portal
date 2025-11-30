@@ -1,6 +1,25 @@
+import { FiHome } from "react-icons/fi";
+import { MdOutlineMenuBook, MdOutlineAssignment } from "react-icons/md";
+import { GiBrain } from "react-icons/gi";
+import { IoPodiumOutline, IoSettingsOutline } from "react-icons/io5";
+import { CgTranscript } from "react-icons/cg";
+
 import { FaDoorOpen, FaCode, FaPaintbrush  } from "react-icons/fa6";
 import { LuBrainCircuit } from "react-icons/lu";
 
+// SIDEBAR DATA
+export const listTexts = [
+  { id: 1, text: 'Home', icon: FiHome, to: '/' },
+  { id: 2, text: 'Course Contents', icon: MdOutlineMenuBook, to: '/welcome' },
+  { id: 3, text: 'Assignments', icon: MdOutlineAssignment, to: '/assignments' },
+  { id: 4, text: 'Quizzes', icon: GiBrain, to: '/quizzes' },
+  { id: 5, text: 'Grades', icon: IoPodiumOutline, to: '/grades' },
+  { id: 6, text: 'Transcript', icon: CgTranscript, to: '/transcript' },
+  { id: 7, text: 'Settings', icon: IoSettingsOutline, to: '/settings' },
+]
+
+
+// WELCOME SCREEN DATA
 export const topics = [
     {
         id: 1,

@@ -68,9 +68,9 @@ function App() {
             {/* <Route path="/dashboard" element={<DashboardScreen />} />
             <Route path="/welcomeTest" element={<WelcomeScreen />} />
             <Route path="/generalOverview" element={<GeneralOverview />} /> */}
-            {/* <Route path="/whyLearn" element={<WhyLearn />} />
+            <Route path="/whyLearn" element={<WhyLearn />} />
             <Route path="/courseOverview" element={<CourseOverview />} />
-            <Route path="/codeEditor" element={<CodeEditors />} /> */}
+            // <Route path="/codeEditor" element={<CodeEditors />} />
           </Route>
         </Routes>
         

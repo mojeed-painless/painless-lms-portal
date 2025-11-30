@@ -1,28 +1,13 @@
 import React from 'react';
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import LogoutButton from '../components/common/LogoutButton';
+import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../assets/styles/layout.css';
+import { listTexts } from '../data.js';
 import pcalogo from '../assets/pcalogo.png';
 import profileImage from '../assets/profile-image.jpg';
+import LogoutButton from '../components/common/LogoutButton';
 import { TbLayoutSidebarRightCollapse, TbLayoutSidebarLeftCollapse } from "react-icons/tb";
-import { FiHome } from "react-icons/fi";
-import { MdOutlineMenuBook, MdOutlineAssignment } from "react-icons/md";
-import { GiBrain } from "react-icons/gi";
-import { IoPodiumOutline, IoSettingsOutline } from "react-icons/io5";
-import { CgTranscript } from "react-icons/cg";
-
-const listTexts = [
-  { id: 1, text: 'Home', icon: <FiHome  />, to: '/' },
-  { id: 2, text: 'Course Contents', icon: <MdOutlineMenuBook />, to: '/welcome' },
-  { id: 3, text: 'Assignments', icon: <MdOutlineAssignment />, to: '/assignments' },
-  { id: 4, text: 'Quizzes', icon: <GiBrain />, to: '/quizzes' },
-  { id: 5, text: 'Grades', icon: <IoPodiumOutline />, to: '/grades' },
-  { id: 6, text: 'Transcript', icon: <CgTranscript />, to: '/transcript' },
-  { id: 7, text: 'Settings', icon: <IoSettingsOutline />, to: '/settings' },
-]
-
 
 
 const MainLayout = () => {
@@ -30,6 +15,28 @@ const MainLayout = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHiden, setIsHiden] = useState(false);
+
+  const smallAsideRef = useRef(null);
+
+    useEffect(() => {
+      const handleOutsideClick = (e) => {
+        const target = e.target;
+
+        if (isHiden && smallAsideRef.current && !smallAsideRef.current.contains(target)) {
+          setIsHiden(false);
+        }
+      };
+
+      document.addEventListener('mousedown', handleOutsideClick);
+      document.addEventListener('touchstart', handleOutsideClick);
+
+      return () => {
+        document.removeEventListener('mousedown', handleOutsideClick);
+        document.removeEventListener('touchstart', handleOutsideClick);
+      };
+    }, [isHiden]);
+
+
 
   return (
     <div className="container">
@@ -67,7 +74,7 @@ const MainLayout = () => {
         <aside className={ isCollapsed ? 'collapsed-sidebar' : '' }>
          {(listTexts.map(item => (
             <Link to={item.to} key={item.id} className="sidebar__links">
-              <span>{item.icon}</span>
+              <span><item.icon /></span>
               {!isCollapsed && <span>{item.text}</span>}
             </Link>
           )))}
@@ -79,7 +86,7 @@ const MainLayout = () => {
 
         {/* for MOBILE screen */}
 
-        <aside className={ `small-screen__sidebar ${ isHiden ? 'show-sidebar' : '' } ` }>
+        <aside ref={smallAsideRef} className={ `small-screen__sidebar ${ isHiden ? 'show-sidebar' : '' } ` }>
          <div className="sidebar-header">
             <span className='collapse-btn' onClick={() => setIsHiden(prev => !prev)}>
               { isHiden ? 
@@ -93,14 +100,12 @@ const MainLayout = () => {
 
          <div className='sidebar-body'>
             {(listTexts.map(item => (
-              <Link to={item.to} key={item.id} className="sidebar__links">
-                <span>{item.icon}</span>
+              <Link to={item.to} key={item.id} className="sidebar__links" onClick={() => setIsHiden(prev => !prev)}>
+                <span><item.icon /></span>
                 <span>{item.text}</span>
               </Link>
             )))}
-            <LogoutButton 
-              className="dashboard__logout-btn"
-            />
+            <LogoutButton className="dashboard__logout-btn"/>
           </div>
         </aside>
         
