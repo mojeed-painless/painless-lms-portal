@@ -28,7 +28,18 @@ import CourseOverview from './pages/html-pages/CourseOverview';
 import CodeEditors from './pages/html-pages/CodeEditors';
 
 {/* HTML pages */}
-import HTMLTransition from './pages/html-pages/HTMLTransition'
+import HTMLTransition from './pages/html-pages/HTMLTransition';
+import HTMLPageStructure from './pages/html-pages/HTMLPageStructure';
+import ListTags from './pages/html-pages/ListTags';
+import Tables from './pages/html-pages/Tables';
+import Images from './pages/html-pages/Images';
+import Hyperlinks from './pages/html-pages/Hyperlinks';
+import InlineBlockElement from './pages/html-pages/InlineBlockElement';
+import Forms from './pages/html-pages/Forms';
+import HTMLStyling from './pages/html-pages/HTMLStyling';
+
+{/* CSS pages */}
+import CSSTransition from './pages/css-pages/CSSTransition';
 
 function App() {
 
@@ -60,6 +71,17 @@ function App() {
 
               {/* HTML pages */}
               <Route path="/html-transition" element={<HTMLTransition />} />
+              <Route path="/html-structure" element={<HTMLPageStructure />} />
+              <Route path="/html-list" element={<ListTags />} />
+              <Route path="/html-table" element={<Tables />} />
+              <Route path="/html-image" element={<Images />} />
+              <Route path="/html-hyperlinks" element={<Hyperlinks />} />
+              <Route path="/html-block-element" element={<InlineBlockElement />} />
+              <Route path="/html-form" element={<Forms />} />
+              <Route path="/html-style" element={<HTMLStyling />} />
+
+              {/* CSS pages */}
+              <Route path="/css-transition" element={<CSSTransition />} />
             </Route>
           </Route>
           
@@ -72,13 +94,7 @@ function App() {
 
 
           <Route element={<MainLayout />}>
-            {/* <Route path="/dashboard" element={<DashboardScreen />} />
-            <Route path="/welcomeTest" element={<WelcomeScreen />} />
-            <Route path="/generalOverview" element={<GeneralOverview />} /> */}
-            {/* <Route path="/whyLearn" element={<WhyLearn />} />
-            <Route path="/courseOverview" element={<CourseOverview />} />
-            <Route path="/codeEditor" element={<CodeEditors />} />
-            <Route path="/htmlTransition" element={<HTMLTransition />} /> */}
+            <Route path="/structures" element={<HTMLPageStructure />} />
           </Route>
         </Routes>
         

@@ -1,24 +1,15 @@
 import '../../assets/styles/course-content.css';
 import '../../assets/styles/transition.css';
-import htmlLogo from '../../assets/html_logo.png';
+import cssLogo from '../../assets/css_logo.png';
 import transitImg from '../../assets/transit1.png';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 
-export default function HTMLTransition() {
+export default function CSSTransition() {
 
     return (
         <section className="course-content transition-content">
-            {/* <div className="course-content__header">
-                <h1>HTML Transition</h1>
-            </div>
-
-            <section>
-                <div className="course-content__container">
-                </div>
-            </section> */}
-
             <div className="transition-card">
-                <span className="badge">Introduction Completed</span>
+                <span className="badge">HTML Module Completed</span>
 
                 <div className="image-container">
                     <div className="transit-container">
@@ -26,23 +17,23 @@ export default function HTMLTransition() {
                     </div>
 
                     <div className="logo-container">
-                        <img src={htmlLogo} alt="HTML Icon" />
+                        <img src={cssLogo} alt="HTML Icon" />
                     </div>
                 </div>
                 
                 <div className="transition-text">
-                    <h1>Welcome to HTML</h1>
+                    <h1>Ready to Style? Welcome to CSS!</h1>
 
                     <p>
-                        You've grasped the concepts. Now, let's build the structure. 
-                        Get ready to learn the language that builds the skeleton of the entire internet.
+                        You’ve built the web's skeleton with HTML. Now, it’s time to add skin, color, and personality! 
+                        We're diving into the world of beautiful design and layout.
                     </p>
                 </div>
             </div>
 
             <PrevNextBtn 
-                prevPath="/editor" 
-                nextPath="/html-structure"
+                prevPath="/html-style" 
+                nextPath=""
             />
         </section>
     );
