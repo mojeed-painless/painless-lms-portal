@@ -25,12 +25,12 @@ article img {
 
 .code-header div,
 .output-header div {
-    font-size: 13px;
+    font-size: 0.82rem;
     font-weight: bold;
 }
 
 .code-header button{
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 0.2rem 0.5rem;
     border: none;
     background: #7925d3;

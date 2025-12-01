@@ -49,9 +49,10 @@ export default function CourseOverview() {
                         <CodeBox 
                             id='htmlCode1'
                             lang='HTML'
-                            codeImg={htmlCode1}
                             outputImg={htmlOutput1}
-                        />
+                        >
+                            <img src={htmlCode1} alt="" />
+                        </CodeBox>
 
                         <hr />
 
@@ -73,13 +74,14 @@ export default function CourseOverview() {
 
                         <h4>Example:</h4>
                         <p>Click <i><b>"Run code"</b></i> to display output</p>
-
+                        
                         <CodeBox 
-                            id='cssCode1'
-                            lang='CSS'
-                            codeImg={cssCode1}
+                            id='htmlCode1'
+                            lang='HTML'
                             outputImg={cssOutput1}
-                        />
+                        >
+                            <img src={cssCode1} alt="" />
+                        </CodeBox>
 
                         <hr />
 

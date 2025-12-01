@@ -73,6 +73,19 @@
     list-style-type: circle;
 }
 
+.course-content__container ul ul li {
+    list-style-type: square;
+}
+
+.course-content__container ol {
+    margin-top: 1rem;
+}
+
+.course-content__container ol li {
+    padding: 0.5rem 0;
+    margin-left: 1.5rem;
+}
+
 blockquote {
     font-style: italic; 
     border-left: 3px solid greenyellow; 
@@ -129,6 +142,24 @@ pre {
     color: rgb(184, 181, 12);
 }
 
+table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+      font-size: 1rem;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #140524;
+}
+
+
 
 
 
@@ -184,6 +215,15 @@ pre {
         flex-direction: column-reverse;
         gap: 0.7rem;
         align-items: start;
+    }
+
+    .course-content pre[class*="language-"] {
+        font-size: 0.89rem;
+    }
+
+
+    table {
+      font-size: 0.8rem;
     }
 
     

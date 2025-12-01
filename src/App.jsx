@@ -94,7 +94,8 @@ function App() {
 
 
           <Route element={<MainLayout />}>
-            <Route path="/structures" element={<HTMLPageStructure />} />
+            {/* <Route path="/courseOverview" element={<CourseOverview />} />
+            <Route path="/htmlList" element={<ListTags />} /> */}
           </Route>
         </Routes>
         
