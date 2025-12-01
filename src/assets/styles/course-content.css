@@ -95,6 +95,14 @@ blockquote {
     text-decoration: underline;
 }
 
+code {
+    background: #140524;
+    padding: 0.2rem 0.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0.2rem;
+    font-size: 1rem;
+}
+
 pre {
     background: #140524;
     padding: 1rem;
@@ -105,38 +113,22 @@ pre {
     white-space: pre;
 }
 
-pre span {
-    white-space: inherit;
+.course-content pre[class*="language-"] {
+    background: #140524;
 }
 
-code {
-    background: #140524;
-    padding: 0.2rem 0.5rem;
-    margin: 1.5rem 0;
-    border-radius: 0.2rem;
-    font-size: 1rem;
-}
+
 
 /* t: tags; s: selectors; p: properties; v: values; */
-.t {
-    color: rgb(66, 113, 243);
-}
-
+.course-content .token.tag { color: #5280ff; }
+.course-content .token.comment{ color: #007000; }
+.course-content .token.attr-name { color: #82cbfc; }
+.course-content .token.attr-value { color: #e2694b; }
+.course-content .token.punctuation { color: #8c94a1; }
 .s {
     color: rgb(184, 181, 12);
 }
 
-.p {
-    color: rgb(117, 197, 250);
-}
-
-.v {
-    color: rgb(226, 105, 75);
-}
-
-.comments {
-    color: rgb(0, 112, 0);
-}
 
 
 

@@ -1,6 +1,8 @@
+import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+
 
 export default function HTMLPageStructure() {
 
@@ -29,29 +31,24 @@ export default function HTMLPageStructure() {
                         one you'll use often:
                       </p>
                       
+ <ExampleCode>
+ {`<!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
 
-<pre>
-<span className="t">&lt;!DOCTYPE <span className="p">html</span>&gt;</span>
-<span className="t">&lt;html</span> <span className="p">lang</span>=<span className="v">"en"</span><span className="t">&gt;</span>
-<span className="t">&lt;head&gt;</span>
-    <span className="t">&lt;meta</span> <span className="p">charset</span>=<span className="v">"UTF-8"</span><span className="t">&gt;</span>
-    <span className="t">&lt;meta</span> <span className="p">http-equiv</span>=<span className="v">"X-UA-Compatible"</span> <span className="p">content</span>=<span className="v">"IE=edge"</span><span className="t">&gt;</span>
-    <span className="t">&lt;meta</span> <span className="p">name</span>=<span className="v">"viewport"</span> <span className="p">content</span>=<span className="v">"width=device-width, initial-scale=1.0"</span><span className="t">&gt;</span>
-    <span className="t">&lt;title&gt;</span>My Web Page<span className="t">&lt;/title&gt;</span>
-    <span className="t">&lt;link</span> <span className="p">rel</span>=<span className="v">"stylesheet"</span> <span className="p">href</span>=<span className="v">"style.css"</span><span className="t">&gt;</span>
-<span className="t">&lt;/head&gt;</span>
-<span className="t">&lt;body&gt;</span>
+    <!-- This is a comment -->
 
-  <span className="comments">&lt;!-- This is a comment --&gt;</span>
-
-  <span className="t">&lt;script</span> <span className="p">src</span>=<span className="v">"script.js"</span><span className="t">&gt;</span><span className="t">&lt;/script&gt;</span>
-<span className="t">&lt;/body&gt;</span>
-<span className="t">&lt;/html&gt;</span>
-</pre>
-
-
-
-
+    <script src="script.js"></script>
+ </body>
+ </html>`}
+</ExampleCode>
 
   <h3>The Doctype Declaration</h3>
   <p>The very first line in any HTML document is the doctype declaration: <code className="code">&lt;!DOCTYPE html&gt;</code></p>
@@ -112,35 +109,16 @@ export default function HTMLPageStructure() {
   </p>
   <code className="code">&lt;!-- This is a comment --&gt;</code>
 
-  <div className="watch">
-    <p>🎥 Watch: HTML Page structure</p>
-    <div className="video-responsive">
-        <iframe width="100%" height="100%" 
-            src="https://www.youtube.com/embed/rHJd47-ZqE8?si=0Bi4lxtGtVdoznxW" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" 
-            allowfullscreen>
-        </iframe>
-    </div>
-  </div>
+  <VideoBox 
+      title='HTML Page structure'
+      code='rHJd47-ZqE8?si=0Bi4lxtGtVdoznxW'
+  />
 
    <h3>Smart Phone</h3>
-    <div className="watch">
-    <p>🎥 Watch: HTML Page structure</p>
-    <div className="video-responsive">
-        <iframe width="100%" height="100%" 
-            src="https://www.youtube.com/embed/IBjU_zEtAOc?si=PzlN_BGzsP6rDZ8D"  
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" 
-            allowfullscreen>
-        </iframe>
-    </div>
-  </div>
-  
+   <VideoBox 
+      title='HTML Page structure'
+      code='IBjU_zEtAOc?si=PzlN_BGzsP6rDZ8D'
+  />
 
   <h3> Final Thoughts</h3>
   <p>
