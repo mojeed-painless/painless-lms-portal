@@ -43,16 +43,12 @@ const MainLayout = () => {
         <div className="nav__left">
           {/* Works for WINDOWS screen only  */}
           <span className='collapse-btn large-collapse-btn' onClick={() => setIsCollapsed(prev => !prev)}>
-            { isCollapsed ? 
-                <TbLayoutSidebarRightCollapse /> : 
-                <TbLayoutSidebarLeftCollapse />}
+            { isCollapsed ? <TbLayoutSidebarRightCollapse /> : <TbLayoutSidebarLeftCollapse />}
           </span>
 
           {/* Works for MOBILE screen only */}
           <span className='collapse-btn small-collapse-btn' onClick={() => setIsHiden(prev => !prev)}>
-            { isHiden ? 
-                <TbLayoutSidebarLeftCollapse /> : 
-                <TbLayoutSidebarRightCollapse />}
+            { isHiden ? <TbLayoutSidebarLeftCollapse /> : <TbLayoutSidebarRightCollapse />}
           </span>
 
           <div className="nav-logo">
@@ -110,7 +106,10 @@ const MainLayout = () => {
         
         <Outlet />
       </main>
-
+      
+      <footer>
+            <p>&copy; 2025 Painless Portal. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
