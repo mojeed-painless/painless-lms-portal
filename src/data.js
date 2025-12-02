@@ -59,7 +59,7 @@ export const topics = [
             {name: 'Inserting CSS', path: '/css_insert'},
             {name: 'CSS Syntax', path: '/css_syntax'},
             {name: 'Selectors', path: '/css_selectors'},
-            {name: 'Colors', path: '/csS_color'},
+            {name: 'Colors', path: '/css_color'},
             {name: 'Background', path: '/css_background'},
             {name: 'Borders', path: '/css_border'},
             {name: 'Box Model', path: '/css_boxmodel'},

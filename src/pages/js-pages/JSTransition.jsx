@@ -1,15 +1,15 @@
 import '../../assets/styles/course-content.css';
 import '../../assets/styles/transition.css';
-import cssLogo from '../../assets/css_logo.png';
+import jsLogo from '../../assets/js_logo.png';
 import transitImg from '../../assets/transit1.png';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 
-export default function CSSTransition() {
+export default function JSTransition() {
 
     return (
         <section className="course-content transition-content">
             <div className="transition-card">
-                <span className="badge">HTML Module Completed</span>
+                <span className="badge">CSS Module Completed</span>
 
                 <div className="image-container">
                     <div className="transit-container">
@@ -17,12 +17,12 @@ export default function CSSTransition() {
                     </div>
 
                     <div className="logo-container">
-                        <img src={cssLogo} alt="CSS Icon" />
+                        <img src={jsLogo} alt="JS Icon" />
                     </div>
                 </div>
                 
                 <div className="transition-text">
-                    <h1>Ready to Style? Welcome to CSS!</h1>
+                    <h1>Ready to Style? Welcome to JS!</h1>
 
                     <p>
                         You’ve built the web's skeleton with HTML. Now, it’s time to add skin, color, and personality! 
@@ -32,7 +32,7 @@ export default function CSSTransition() {
             </div>
 
             <PrevNextBtn 
-                prevPath="/html-style" 
+                prevPath="/css_portfolio" 
                 nextPath=""
             />
         </section>

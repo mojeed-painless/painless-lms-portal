@@ -6,7 +6,7 @@ import VideoBox from '../../components/common/VideoBox';
 import tableOutput1 from '../../assets/table1.png';
 import tableOutput2 from '../../assets/table2.png'
 
-export default function Tables() {
+export default function TableTags() {
 
     return (
         <section className="course-content">
