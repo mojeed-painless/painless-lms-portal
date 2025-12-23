@@ -33,7 +33,7 @@ export default function CSSTransition() {
 
             <PrevNextBtn 
                 prevPath="/html-style" 
-                nextPath=""
+                nextPath="/css_introduction"
             />
         </section>
     );

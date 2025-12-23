@@ -29,15 +29,10 @@ export default function WelcomeScreen() {
                   <img src={welcomImg} alt="Welcome" />
                 </div>  
                 <div className="header__text">
-                    <h3>Hey, {user.firstName || "User"}</h3>
-                    {/* <h3>Hey, Mojeed!</h3> */}
+                    {/* <h3>Hey, {user.firstName || "User"}</h3> */}
+                    <h3>Hey, Mojeed!</h3>
                     <h1>Welcome to the world of Web Development</h1>
-                    <p className='line-clamp-8'>This course is carefully designed to take complete beginners from ground level 
-                        to confident web developers. Whether you’ve never written a line of code before 
-                        or you're curious about how websites are built, this is the perfect starting point.
-                        By the end of the course, you’ll have a solid foundation in web technologies 
-                        and the hands-on skills to create modern, responsive websites—ready to take 
-                        on real-world projects or dive deeper into advanced development.
+                    <p className='line-clamp-8'>This course is carefully designed to take complete beginners from ground level to confident web developers. Whether you’ve never written a line of code before or you're curious about how websites are built, this is the perfect starting point. By the end of the course, you’ll have a solid foundation in web technologies and the hands-on skills to create modern, responsive websites—ready to take on real-world projects or dive deeper into advanced development.
                     </p>
                 </div>
             </header>

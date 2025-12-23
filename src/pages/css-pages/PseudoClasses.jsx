@@ -186,7 +186,7 @@ export default function PseudoClasses() {
 
             <PrevNextBtn 
                 prevPath="/css_conbinator" 
-                nextPath="/css_pseudoelementr"
+                nextPath="/css_pseudoelement"
             />
         </section>
     );
