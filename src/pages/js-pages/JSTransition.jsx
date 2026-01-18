@@ -22,11 +22,10 @@ export default function JSTransition() {
                 </div>
                 
                 <div className="transition-text">
-                    <h1>Ready to Style? Welcome to JS!</h1>
+                    <h1>Ready to write Logics? Welcome to JavaScript!</h1>
 
                     <p>
-                        You’ve built the web's skeleton with HTML. Now, it’s time to add skin, color, and personality! 
-                        We're diving into the world of beautiful design and layout.
+                        You’ve built the structure and styled the look. Now it’s time to bring your website to life. JavaScript is where your pages start to think, react, and respond.
                     </p>
                 </div>
             </div>

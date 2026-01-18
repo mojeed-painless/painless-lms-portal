@@ -27,7 +27,7 @@ const DashboardScreen = () => {
             </div>
           </div>
           
-          <Link to="/catalog" className="not-found-link" >Go to Course Catalog</Link>
+          {/* <Link to="/catalog" className="not-found-link" >Go to Course Catalog</Link> */}
         </section>
   );
 };

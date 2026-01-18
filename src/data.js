@@ -95,10 +95,20 @@ export const topics = [
         section: "Javascript",
         description: "Make your websites interactive and dynamic.",
         subjects: [
-            {name: 'General Overview', path: '/general-overview'},
-            {name: 'Why should I learn Coding', path: '/why'},
-            {name: 'Course Overview', path: '/course-overview'},
-            {name: 'Code Editors', path: '/editor'}
+            {name: 'JavaScript Introduction', path: ''},
+            {name: 'Adding JavaScript', path: ''},
+            {name: 'ALERT, CONSOLE & COMMENT', path: ''},
+            {name: 'STATEMENTS', path: ''}
+            {name: 'VARIABLES', path: ''}
+            {name: 'NAMING VARIABLES', path: ''}
+            {name: 'CONSTANT', path: ''}
+            {name: 'DATA TYPES', path: ''}
+            {name: 'STRINGS', path: ''}
+            {name: 'NUMBERS', path: ''}
+            {name: 'BIGINT', path: ''}
+            {name: 'BOOLEAN', path: ''}
+            {name: 'NULL, UNDEFINED', path: ''}
+            {name: 'STRINGS', path: ''}
         ]
     },
 ]
