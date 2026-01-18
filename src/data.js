@@ -98,17 +98,17 @@ export const topics = [
             {name: 'JavaScript Introduction', path: ''},
             {name: 'Adding JavaScript', path: ''},
             {name: 'ALERT, CONSOLE & COMMENT', path: ''},
-            {name: 'STATEMENTS', path: ''}
-            {name: 'VARIABLES', path: ''}
-            {name: 'NAMING VARIABLES', path: ''}
-            {name: 'CONSTANT', path: ''}
-            {name: 'DATA TYPES', path: ''}
-            {name: 'STRINGS', path: ''}
-            {name: 'NUMBERS', path: ''}
-            {name: 'BIGINT', path: ''}
-            {name: 'BOOLEAN', path: ''}
-            {name: 'NULL, UNDEFINED', path: ''}
-            {name: 'STRINGS', path: ''}
+            {name: 'STATEMENTS', path: ''},
+            {name: 'VARIABLES', path: ''},
+            {name: 'NAMING VARIABLES', path: ''},
+            {name: 'CONSTANT', path: ''},
+            {name: 'DATA TYPES', path: ''},
+            {name: 'STRINGS', path: ''},
+            {name: 'NUMBERS', path: ''},
+            {name: 'BIGINT', path: ''},
+            {name: 'BOOLEAN', path: ''},
+            {name: 'NULL, UNDEFINED', path: ''},
+            {name: 'TYPEOF', path: ''},
         ]
     },
 ]
