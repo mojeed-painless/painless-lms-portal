@@ -112,9 +112,7 @@ const MainLayout = () => {
         <Outlet />
       </main>
       
-      <footer>
-            <p>&copy; 2025 Painless Portal. All rights reserved.</p>
-      </footer>
+      
     </div>
   );
 };

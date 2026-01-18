@@ -1,5 +1,7 @@
+import UnderDevelopment from "../components/common/UnderDevelopment";
+
 export default function GradeScreen() {
   return (
-      <h1>Grades</h1>
+      <UnderDevelopment section="Grade" />
   );
 }

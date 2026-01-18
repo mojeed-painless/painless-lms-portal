@@ -1,5 +1,6 @@
+import UnderDevelopment from "../components/common/UnderDevelopment";
 export default function QuizScreen() {
   return (
-      <h1>Qiuz</h1>
+      <UnderDevelopment section="Quiz" />
   );
 }

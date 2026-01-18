@@ -89,8 +89,9 @@ function App() {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterScreen />} />
           
-          <Route path="/" element={<PrivateRoute />}>
           
+          <Route path="/" element={<PrivateRoute />}>
+
             <Route element={<MainLayout />}>
               <Route index element={<RoleBasedDashboard />} />
               <Route path="/catalog" element={<CourseCatalogScreen />} />
@@ -172,7 +173,8 @@ function App() {
 
 
           <Route path="/animate" element={<LoadingAnimation />} />
-          {/*<Route element={<MainLayout />}>
+          
+          {/* <Route element={<MainLayout />}>
               <Route index element={<RoleBasedDashboard />} />
               <Route path="/catalog" element={<CourseCatalogScreen />} />
               <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
@@ -240,7 +242,8 @@ function App() {
 
               
               <Route path="/js-transition" element={<JSTransition />} />
-          </Route>*/}
+          </Route> */}
+
         </Routes>
         
         

@@ -1,5 +1,6 @@
+import UnderDevelopment from "../components/common/UnderDevelopment";
 export default function SettingsScreen() {
   return (
-      <h1>Settings</h1>
+      <UnderDevelopment section="Settings" />
   );
 }

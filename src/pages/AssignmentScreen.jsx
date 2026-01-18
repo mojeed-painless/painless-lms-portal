@@ -1,5 +1,7 @@
+import UnderDevelopment from "../components/common/UnderDevelopment";
+
 export default function AssignmentScreen() {
   return (
-      <h1>Assignments</h1>
+      <UnderDevelopment section="Assignment" />
   );
 }

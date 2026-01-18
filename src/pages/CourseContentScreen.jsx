@@ -1,5 +1,6 @@
+import UnderDevelopment from "../components/common/UnderDevelopment";
 export default function CourseContentScreen() {
   return (
-      <h1>Course Contents</h1>
+      <UnderDevelopment section="Course Content" />
   );
 }
