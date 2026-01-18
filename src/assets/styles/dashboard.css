@@ -18,6 +18,13 @@
     overflow: hidden;
 }
 
+.greetings__profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 
 
 
@@ -42,10 +49,21 @@
 
 
 @media screen and (max-width: 1024px) {
+    .dashboard-content {
+        padding: 1.5rem;
+    }
 
     .greetings__profile-image {
-        width: 3.5rem;
-        height: 3.5rem;
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .greetings__text h2 {
+        font-size: 1.3rem;
+    }
+
+    .content__greetings {
+        gap: 0.7rem;
     }
 }
 
