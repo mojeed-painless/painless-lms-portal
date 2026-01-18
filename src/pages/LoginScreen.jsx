@@ -6,6 +6,11 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import pcalogo from '../assets/pcalogo.png';
 import codeIllustration from '../assets/code-illustration.png';
 import { GiNotebook } from "react-icons/gi";
+import { CgProfile } from "react-icons/cg";
+import { TbLockPassword } from "react-icons/tb";
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa6";
+
 
 const LoginScreen = () => {
   // Local state for form inputs
@@ -13,6 +18,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   // const [screenContent, setScreenContent] = useState('');
   const [displayError, setDisplayError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   // Auth context for login logic and state
   const { login, isLoading, error, clearError, isAuthenticated } = useAuth();
@@ -72,6 +78,7 @@ const LoginScreen = () => {
         <div className="auth-form-group">
             <div>
               <label htmlFor="identifier">Username or Email</label>
+              <span className='input-icon'><CgProfile /></span>
               <input
                 id="identifier"
                 name="identifier"
@@ -87,10 +94,12 @@ const LoginScreen = () => {
               <label htmlFor="password">
                 Password
               </label>
+              <span className='input-icon'><TbLockPassword /></span>
+              <span className='eye-icon' onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash /> : <FaEye />}</span>
               <input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 placeholder="Password"
                 value={password}

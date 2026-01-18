@@ -14,6 +14,11 @@ const MainLayout = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHiden, setIsHiden] = useState(false);
+  const [selectedLink, setSelectedLink] = useState('Home');
+
+  function handleClickedLink(activeLink) {
+    setSelectedLink(activeLink)
+  }
 
   const smallAsideRef = useRef(null);
 
@@ -57,8 +62,8 @@ const MainLayout = () => {
         </div>
 
         <div className="nav__right">
-          {/* <div className="nav__username">{user.firstName || "User"}</div> */}
-          <div className="nav__username">Mojeed</div>
+          <div className="nav__username">{user.firstName || "User"}</div>
+          {/* <div className="nav__username">Mojeed</div> */}
           <div className="nav__user-image">
             <img src={profileImage} alt="user profile" />
           </div>
@@ -67,10 +72,10 @@ const MainLayout = () => {
 
       <main>
         <aside className={ isCollapsed ? 'collapsed-sidebar' : '' }>
-         {(listTexts.map(item => (
-            <Link to={item.to} key={item.id} className="sidebar__links">
-              <span><item.icon /></span>
-              {!isCollapsed && <span>{item.text}</span>}
+         {(listTexts.map(({ id, to, icon: Icon, text }) => (
+            <Link to={to} key={id} className={`sidebar__links ${selectedLink === text ? "active-sidebar__links" : ''}`} onClick={() => handleClickedLink(text)}>
+              <span><Icon /></span>
+              {!isCollapsed && <span>{text}</span>}
             </Link>
           )))}
           <LogoutButton 

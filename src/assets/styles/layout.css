@@ -113,6 +113,10 @@ aside > :last-child {
     display: flex;
 }
 
+.active-sidebar__links {
+    color: greenyellow;
+}
+
 .dashboard__logout-btn {
     background: transparent;
     outline: none;

@@ -90,86 +90,8 @@ function App() {
           <Route path="/register" element={<RegisterScreen />} />
           
           <Route path="/" element={<PrivateRoute />}>
-            <Route element={<MainLayout />}>
-              {/* <Route index element={<RoleBasedDashboard />} />
-              <Route path="/catalog" element={<CourseCatalogScreen />} />
-              <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
-              <Route path="/content" element={<CourseContentScreen />} />
-              <Route path="/assignments" element={<AssignmentScreen />} />
-              <Route path="/quizzes" element={<QuizScreen />} />
-              <Route path="/grades" element={<GradeScreen />} />
-              <Route path="/transcript" element={<TranscriptScreen />} />
-              <Route path="/settings" element={<SettingsScreen />} />
-
-              Introduction pages
-              <Route path="/welcome" element={<WelcomeScreen />} />
-              <Route path="/general-overview" element={<GeneralOverview />} />
-              <Route path="/why" element={<WhyLearn />} />
-              <Route path="/course-overview" element={<CourseOverview />} />
-              <Route path="/editor" element={<CodeEditors />} />
-
-              HTML pages
-              <Route path="/html-transition" element={<HTMLTransition />} />
-              <Route path="/html-structure" element={<HTMLPageStructure />} />
-              <Route path="/html-list" element={<ListTags />} />
-              <Route path="/html-table" element={<TableTags />} />
-              <Route path="/html-image" element={<Images />} />
-              <Route path="/html-hyperlinks" element={<Hyperlinks />} />
-              <Route path="/html-block-element" element={<InlineBlockElement />} />
-              <Route path="/html-form" element={<Forms />} />
-              <Route path="/html-style" element={<HTMLStyling />} />
-
-              CSS pages
-              <Route path="/css-transition" element={<CSSTransition />} />
-              <Route path="/css_animation" element={<Animation />} />
-              <Route path="/css_attribute" element={<AttributesSelector />} />
-              <Route path="/css_background" element={<Background />} />
-              <Route path="/css_border" element={<Borders />} />
-              <Route path="/css_boxmodel" element={<BoxModel />} />
-              <Route path="/css_boxshadow" element={<BoxShadow />} />
-              <Route path="/css_color" element={<Colors />} />
-              <Route path="/css_conbinator" element={<Combinators />} />
-              <Route path="/css_introduction" element={<CSSIntroduction />} />
-              <Route path="/css_syntax" element={<CSSSyntax />} />
-              <Route path="/css_display" element={<DisplayLayout />} />
-              <Route path="/css_flexbox" element={<FlexboxLayout />} />
-              <Route path="/css_grid" element={<GridLayout />} />
-              <Route path="/css_width" element={<HeightWidth />} />
-              <Route path="/css_icon" element={<Icons />} />
-              <Route path="/css_insert" element={<InsertingCSS />} />
-              <Route path="/css_links" element={<Links />} />
-              <Route path="/css_lists" element={<Lists />} />
-              <Route path="/css_mediaquery" element={<MediaQuery />} />
-              <Route path="/css_navbar" element={<NavigationBar />} />
-              <Route path="/css_opacity" element={<Opacity />} />
-              <Route path="/css_overflow" element={<OverflowLayout />} />
-              <Route path="/css_portfolio" element={<PortfolioProject />} />
-              <Route path="/css_position" element={<PositionLayout />} />
-              <Route path="/css_pseudoclass" element={<PseudoClasses />} />
-              <Route path="/css_pseudoelement" element={<PseudoElements />} />
-              <Route path="/css_selectors" element={<Selectors />} />
-              <Route path="/css_form" element={<StylingForms />} />
-              <Route path="/css_table" element={<Tables />} />
-              <Route path="/css_formatting" element={<TextFormatting />} />
-              <Route path="/css_transform" element={<Transform />} />
-              <Route path="/css_transition" element={<Transition />} />
-              
-
-
-              
-              <Route path="/js-transition" element={<JSTransition />} /> */}
-            </Route>
-          </Route>
           
-          <Route path="*" element={<NotFoundScreen />} />
-
-
-
-
-
-
-          <Route path="/animate" element={<LoadingAnimation />} />
-          <Route element={<MainLayout />}>
+            <Route element={<MainLayout />}>
               <Route index element={<RoleBasedDashboard />} />
               <Route path="/catalog" element={<CourseCatalogScreen />} />
               <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
@@ -180,14 +102,14 @@ function App() {
               <Route path="/transcript" element={<TranscriptScreen />} />
               <Route path="/settings" element={<SettingsScreen />} />
 
-              {/* Introduction pages */}
+              
               <Route path="/welcome" element={<WelcomeScreen />} />
               <Route path="/general-overview" element={<GeneralOverview />} />
               <Route path="/why" element={<WhyLearn />} />
               <Route path="/course-overview" element={<CourseOverview />} />
               <Route path="/editor" element={<CodeEditors />} />
 
-              {/* HTML pages */}
+              
               <Route path="/html-transition" element={<HTMLTransition />} />
               <Route path="/html-structure" element={<HTMLPageStructure />} />
               <Route path="/html-list" element={<ListTags />} />
@@ -198,7 +120,7 @@ function App() {
               <Route path="/html-form" element={<Forms />} />
               <Route path="/html-style" element={<HTMLStyling />} />
 
-              {/* CSS pages */}
+              
               <Route path="/css-transition" element={<CSSTransition />} />
               <Route path="/css_animation" element={<Animation />} />
               <Route path="/css_attribute" element={<AttributesSelector />} />
@@ -235,9 +157,90 @@ function App() {
               
 
 
-              {/* JS pages */}
+              
               <Route path="/js-transition" element={<JSTransition />} />
+            </Route>
+
+
           </Route>
+          
+          <Route path="*" element={<NotFoundScreen />} />
+
+
+
+
+
+
+          <Route path="/animate" element={<LoadingAnimation />} />
+          {/*<Route element={<MainLayout />}>
+              <Route index element={<RoleBasedDashboard />} />
+              <Route path="/catalog" element={<CourseCatalogScreen />} />
+              <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
+              <Route path="/content" element={<CourseContentScreen />} />
+              <Route path="/assignments" element={<AssignmentScreen />} />
+              <Route path="/quizzes" element={<QuizScreen />} />
+              <Route path="/grades" element={<GradeScreen />} />
+              <Route path="/transcript" element={<TranscriptScreen />} />
+              <Route path="/settings" element={<SettingsScreen />} />
+
+              
+              <Route path="/welcome" element={<WelcomeScreen />} />
+              <Route path="/general-overview" element={<GeneralOverview />} />
+              <Route path="/why" element={<WhyLearn />} />
+              <Route path="/course-overview" element={<CourseOverview />} />
+              <Route path="/editor" element={<CodeEditors />} />
+
+              
+              <Route path="/html-transition" element={<HTMLTransition />} />
+              <Route path="/html-structure" element={<HTMLPageStructure />} />
+              <Route path="/html-list" element={<ListTags />} />
+              <Route path="/html-table" element={<TableTags />} />
+              <Route path="/html-image" element={<Images />} />
+              <Route path="/html-hyperlinks" element={<Hyperlinks />} />
+              <Route path="/html-block-element" element={<InlineBlockElement />} />
+              <Route path="/html-form" element={<Forms />} />
+              <Route path="/html-style" element={<HTMLStyling />} />
+
+              
+              <Route path="/css-transition" element={<CSSTransition />} />
+              <Route path="/css_animation" element={<Animation />} />
+              <Route path="/css_attribute" element={<AttributesSelector />} />
+              <Route path="/css_background" element={<Background />} />
+              <Route path="/css_border" element={<Borders />} />
+              <Route path="/css_boxmodel" element={<BoxModel />} />
+              <Route path="/css_boxshadow" element={<BoxShadow />} />
+              <Route path="/css_color" element={<Colors />} />
+              <Route path="/css_conbinator" element={<Combinators />} />
+              <Route path="/css_introduction" element={<CSSIntroduction />} />
+              <Route path="/css_syntax" element={<CSSSyntax />} />
+              <Route path="/css_display" element={<DisplayLayout />} />
+              <Route path="/css_flexbox" element={<FlexboxLayout />} />
+              <Route path="/css_grid" element={<GridLayout />} />
+              <Route path="/css_width" element={<HeightWidth />} />
+              <Route path="/css_icon" element={<Icons />} />
+              <Route path="/css_insert" element={<InsertingCSS />} />
+              <Route path="/css_links" element={<Links />} />
+              <Route path="/css_lists" element={<Lists />} />
+              <Route path="/css_mediaquery" element={<MediaQuery />} />
+              <Route path="/css_navbar" element={<NavigationBar />} />
+              <Route path="/css_opacity" element={<Opacity />} />
+              <Route path="/css_overflow" element={<OverflowLayout />} />
+              <Route path="/css_portfolio" element={<PortfolioProject />} />
+              <Route path="/css_position" element={<PositionLayout />} />
+              <Route path="/css_pseudoclass" element={<PseudoClasses />} />
+              <Route path="/css_pseudoelement" element={<PseudoElements />} />
+              <Route path="/css_selectors" element={<Selectors />} />
+              <Route path="/css_form" element={<StylingForms />} />
+              <Route path="/css_table" element={<Tables />} />
+              <Route path="/css_formatting" element={<TextFormatting />} />
+              <Route path="/css_transform" element={<Transform />} />
+              <Route path="/css_transition" element={<Transition />} />
+              
+
+
+              
+              <Route path="/js-transition" element={<JSTransition />} />
+          </Route>*/}
         </Routes>
         
         
