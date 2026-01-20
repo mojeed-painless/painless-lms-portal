@@ -62,12 +62,22 @@
 }
 
 .stats__box span {
-    background: #fff;
-    color: rgb(121, 37, 211);
+    background: rgb(241, 190, 22);
+    color: #fff;
     height: fit-content;
     display: flex;
     padding: 0.4rem;
     border-radius: 0.5rem;
+}
+
+.stats__box:nth-child(2) span {
+    background: rgb(233, 44, 19);
+}
+.stats__box:nth-child(3) span {
+    background: rgb(20, 186, 228);
+}
+.stats__box:last-child span {
+    background: rgb(21, 223, 82);
 }
 
 
