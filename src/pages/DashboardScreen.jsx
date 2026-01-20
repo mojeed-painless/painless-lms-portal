@@ -1,9 +1,14 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { statsData, learningPath} from "../data.js";
 import '../assets/styles/dashboard.css';
 import profileImage from '../assets/profile-image.jpg';
-
+import {
+    BookOpenCheck,
+    LockKeyhole,
+    ChevronRight,
+} from 'lucide-react';
 
 
 const DashboardScreen = () => {
@@ -26,8 +31,59 @@ const DashboardScreen = () => {
               <p>student</p> */}
             </div>
           </div>
-          
-          {/* <Link to="/catalog" className="not-found-link" >Go to Course Catalog</Link> */}
+
+          <div className="dashboard__stats">
+            {statsData.map(({title, figure, description, Icon}) => (
+              <div key={title} className="stats__box">
+                <div>
+                  <p>{title}</p>
+                  <h1>{figure}</h1>
+                  <small>{description}</small>
+                </div>
+                
+                <span><Icon/></span>
+              </div>
+            ))}
+          </div>
+
+
+          <div className="dashboard__others">
+            <div className='dashboard__courses'>
+              <div className='dashboard__learning-path'>
+                <span><BookOpenCheck/></span>
+                <h3>Your Learning Path</h3>
+              </div>
+
+              {learningPath.map(({Icon, stage, title, ...props}) => (
+                <div key={stage} className={`dashboard__courses-box ${stage}`}>
+                  <div className='dashboard__courses-left'>
+                    <span><Icon/></span>
+                  </div>
+
+                  <div className='dashboard__courses-right'>
+                    <div>
+                      <p>{stage}</p>
+                      {stage !== 'beginner' && <span className='dashboard__lock'><LockKeyhole size='14'/></span>}
+                    </div>
+
+                    <h3 className={stage !== 'beginner' ? 'dashboard__courses-title' : ''}>{title}</h3>
+
+                    <p>{props.description}</p>
+
+                    <div>
+                      <small>{props.module}</small>
+                      {stage === 'beginner' ? 
+                      <Link to={props.link}>Continue <span><ChevronRight size={15}/></span></Link> : 
+                      <menu>Locked <span><LockKeyhole size={14}/></span></menu>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className='dashboard__quiz'></div>
+          </div>
+
         </section>
   );
 };

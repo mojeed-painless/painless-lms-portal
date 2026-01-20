@@ -112,3 +112,74 @@ export const topics = [
         ]
     },
 ]
+
+
+
+
+import {
+    Award,
+    BadgeCheck,
+    NotepadText,
+    Sparkles,
+    Atom,
+    PenTool,
+    CodeXml,
+} from 'lucide-react';
+
+// DASHBOARD STATS
+export const statsData = [
+    {
+        title: 'Lessons Completed',
+        figure: '0/74',
+        description: '0% completed',
+        Icon: BadgeCheck,
+    },
+    {
+        title: 'Overall Grade',
+        figure: '0%',
+        description: 'Keep learning!',
+        Icon: Award,
+    },
+    {
+        title: 'Assignments Done',
+        figure: '0',
+        description: 'submit pending Assignment',
+        Icon: NotepadText,
+    },
+    {
+        title: 'Daily Quiz',
+        figure: '0pts',
+        description: '+0pts today',
+        Icon: Sparkles,
+    },
+]
+
+
+
+
+export const learningPath = [
+    {
+        Icon: CodeXml,
+        stage: 'beginner',
+        title: 'HTML, CSS & Basic JavaScript',
+        description: 'Master the foundational technologies of web development',
+        module: '4/5 modules complete',
+        link: '/welcome',
+    },
+    {
+        Icon: PenTool,
+        stage: 'Intermediate',
+        title: 'Advanced JavaScript',
+        description: 'Deep dive into modern JavaScript concepts',
+        module: '0/4 modules complete',
+        link: '',
+    },
+    {
+        Icon: Atom,
+        stage: 'Advanced',
+        title: 'React Mastery',
+        description: 'Build modern web applications with React',
+        module: '0/8 modules complete',
+        link: '',
+    }
+]
