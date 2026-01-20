@@ -47,7 +47,7 @@ img {
 .auth-container {
     display: flex; 
     align-items: center; 
-    min-height: 100vh; 
+    min-height: 100dvh; 
 }
 
 .auth-card {
@@ -59,7 +59,7 @@ img {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    height: 100vh;
+    height: 100dvh;
 }
 
 .auth-title {
@@ -274,7 +274,7 @@ img {
 .right-info {
     background: radial-gradient(#280a48, #20043d);
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     color: white;
     padding: 4rem;
     position: relative;
@@ -517,7 +517,7 @@ img {
 
 
 /* .main-layout {
-    min-height: 100vh;
+    min-height: 100dvh;
     background-color: #f4f4f9;
 }
 
@@ -779,7 +779,7 @@ img {
 /* .player-layout {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100dvh;
     background-color: #f7f7f7;
 }
 
