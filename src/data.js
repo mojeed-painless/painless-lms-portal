@@ -130,8 +130,8 @@ import {
 export const statsData = [
     {
         title: 'Lessons Completed',
-        figure: '0/74',
-        description: '0% completed',
+        figure: '44/74',
+        description: '60% completed',
         Icon: BadgeCheck,
     },
     {
@@ -149,7 +149,7 @@ export const statsData = [
     {
         title: 'Daily Quiz',
         figure: '0 pts',
-        description: '+0pts today',
+        description: '+0 pts today',
         Icon: Sparkles,
     },
 ]
