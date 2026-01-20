@@ -70,6 +70,8 @@ const DashboardScreen = () => {
 
                     <p>{props.description}</p>
 
+                    <span className="dashboard__back-icon"><Icon size={140}/></span>
+
                     <div>
                       <small>{props.module}</small>
                       {stage === 'beginner' ? 
