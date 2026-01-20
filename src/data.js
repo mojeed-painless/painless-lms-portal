@@ -1,6 +1,6 @@
 import { FiHome } from "react-icons/fi";
 import { MdOutlineMenuBook, MdOutlineAssignment } from "react-icons/md";
-import { GiBrain } from "react-icons/gi";
+import { LuSparkles } from "react-icons/lu";
 import { IoPodiumOutline, IoSettingsOutline } from "react-icons/io5";
 import { CgTranscript } from "react-icons/cg";
 
@@ -12,7 +12,7 @@ export const listTexts = [
   { id: 1, text: 'Home', icon: FiHome, to: '/' },
   { id: 2, text: 'Course Contents', icon: MdOutlineMenuBook, to: '/welcome' },
   { id: 3, text: 'Assignments', icon: MdOutlineAssignment, to: '/assignments' },
-  { id: 4, text: 'Quizzes', icon: GiBrain, to: '/quizzes' },
+  { id: 4, text: 'Quizzes', icon: LuSparkles, to: '/quizzes' },
   { id: 5, text: 'Grades', icon: IoPodiumOutline, to: '/grades' },
   { id: 6, text: 'Transcript', icon: CgTranscript, to: '/transcript' },
   { id: 7, text: 'Settings', icon: IoSettingsOutline, to: '/settings' },
@@ -148,7 +148,7 @@ export const statsData = [
     },
     {
         title: 'Daily Quiz',
-        figure: '0pts',
+        figure: '0 pts',
         description: '+0pts today',
         Icon: Sparkles,
     },
@@ -160,7 +160,7 @@ export const statsData = [
 export const learningPath = [
     {
         Icon: CodeXml,
-        stage: 'beginner',
+        stage: 'Beginner',
         title: 'HTML, CSS & Basic JavaScript',
         description: 'Master the foundational technologies of web development',
         module: '4/5 modules complete',

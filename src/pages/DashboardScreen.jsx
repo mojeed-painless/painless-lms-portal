@@ -63,10 +63,10 @@ const DashboardScreen = () => {
                   <div className='dashboard__courses-right'>
                     <div>
                       <p>{stage}</p>
-                      {stage !== 'beginner' && <span className='dashboard__lock'><LockKeyhole size='14'/></span>}
+                      {stage !== 'Beginner' && <span className='dashboard__lock'><LockKeyhole size='14'/></span>}
                     </div>
 
-                    <h3 className={stage !== 'beginner' ? 'dashboard__courses-title' : ''}>{title}</h3>
+                    <h3 className={stage !== 'Beginner' ? 'dashboard__courses-title' : ''}>{title}</h3>
 
                     <p>{props.description}</p>
 
@@ -74,7 +74,7 @@ const DashboardScreen = () => {
 
                     <div>
                       <small>{props.module}</small>
-                      {stage === 'beginner' ? 
+                      {stage === 'Beginner' ? 
                       <Link to={props.link}>Continue <span><ChevronRight size={15}/></span></Link> : 
                       <menu>Locked <span><LockKeyhole size={14}/></span></menu>}
                     </div>
