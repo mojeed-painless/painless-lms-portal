@@ -285,31 +285,28 @@ console.log(allUsers);
                   <td><small>{userItem.role}</small></td>
                   <td><small>Jan 10, 2024</small></td>
                   <td>
-                    <input 
-                      type="checkbox" 
-                      name='html'
-                      checked={courseAccess[`${userItem._id}-html`] || false}
-                      onChange={(e) => handleCourseAccessChange(userItem._id, 'html', e.target.checked)}
-                      title={courseAccess[`${userItem._id}-html`] ? 'User has access' : 'User has no access'}
-                    />
+                    <button 
+                      className={`access-toggle ${courseAccess[`${userItem._id}-html`] ? 'granted' : 'locked'}`}
+                      onClick={() => handleCourseAccessChange(userItem._id, 'html', !courseAccess[`${userItem._id}-html`])}
+                    >
+                      {courseAccess[`${userItem._id}-html`] ? '✓ Access' : '✕ Locked'}
+                    </button>
                   </td>
                   <td>
-                    <input 
-                      type="checkbox" 
-                      name='js'
-                      checked={courseAccess[`${userItem._id}-js`] || false}
-                      onChange={(e) => handleCourseAccessChange(userItem._id, 'js', e.target.checked)}
-                      title={courseAccess[`${userItem._id}-js`] ? 'User has access' : 'User has no access'}
-                    />
+                    <button 
+                      className={`access-toggle ${courseAccess[`${userItem._id}-js`] ? 'granted' : 'locked'}`}
+                      onClick={() => handleCourseAccessChange(userItem._id, 'js', !courseAccess[`${userItem._id}-js`])}
+                    >
+                      {courseAccess[`${userItem._id}-js`] ? '✓ Access' : '✕ Locked'}
+                    </button>
                   </td>
                   <td>
-                    <input 
-                      type="checkbox" 
-                      name='react'
-                      checked={courseAccess[`${userItem._id}-react`] || false}
-                      onChange={(e) => handleCourseAccessChange(userItem._id, 'react', e.target.checked)}
-                      title={courseAccess[`${userItem._id}-react`] ? 'User has access' : 'User has no access'}
-                    />
+                    <button 
+                      className={`access-toggle ${courseAccess[`${userItem._id}-react`] ? 'granted' : 'locked'}`}
+                      onClick={() => handleCourseAccessChange(userItem._id, 'react', !courseAccess[`${userItem._id}-react`])}
+                    >
+                      {courseAccess[`${userItem._id}-react`] ? '✓ Access' : '✕ Locked'}
+                    </button>
                   </td>
                   <td><button className="btn-delete" onClick={() => handleDeleteUser(userItem._id)} >🗑️</button></td>
                 </tr>

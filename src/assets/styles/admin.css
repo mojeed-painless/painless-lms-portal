@@ -193,6 +193,39 @@
 .btn-delete { background: none; border: none; cursor: pointer; font-size: 1.2rem; filter: grayscale(1); opacity: 0.5; }
 .btn-delete:hover { filter: grayscale(0); opacity: 1; }
 
+.access-toggle {
+  padding: 0.5rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 300ms ease;
+  min-width: 100px;
+}
+
+.access-toggle.granted {
+  background-color: var(--green);
+  color: white;
+}
+
+.access-toggle.granted:hover {
+  background-color: #16a34a;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  transform: translateY(-1px);
+}
+
+.access-toggle.locked {
+  background-color: #fecaca;
+  color: #991b1b;
+}
+
+.access-toggle.locked:hover {
+  background-color: #fca5a5;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.3);
+  transform: translateY(-1px);
+}
+
 input[type="checkbox"] {
   width: 15px; 
   height: 15px; 
