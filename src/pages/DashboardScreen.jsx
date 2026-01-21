@@ -18,9 +18,9 @@ const DashboardScreen = () => {
 
   const { user } = useAuth();
   const [courseAccess, setCourseAccess] = useState({
-    html: false,
-    js: false,
-    react: false
+    htmlAccess: false,
+    jsAccess: false,
+    reactAccess: false
   });
   const [loading, setLoading] = useState(true);
 
@@ -36,17 +36,17 @@ const DashboardScreen = () => {
       const { data } = await axios.get(API_URL, config);
       
       setCourseAccess({
-        html: data.html || false,
-        js: data.js || false,
-        react: data.react || false
+        htmlAccess: data.htmlAccess || false,
+        jsAccess: data.jsAccess || false,
+        reactAccess: data.reactAccess || false
       });
     } catch (err) {
       console.error('Error fetching course access:', err);
       // Default all to locked if fetch fails
       setCourseAccess({
-        html: false,
-        js: false,
-        react: false
+        htmlAccess: false,
+        jsAccess: false,
+        reactAccess: false
       });
     } finally {
       setLoading(false);
@@ -69,9 +69,9 @@ const DashboardScreen = () => {
   // Map stage to access permission
   const getAccessStatus = (stage) => {
     const accessMap = {
-      'Beginner': courseAccess.html,
-      'Intermediate': courseAccess.js,
-      'Advanced': courseAccess.react
+      'Beginner': courseAccess.htmlAccess,
+      'Intermediate': courseAccess.jsAccess,
+      'Advanced': courseAccess.reactAccess
     };
     return accessMap[stage] || false;
   };
