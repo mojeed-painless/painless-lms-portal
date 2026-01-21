@@ -115,14 +115,15 @@ const handleDeleteUser = async (userId) => {
   };
 
   const handleCourseAccessChange = async (userId, courseName, isChecked) => {
-    try {
-      // Update local state
-      const key = `${userId}-${courseName}`;
-      setCourseAccess(prev => ({
-        ...prev,
-        [key]: isChecked
-      }));
+    const key = `${userId}-${courseName}`;
+    
+    // Optimistic update - update UI immediately
+    setCourseAccess(prev => ({
+      ...prev,
+      [key]: isChecked
+    }));
 
+    try {
       // Map course names to backend field names
       const fieldMap = {
         'html': 'htmlAccess',
@@ -131,12 +132,33 @@ const handleDeleteUser = async (userId) => {
       };
 
       // Send to backend
-      await axios.put(`${API_URL}/${userId}`, {
+      const response = await axios.put(`${API_URL}/${userId}`, {
         [fieldMap[courseName]]: isChecked
       }, config);
 
-      // Refresh the user data to ensure state is synced with backend
-      await fetchUsers();
+      // Verify the update was successful
+      if (response.status === 200) {
+        console.log(`Successfully updated ${courseName} access for user ${userId}`);
+        
+        // Silently refresh the user data to sync with backend (no loading state)
+        try {
+          const { data: allData } = await axios.get(`${API_URL}/all`, config);
+          const approvedUsers = Array.isArray(allData) 
+            ? allData.filter(u => u.isApproved && u._id !== user._id)
+            : [];
+          
+          // Update course access from latest data
+          const access = {};
+          approvedUsers.forEach(u => {
+            access[`${u._id}-html`] = u.htmlAccess || false;
+            access[`${u._id}-js`] = u.jsAccess || false;
+            access[`${u._id}-react`] = u.reactAccess || false;
+          });
+          setCourseAccess(access);
+        } catch (refreshErr) {
+          console.error('Error refreshing user data:', refreshErr);
+        }
+      }
 
     } catch (err) {
       console.error(`Error updating ${courseName} access:`, err);
@@ -144,7 +166,7 @@ const handleDeleteUser = async (userId) => {
       // Revert on error
       setCourseAccess(prev => ({
         ...prev,
-        [`${userId}-${courseName}`]: !isChecked
+        [key]: !isChecked
       }));
     }
   };
