@@ -135,6 +135,9 @@ const handleDeleteUser = async (userId) => {
         [fieldMap[courseName]]: isChecked
       }, config);
 
+      // Refresh the user data to ensure state is synced with backend
+      await fetchUsers();
+
     } catch (err) {
       console.error(`Error updating ${courseName} access:`, err);
       setError(err.response?.data?.message || `Failed to update ${courseName} access.`);
