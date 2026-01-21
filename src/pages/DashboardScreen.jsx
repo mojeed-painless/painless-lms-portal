@@ -18,51 +18,26 @@ const DashboardScreen = () => {
 
   const { user } = useAuth();
   const [courseAccess, setCourseAccess] = useState({
-    htmlAccess: false,
-    jsAccess: false,
-    reactAccess: false
+    htmlAccess: user?.htmlAccess || false,
+    jsAccess: user?.jsAccess || false,
+    reactAccess: user?.reactAccess || false
   });
-  const [loading, setLoading] = useState(true);
-
-  const fetchUserCourseAccess = async () => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      
-      // Fetch the current user's data to get their course access permissions
-      const { data } = await axios.get(API_URL, config);
-      
-      setCourseAccess({
-        htmlAccess: data.htmlAccess || false,
-        jsAccess: data.jsAccess || false,
-        reactAccess: data.reactAccess || false
-      });
-    } catch (err) {
-      console.error('Error fetching course access:', err);
-      // Default all to locked if fetch fails
-      setCourseAccess({
-        htmlAccess: false,
-        jsAccess: false,
-        reactAccess: false
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user && user.token) {
-      fetchUserCourseAccess();
+    // Update courseAccess whenever user data changes (polled every 5 seconds)
+    if (user) {
+      setCourseAccess({
+        htmlAccess: user.htmlAccess || false,
+        jsAccess: user.jsAccess || false,
+        reactAccess: user.reactAccess || false
+      });
       
-      // Poll for updates every 5 seconds to check if admin granted access
-      const interval = setInterval(() => {
-        fetchUserCourseAccess();
-      }, 5000);
-      
-      return () => clearInterval(interval);
+      console.log('User data updated:', {
+        htmlAccess: user.htmlAccess,
+        jsAccess: user.jsAccess,
+        reactAccess: user.reactAccess
+      });
     }
   }, [user]);
 
