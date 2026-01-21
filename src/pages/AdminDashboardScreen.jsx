@@ -131,10 +131,14 @@ const handleDeleteUser = async (userId) => {
         'react': 'reactAccess'
       };
 
-      // Send to backend
-      const response = await axios.put(`${API_URL}/${userId}`, {
+      const updateData = {
         [fieldMap[courseName]]: isChecked
-      }, config);
+      };
+
+      console.log('Sending update:', { userId, courseName, updateData });
+
+      // Send to backend
+      const response = await axios.put(`${API_URL}/${userId}`, updateData, config);
 
       // Verify the update was successful
       if (response.status === 200) {
@@ -162,6 +166,7 @@ const handleDeleteUser = async (userId) => {
 
     } catch (err) {
       console.error(`Error updating ${courseName} access:`, err);
+      console.error('Backend error response:', err.response?.data);
       setError(err.response?.data?.message || `Failed to update ${courseName} access.`);
       // Revert on error
       setCourseAccess(prev => ({
