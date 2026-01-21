@@ -4,6 +4,11 @@ import { useAuth } from '../context/AuthContext';
 import LogoutButton from '../components/common/LogoutButton';
 // import ApprovedUserListItem from '../components/common/ApprovedUserListItem';
 import '../assets/styles/admin.css'; 
+import { adminStats } from '../data.js';
+import {
+    History,
+    UserRoundCheck,
+} from 'lucide-react'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
 const API_URL = `${API_BASE}/api/users/admin`;
@@ -30,13 +35,15 @@ const AdminDashboardScreen = () => {
     try {
       // 1. Fetch Pending Users
       const { data: pendingData } = await axios.get(`${API_URL}/pending`, config);
-      setPendingUsers(pendingData);
+      setPendingUsers(Array.isArray(pendingData) ? pendingData : []);
 
       // 2. Fetch ALL Users
       const { data: allData } = await axios.get(`${API_URL}/all`, config);
       
       // Filter 'all' data to include only approved users (and exclude the logged-in admin)
-      const approvedUsers = allData.filter(u => u.isApproved && u._id !== user._id);
+      const approvedUsers = Array.isArray(allData) 
+        ? allData.filter(u => u.isApproved && u._id !== user._id)
+        : [];
       
       setAllUsers(approvedUsers);
       setError(null);
@@ -105,115 +112,219 @@ const handleDeleteUser = async (userId) => {
             </div>
         );
     }
-    
 
+//    const ApprovedUserListItem = ({ userItem }) => (
+//     <li className="approved-list-item">
+//       <div className="list-user-info">
+//         <span className="user-name">{userItem.username}</span> 
+//         <span className="user-email">({userItem.email})</span>
+//         <span className="list-role approved-role role-value">{userItem.role}</span>
+//       </div>
 
-   const ApprovedUserListItem = ({ userItem }) => (
-    <li className="approved-list-item">
-      <div className="list-user-info">
-        <span className="user-name">{userItem.username}</span> 
-        <span className="user-email">({userItem.email})</span>
-        <span className="list-role approved-role role-value">{userItem.role}</span>
-      </div>
-
-      <div className="button-group-list">
-        {/* Role Change Dropdown */}
-        <select
-            className="role-select"
-            value={userItem.role}
-            onChange={(e) => handleUpdateUser(userItem._id, true, e.target.value)}
-        >
-            <option value="student">Set Student</option>
-            <option value="instructor">Set Instructor</option>
-            {/* Admin role change should typically be done via a separate secure process */}
-        </select>
+//       <div className="button-group-list">
+//         {/* Role Change Dropdown */}
+//         <select
+//             className="role-select"
+//             value={userItem.role}
+//             onChange={(e) => handleUpdateUser(userItem._id, true, e.target.value)}
+//         >
+//             <option value="student">Set Student</option>
+//             <option value="instructor">Set Instructor</option>
+//             {/* Admin role change should typically be done via a separate secure process */}
+//         </select>
         
-        {/* Delete Button */}
-        <button 
-          className="btn btn-delete-small"
-          onClick={() => handleDeleteUser(userItem._id)} 
-        >
-          Delete
-        </button>
-      </div>
-    </li>
-  );
+//         {/* Delete Button */}
+//         <button 
+//           className="btn btn-delete-small"
+//           onClick={() => handleDeleteUser(userItem._id)} 
+//         >
+//           Delete
+//         </button>
+//       </div>
+//     </li>
+//   );
 
     return (
-        <div className="main-layout"> 
-            <header className="app-header">
-                <h1 className="logo-text">Admin Center</h1>
-                <div className="user-controls">
-                    <LogoutButton /> 
-                </div>
-            </header>
+        // <div className="main-layout"> 
+        //     <header className="app-header">
+        //         <h1 className="logo-text">Admin Center</h1>
+        //         <div className="user-controls">
+        //             <LogoutButton /> 
+        //         </div>
+        //     </header>
             
-            <main className="dashboard-content">
-                <h2 className="section-title">Pending Account Approvals</h2>
+        //     <main className="dashboard-content">
+        //         <h2 className="section-title">Pending Account Approvals</h2>
 
-                {error && <div className="error-message">{error}</div>}
+        //         {error && <div className="error-message">{error}</div>}
 
-                {loading && <div className="loading-message">Loading pending requests...</div>}
+        //         {loading && <div className="loading-message">Loading pending requests...</div>}
                 
-                {!loading && pendingUsers.length === 0 && (
-                    <div className="empty-message">No accounts currently pending approval.</div>
-                )}
+        //         {!loading && pendingUsers.length === 0 && (
+        //             <div className="empty-message">No accounts currently pending approval.</div>
+        //         )}
                 
-                <div className="admin-grid">
-                    {pendingUsers.map(userItem => (
-                        <div key={userItem._id} className="pending-card">
-                            <div className="user-info">
-                                <h3>{userItem.username}</h3>
-                                <p>Email: {userItem.email}</p>
-                            </div>
-                            <div className="role-request">
-                                Requested Role: <span className={`role-tag role-${userItem.role}`}>
-                                    {userItem.role.toUpperCase()}
-                                </span>
-                            </div>
+        //         <div className="admin-grid">
+        //             {pendingUsers.map(userItem => (
+        //                 <div key={userItem._id} className="pending-card">
+        //                     <div className="user-info">
+        //                         <h3>{userItem.username}</h3>
+        //                         <p>Email: {userItem.email}</p>
+        //                     </div>
+        //                     <div className="role-request">
+        //                         Requested Role: <span className={`role-tag role-${userItem.role}`}>
+        //                             {userItem.role.toUpperCase()}
+        //                         </span>
+        //                     </div>
 
-                            <div className="approval-actions">
-                                <button 
-                                    className="primary-btn approve-btn"
-                                    onClick={() => handleUpdateUser(userItem._id, true, userItem.role)}
-                                >
-                                    Approve as {userItem.role}
-                                </button>
-                                <button 
-                                    className="primary-btn reject-btn"
-                                    onClick={() => handleUpdateUser(userItem._id, true, 'student')}
-                                >
-                                    Approve as Student
-                                </button>
-                                <button 
-                                    className="primary-btn delete-btn"
-                                    onClick={() => handleDeleteUser(userItem._id)}
-                                >
-                                    Deny & Delete
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        //                     <div className="approval-actions">
+        //                         <button 
+        //                             className="primary-btn approve-btn"
+        //                             onClick={() => handleUpdateUser(userItem._id, true, userItem.role)}
+        //                         >
+        //                             Approve as {userItem.role}
+        //                         </button>
+        //                         <button 
+        //                             className="primary-btn reject-btn"
+        //                             onClick={() => handleUpdateUser(userItem._id, true, 'student')}
+        //                         >
+        //                             Approve as Student
+        //                         </button>
+        //                         <button 
+        //                             className="primary-btn delete-btn"
+        //                             onClick={() => handleDeleteUser(userItem._id)}
+        //                         >
+        //                             Deny & Delete
+        //                         </button>
+        //                     </div>
+        //                 </div>
+        //             ))}
+        //         </div>
 
+        //         <div>
+        //             <h2 className="section-title">All Approved Users ({allUsers.length})</h2>
+
+        //             {allUsers.length === 0 && !loading && (
+        //                 <p className="empty-message">No approved users found (excluding yourself).</p>
+        //             )}
+
+        //             <ul className="approved-users-list">
+        //                 {allUsers.map((userItem) => (
+        //                 <ApprovedUserListItem 
+        //                     key={userItem._id} 
+        //                     userItem={userItem}
+        //                 />
+        //                 ))}
+        //             </ul>
+        //         </div>
+        //     </main>
+        // </div>
+
+    <div className="admin-container">
+      {/* 1. Statistics Cards */}
+      <div className="stats-grid">
+        {adminStats.map(({title, value, Icon, color}) => (
+            <div key={title} className="stat-card">
                 <div>
-                    <h2 className="section-title">All Approved Users ({allUsers.length})</h2>
-
-                    {allUsers.length === 0 && !loading && (
-                        <p className="empty-message">No approved users found (excluding yourself).</p>
-                    )}
-
-                    <ul className="approved-users-list">
-                        {allUsers.map((userItem) => (
-                        <ApprovedUserListItem 
-                            key={userItem._id} 
-                            userItem={userItem}
-                        />
-                        ))}
-                    </ul>
+                    <p className="stat-label">{title}</p>
+                    <h2 className="stat-value">{value}</h2>
                 </div>
-            </main>
+                <div className={`stat-icon ${color}`}><Icon/></div>
+            </div>
+        ))} 
+      </div>
+
+      {/* 2. Pending Approvals Section */}
+      <section className="section-container">
+        <h3 className="section-title">
+            <span> <History size={20}/> </span>
+            <span> Pending Approvals </span>
+            <span className="admin-badge">3</span>
+        </h3>
+
+        {error && <div className="error-message">{error}</div>}
+
+        {loading && <div className="loading-message">Loading pending requests...</div>}
+                
+        {!loading && pendingUsers.length === 0 && (
+            <div className="empty-message">No accounts currently pending approval.</div>
+        )}
+
+        <div className="pending-grid">
+          {pendingUsers.map(userItem => (
+            <div key={userItem._id} className="pending-card">
+              <div className="card-header">
+                <div className="user-avatar">MS</div>
+                <div className="user-info">
+                  <h4>{userItem.username}</h4>
+                  <p>{userItem.email}</p>
+                  <small>Registered: Jan 10, 2024</small>
+                </div>
+                <div className="action-btns">
+                  <button className="btn-reject" onClick={() => handleDeleteUser(userItem._id)}>✕</button>
+                  <button className="btn-approve" onClick={() => handleUpdateUser(userItem._id, true, userItem.role)}>✓</button>
+                </div>
+              </div>
+              <div className="card-tags">
+                  <span  className={`tag html`}>
+                    HTML
+                  </span>
+              </div>
+            </div>
+          ))}
         </div>
+      </section>
+
+      {/* 3. Approved Users Table */}
+      <section className="section-container">
+        <h3 className="section-title">
+            <span className='green-color'><UserRoundCheck size={20}/></span> 
+            <span>Approved Users</span> 
+            <span className="admin-badge green-bg">5</span>
+        </h3>
+
+        {allUsers.length === 0 && !loading && (
+            <p className="empty-message">No approved users found (excluding yourself).</p>
+        )}
+
+        <div className="admin__table-responsive">
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th>Registered</th>
+                <th>HTML</th>
+                <th>Advanced JavaScript</th>
+                <th>React</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allUsers.map(userItem => (
+                <tr key={userItem.id}>
+                  <td>
+                    <div className="table-user">
+                      <div className="user-avatar small">MS</div>
+                      <div>
+                        <strong>{userItem.username}</strong>
+                        <small>{userItem.email}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><small>{userItem.role}</small></td>
+                  <td><small>Jan 10, 2024</small></td>
+                  <td><input type="checkbox" name='html' /></td>
+                  <td><input type="checkbox" name='js' /></td>
+                  <td><input type="checkbox" name='react' /></td>
+                  <td><button className="btn-delete" onClick={() => handleDeleteUser(userItem._id)} >🗑️</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
     );
 };
 

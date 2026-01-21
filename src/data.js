@@ -124,6 +124,10 @@ import {
     Atom,
     PenTool,
     CodeXml,
+    UsersRound,
+    UserRoundCheck,
+    History,
+    BookOpenText,
 } from 'lucide-react';
 
 // DASHBOARD STATS
@@ -181,5 +185,36 @@ export const learningPath = [
         description: 'Build modern web applications with React',
         module: '0/8 modules complete',
         link: '',
+    }
+]
+
+
+
+
+
+export const adminStats = [
+    {
+        title: 'Total Users',
+        value: '1,234',
+        Icon: UsersRound,
+        color: 'blue',
+    },
+    {
+        title: 'Pending Approval',
+        value: '56',
+        Icon: History,
+        color: 'yellow',
+    },
+    {
+        title: 'Approved Users',
+        value: '890',
+        Icon: UserRoundCheck,
+        color: 'green',
+    },
+    {
+        title: 'Course Enrollments',
+        value: '12',
+        Icon: BookOpenText,
+        color: 'purple',
     }
 ]

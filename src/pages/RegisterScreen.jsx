@@ -183,7 +183,7 @@ const RegisterScreen = () => {
                 className="auth-select"
               >
                 <option value="student">Student</option>
-                <option value="instructor">Instructor</option>
+                {/* <option value="instructor">Instructor</option> */}
               </select>
             </div>
 

@@ -62,7 +62,7 @@
 }
 
 .stats__box span {
-    background: rgb(241, 190, 22);
+    background: #f1be16;
     color: #fff;
     height: fit-content;
     display: flex;

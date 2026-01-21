@@ -16,7 +16,7 @@ export default function LinkingJavascript() {
                 <div className="course-content__container">
                     
                         <VideoBox 
-                            title=''
+                            title='Linking Javascript'
                             code='SO-tf5ydrf8?si=FnZWFmkfCvZLNGEl'
                         />
                 </div>
