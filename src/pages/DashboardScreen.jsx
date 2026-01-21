@@ -11,7 +11,7 @@ import {
     ChevronRight,
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 const API_URL = `${API_BASE}/api/users/admin/all`;
 
 const DashboardScreen = () => {
@@ -49,21 +49,26 @@ const DashboardScreen = () => {
         // Fetch all users to get current user's updated data
         const { data: allUsers } = await axios.get(API_URL, config);
         
+        console.log('Poll response:', allUsers);
+        
         if (Array.isArray(allUsers)) {
           // Find current user in the list
           const currentUserData = allUsers.find(u => u._id === user._id);
           
+          console.log('Current user data found:', currentUserData);
+          
           if (currentUserData) {
-            setCourseAccess({
+            const newAccess = {
               htmlAccess: currentUserData.htmlAccess || false,
               jsAccess: currentUserData.jsAccess || false,
               reactAccess: currentUserData.reactAccess || false
-            });
+            };
+            console.log('Setting new access:', newAccess);
+            setCourseAccess(newAccess);
           }
         }
       } catch (err) {
-        // Silent fail - don't spam errors
-        console.debug('Polling for access updates failed (expected if endpoint unavailable)');
+        console.error('Polling error:', err.response?.status, err.message);
       }
     };
 
