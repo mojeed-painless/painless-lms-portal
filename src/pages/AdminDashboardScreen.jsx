@@ -289,7 +289,7 @@ console.log(allUsers);
                       className={`access-toggle ${courseAccess[`${userItem._id}-html`] ? 'granted' : 'locked'}`}
                       onClick={() => handleCourseAccessChange(userItem._id, 'html', !courseAccess[`${userItem._id}-html`])}
                     >
-                      {courseAccess[`${userItem._id}-html`] ? '✓ Access' : '✕ Locked'}
+                      {courseAccess[`${userItem._id}-html`] ? '✕ Lock' : '✓ Grant'}
                     </button>
                   </td>
                   <td>
@@ -297,7 +297,7 @@ console.log(allUsers);
                       className={`access-toggle ${courseAccess[`${userItem._id}-js`] ? 'granted' : 'locked'}`}
                       onClick={() => handleCourseAccessChange(userItem._id, 'js', !courseAccess[`${userItem._id}-js`])}
                     >
-                      {courseAccess[`${userItem._id}-js`] ? '✓ Access' : '✕ Locked'}
+                      {courseAccess[`${userItem._id}-js`] ? '✕ Lock' : '✓ Grant'}
                     </button>
                   </td>
                   <td>
@@ -305,7 +305,7 @@ console.log(allUsers);
                       className={`access-toggle ${courseAccess[`${userItem._id}-react`] ? 'granted' : 'locked'}`}
                       onClick={() => handleCourseAccessChange(userItem._id, 'react', !courseAccess[`${userItem._id}-react`])}
                     >
-                      {courseAccess[`${userItem._id}-react`] ? '✓ Access' : '✕ Locked'}
+                      {courseAccess[`${userItem._id}-react`] ? '✕ Lock' : '✓ Grant'}
                     </button>
                   </td>
                   <td><button className="btn-delete" onClick={() => handleDeleteUser(userItem._id)} >🗑️</button></td>
