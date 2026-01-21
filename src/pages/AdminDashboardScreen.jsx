@@ -113,112 +113,12 @@ const handleDeleteUser = async (userId) => {
         );
     }
 
-//    const ApprovedUserListItem = ({ userItem }) => (
-//     <li className="approved-list-item">
-//       <div className="list-user-info">
-//         <span className="user-name">{userItem.username}</span> 
-//         <span className="user-email">({userItem.email})</span>
-//         <span className="list-role approved-role role-value">{userItem.role}</span>
-//       </div>
-
-//       <div className="button-group-list">
-//         {/* Role Change Dropdown */}
-//         <select
-//             className="role-select"
-//             value={userItem.role}
-//             onChange={(e) => handleUpdateUser(userItem._id, true, e.target.value)}
-//         >
-//             <option value="student">Set Student</option>
-//             <option value="instructor">Set Instructor</option>
-//             {/* Admin role change should typically be done via a separate secure process */}
-//         </select>
-        
-//         {/* Delete Button */}
-//         <button 
-//           className="btn btn-delete-small"
-//           onClick={() => handleDeleteUser(userItem._id)} 
-//         >
-//           Delete
-//         </button>
-//       </div>
-//     </li>
-//   );
+    const totalUsers = allUsers.length + pendingUsers.length;
+    const PendingStudents = pendingUsers.length;
+    const ApprovedStudents = allUsers.length;
 
     return (
-        // <div className="main-layout"> 
-        //     <header className="app-header">
-        //         <h1 className="logo-text">Admin Center</h1>
-        //         <div className="user-controls">
-        //             <LogoutButton /> 
-        //         </div>
-        //     </header>
-            
-        //     <main className="dashboard-content">
-        //         <h2 className="section-title">Pending Account Approvals</h2>
-
-        //         {error && <div className="error-message">{error}</div>}
-
-        //         {loading && <div className="loading-message">Loading pending requests...</div>}
-                
-        //         {!loading && pendingUsers.length === 0 && (
-        //             <div className="empty-message">No accounts currently pending approval.</div>
-        //         )}
-                
-        //         <div className="admin-grid">
-        //             {pendingUsers.map(userItem => (
-        //                 <div key={userItem._id} className="pending-card">
-        //                     <div className="user-info">
-        //                         <h3>{userItem.username}</h3>
-        //                         <p>Email: {userItem.email}</p>
-        //                     </div>
-        //                     <div className="role-request">
-        //                         Requested Role: <span className={`role-tag role-${userItem.role}`}>
-        //                             {userItem.role.toUpperCase()}
-        //                         </span>
-        //                     </div>
-
-        //                     <div className="approval-actions">
-        //                         <button 
-        //                             className="primary-btn approve-btn"
-        //                             onClick={() => handleUpdateUser(userItem._id, true, userItem.role)}
-        //                         >
-        //                             Approve as {userItem.role}
-        //                         </button>
-        //                         <button 
-        //                             className="primary-btn reject-btn"
-        //                             onClick={() => handleUpdateUser(userItem._id, true, 'student')}
-        //                         >
-        //                             Approve as Student
-        //                         </button>
-        //                         <button 
-        //                             className="primary-btn delete-btn"
-        //                             onClick={() => handleDeleteUser(userItem._id)}
-        //                         >
-        //                             Deny & Delete
-        //                         </button>
-        //                     </div>
-        //                 </div>
-        //             ))}
-        //         </div>
-
-        //         <div>
-        //             <h2 className="section-title">All Approved Users ({allUsers.length})</h2>
-
-        //             {allUsers.length === 0 && !loading && (
-        //                 <p className="empty-message">No approved users found (excluding yourself).</p>
-        //             )}
-
-        //             <ul className="approved-users-list">
-        //                 {allUsers.map((userItem) => (
-        //                 <ApprovedUserListItem 
-        //                     key={userItem._id} 
-        //                     userItem={userItem}
-        //                 />
-        //                 ))}
-        //             </ul>
-        //         </div>
-        //     </main>
-        // </div>
+       
 
     <div className="admin-container">
       {/* 1. Statistics Cards */}
@@ -227,7 +127,12 @@ const handleDeleteUser = async (userId) => {
             <div key={title} className="stat-card">
                 <div>
                     <p className="stat-label">{title}</p>
-                    <h2 className="stat-value">{value}</h2>
+                    <h2 className="stat-value">
+                        {title === 'Total Users' && totalUsers}
+                        {title === 'Pending Approval' && PendingStudents}
+                        {title === 'Approved Users' && ApprovedStudents}
+                        {title === 'Course Enrollments' && value}
+                    </h2>
                 </div>
                 <div className={`stat-icon ${color}`}><Icon/></div>
             </div>
@@ -239,7 +144,7 @@ const handleDeleteUser = async (userId) => {
         <h3 className="section-title">
             <span> <History size={20}/> </span>
             <span> Pending Approvals </span>
-            <span className="admin-badge">3</span>
+            <span className="admin-badge">{PendingStudents}</span>
         </h3>
 
         {error && <div className="error-message">{error}</div>}
@@ -280,7 +185,7 @@ const handleDeleteUser = async (userId) => {
         <h3 className="section-title">
             <span className='green-color'><UserRoundCheck size={20}/></span> 
             <span>Approved Users</span> 
-            <span className="admin-badge green-bg">5</span>
+            <span className="admin-badge green-bg">{ApprovedStudents}</span>
         </h3>
 
         {allUsers.length === 0 && !loading && (
