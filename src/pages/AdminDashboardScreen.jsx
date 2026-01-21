@@ -182,7 +182,7 @@ const handleDeleteUser = async (userId) => {
     const totalUsers = allUsers.length + pendingUsers.length;
     const PendingStudents = pendingUsers.length;
     const ApprovedStudents = allUsers.length;
-console.log(allUsers);
+
     return (
        
 
@@ -277,7 +277,7 @@ console.log(allUsers);
                     <div className="table-user">
                       <div className="user-avatar small">MS</div>
                       <div>
-                        <strong>{userItem.username}</strong>
+                        <strong>{userItem.firstName} {userItem.lastName}</strong>
                         <small>{userItem.email}</small>
                       </div>
                     </div>
