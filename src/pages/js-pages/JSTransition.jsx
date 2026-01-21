@@ -32,7 +32,7 @@ export default function JSTransition() {
 
             <PrevNextBtn 
                 prevPath="/css_portfolio" 
-                nextPath=""
+                nextPath="/js-intro"
             />
         </section>
     );

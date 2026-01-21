@@ -75,6 +75,8 @@ import Transition from './pages/css-pages/Transition';
 
 {/* JS pages */}
 import JSTransition from './pages/js-pages/JSTransition';
+import JavascriptIntro from './pages/js-pages/JavascriptIntro';
+import LinkingJavascript from './pages/js-pages/LinkingJavascript';
 import LoadingAnimation from './components/common/LoadingAnimation';
 
 
@@ -160,6 +162,8 @@ function App() {
 
               
               <Route path="/js-transition" element={<JSTransition />} />
+              <Route path="/js-intro" element={<JavascriptIntro />} />
+              <Route path="/js-linking" element={<LinkingJavascript />} />
             </Route>
 
 
