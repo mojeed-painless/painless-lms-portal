@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
-const API_URL = `${API_BASE}/api/users/profile`;
+const API_URL = `${API_BASE}/api/users/admin/all`;
 
 const DashboardScreen = () => {
 
@@ -22,24 +22,57 @@ const DashboardScreen = () => {
     jsAccess: user?.jsAccess || false,
     reactAccess: user?.reactAccess || false
   });
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Update courseAccess whenever user data changes (polled every 5 seconds)
+    // Initial setup from user object
     if (user) {
       setCourseAccess({
         htmlAccess: user.htmlAccess || false,
         jsAccess: user.jsAccess || false,
         reactAccess: user.reactAccess || false
       });
-      
-      console.log('User data updated:', {
-        htmlAccess: user.htmlAccess,
-        jsAccess: user.jsAccess,
-        reactAccess: user.reactAccess
-      });
     }
-  }, [user]);
+  }, [user?.htmlAccess, user?.jsAccess, user?.reactAccess]);
+
+  // Poll for access updates every 3 seconds
+  useEffect(() => {
+    if (!user || !user.token) return;
+
+    const pollAccessUpdates = async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        
+        // Fetch all users to get current user's updated data
+        const { data: allUsers } = await axios.get(API_URL, config);
+        
+        if (Array.isArray(allUsers)) {
+          // Find current user in the list
+          const currentUserData = allUsers.find(u => u._id === user._id);
+          
+          if (currentUserData) {
+            setCourseAccess({
+              htmlAccess: currentUserData.htmlAccess || false,
+              jsAccess: currentUserData.jsAccess || false,
+              reactAccess: currentUserData.reactAccess || false
+            });
+          }
+        }
+      } catch (err) {
+        // Silent fail - don't spam errors
+        console.debug('Polling for access updates failed (expected if endpoint unavailable)');
+      }
+    };
+
+    // Poll immediately and then every 3 seconds
+    pollAccessUpdates();
+    const interval = setInterval(pollAccessUpdates, 3000);
+    
+    return () => clearInterval(interval);
+  }, [user?.token, user?._id]);
 
   // Map stage to access permission
   const getAccessStatus = (stage) => {
