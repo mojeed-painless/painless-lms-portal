@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { statsData, learningPath} from "../data.js";
@@ -10,10 +11,63 @@ import {
     ChevronRight,
 } from 'lucide-react';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5173';
+const API_URL = `${API_BASE}/api/users/profile`;
 
 const DashboardScreen = () => {
 
   const { user } = useAuth();
+  const [courseAccess, setCourseAccess] = useState({
+    htmlAccess: false,
+    jsAccess: false,
+    reactAccess: false
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserCourseAccess = async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        
+        // Fetch the current user's data to get their course access permissions
+        const { data } = await axios.get(API_URL, config);
+        
+        setCourseAccess({
+          htmlAccess: data.htmlAccess || false,
+          jsAccess: data.jsAccess || false,
+          reactAccess: data.reactAccess || false
+        });
+      } catch (err) {
+        console.error('Error fetching course access:', err);
+        // Default all to locked if fetch fails
+        setCourseAccess({
+          htmlAccess: false,
+          jsAccess: false,
+          reactAccess: false
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user && user.token) {
+      fetchUserCourseAccess();
+    }
+  }, [user]);
+
+  // Map stage to access permission
+  const getAccessStatus = (stage) => {
+    const accessMap = {
+      'Beginner': courseAccess.htmlAccess,
+      'Intermediate': courseAccess.jsAccess,
+      'Advanced': courseAccess.reactAccess
+    };
+    return accessMap[stage] || false;
+  };
 
   return (
 
@@ -54,7 +108,9 @@ const DashboardScreen = () => {
                 <h3>Your Learning Path</h3>
               </div>
 
-              {learningPath.map(({Icon, stage, title, ...props}) => (
+              {learningPath.map(({Icon, stage, title, ...props}) => {
+                const hasAccess = getAccessStatus(stage);
+                return (
                 <div key={stage} className={`dashboard__courses-box ${stage}`}>
                   <div className='dashboard__courses-left'>
                     <span><Icon/></span>
@@ -63,10 +119,10 @@ const DashboardScreen = () => {
                   <div className='dashboard__courses-right'>
                     <div>
                       <p>{stage}</p>
-                      {stage !== 'Beginner' && <span className='dashboard__lock'><LockKeyhole size='14'/></span>}
+                      {!hasAccess && <span className='dashboard__lock'><LockKeyhole size='14'/></span>}
                     </div>
 
-                    <h3 className={stage !== 'Beginner' ? 'dashboard__courses-title' : ''}>{title}</h3>
+                    <h3 className={!hasAccess ? 'dashboard__courses-title' : ''}>{title}</h3>
 
                     <p>{props.description}</p>
 
@@ -74,13 +130,14 @@ const DashboardScreen = () => {
 
                     <div>
                       <small>{props.module}</small>
-                      {stage === 'Beginner' ? 
+                      {hasAccess ? 
                       <Link to={props.link}>Continue <span><ChevronRight size={15}/></span></Link> : 
                       <menu>Locked <span><LockKeyhole size={14}/></span></menu>}
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
 
             <div className='dashboard__quiz'></div>
