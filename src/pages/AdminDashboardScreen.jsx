@@ -252,7 +252,7 @@ const handleDeleteUser = async (userId) => {
                     <div className="table-user">
                       <div className="user-avatar small">MS</div>
                       <div>
-                        <strong>{userItem.username}</strong>
+                        <strong>{userItem.firstname} {userItem.lastname}</strong>
                         <small>{userItem.email}</small>
                       </div>
                     </div>
