@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import LogoutButton from '../components/common/LogoutButton';
-// import ApprovedUserListItem from '../components/common/ApprovedUserListItem';
 import '../assets/styles/admin.css'; 
 import { adminStats } from '../data.js';
 import {
@@ -21,6 +19,7 @@ const AdminDashboardScreen = () => {
     const [allUsers, setAllUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [courseAccess, setCourseAccess] = useState({});
 
     const config = {
         headers: {
@@ -46,6 +45,16 @@ const AdminDashboardScreen = () => {
         : [];
       
       setAllUsers(approvedUsers);
+
+      // Load course access state from users data
+      const access = {};
+      approvedUsers.forEach(u => {
+        access[`${u._id}-html`] = u.htmlAccess || false;
+        access[`${u._id}-js`] = u.jsAccess || false;
+        access[`${u._id}-react`] = u.reactAccess || false;
+      });
+      setCourseAccess(access);
+
       setError(null);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -105,6 +114,38 @@ const handleDeleteUser = async (userId) => {
     }
   };
 
+  const handleCourseAccessChange = async (userId, courseName, isChecked) => {
+    try {
+      // Update local state
+      const key = `${userId}-${courseName}`;
+      setCourseAccess(prev => ({
+        ...prev,
+        [key]: isChecked
+      }));
+
+      // Map course names to backend field names
+      const fieldMap = {
+        'html': 'htmlAccess',
+        'js': 'jsAccess',
+        'react': 'reactAccess'
+      };
+
+      // Send to backend
+      await axios.put(`${API_URL}/${userId}`, {
+        [fieldMap[courseName]]: isChecked
+      }, config);
+
+    } catch (err) {
+      console.error(`Error updating ${courseName} access:`, err);
+      setError(err.response?.data?.message || `Failed to update ${courseName} access.`);
+      // Revert on error
+      setCourseAccess(prev => ({
+        ...prev,
+        [`${userId}-${courseName}`]: !isChecked
+      }));
+    }
+  };
+
     if (user.role !== 'admin') {
         return (
             <div className="error-state">
@@ -159,7 +200,6 @@ const handleDeleteUser = async (userId) => {
           {pendingUsers.map(userItem => (
             <div key={userItem._id} className="pending-card">
               <div className="card-header">
-                <div className="user-avatar">MS</div>
                 <div className="user-info">
                   <h4>{userItem.username}</h4>
                   <p>{userItem.email}</p>
@@ -219,9 +259,33 @@ const handleDeleteUser = async (userId) => {
                   </td>
                   <td><small>{userItem.role}</small></td>
                   <td><small>Jan 10, 2024</small></td>
-                  <td><input type="checkbox" name='html' /></td>
-                  <td><input type="checkbox" name='js' /></td>
-                  <td><input type="checkbox" name='react' /></td>
+                  <td>
+                    <input 
+                      type="checkbox" 
+                      name='html'
+                      checked={courseAccess[`${userItem._id}-html`] || false}
+                      onChange={(e) => handleCourseAccessChange(userItem._id, 'html', e.target.checked)}
+                      title={courseAccess[`${userItem._id}-html`] ? 'User has access' : 'User has no access'}
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type="checkbox" 
+                      name='js'
+                      checked={courseAccess[`${userItem._id}-js`] || false}
+                      onChange={(e) => handleCourseAccessChange(userItem._id, 'js', e.target.checked)}
+                      title={courseAccess[`${userItem._id}-js`] ? 'User has access' : 'User has no access'}
+                    />
+                  </td>
+                  <td>
+                    <input 
+                      type="checkbox" 
+                      name='react'
+                      checked={courseAccess[`${userItem._id}-react`] || false}
+                      onChange={(e) => handleCourseAccessChange(userItem._id, 'react', e.target.checked)}
+                      title={courseAccess[`${userItem._id}-react`] ? 'User has access' : 'User has no access'}
+                    />
+                  </td>
                   <td><button className="btn-delete" onClick={() => handleDeleteUser(userItem._id)} >🗑️</button></td>
                 </tr>
               ))}

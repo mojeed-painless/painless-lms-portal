@@ -10,7 +10,7 @@
   --yellow: #f59e0b;
 }
 
-.empty-message {
+.empty-message, .loading-message {
     opacity: 0.4;
     text-align: center;
     width: 100%;
