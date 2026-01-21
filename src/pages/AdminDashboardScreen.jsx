@@ -286,7 +286,7 @@ console.log(allUsers);
                   <td><small>Jan 10, 2024</small></td>
                   <td>
                     <button 
-                      className={`access-toggle ${courseAccess[`${userItem._id}-html`] ? 'granted' : 'locked'}`}
+                      className={`access-toggle ${courseAccess[`${userItem._id}-html`] ? 'locked' : 'granted'}`}
                       onClick={() => handleCourseAccessChange(userItem._id, 'html', !courseAccess[`${userItem._id}-html`])}
                     >
                       {courseAccess[`${userItem._id}-html`] ? '✕ Lock' : '✓ Grant'}
@@ -294,7 +294,7 @@ console.log(allUsers);
                   </td>
                   <td>
                     <button 
-                      className={`access-toggle ${courseAccess[`${userItem._id}-js`] ? 'granted' : 'locked'}`}
+                      className={`access-toggle ${courseAccess[`${userItem._id}-js`] ? 'locked' : 'granted'}`}
                       onClick={() => handleCourseAccessChange(userItem._id, 'js', !courseAccess[`${userItem._id}-js`])}
                     >
                       {courseAccess[`${userItem._id}-js`] ? '✕ Lock' : '✓ Grant'}
@@ -302,7 +302,7 @@ console.log(allUsers);
                   </td>
                   <td>
                     <button 
-                      className={`access-toggle ${courseAccess[`${userItem._id}-react`] ? 'granted' : 'locked'}`}
+                      className={`access-toggle ${courseAccess[`${userItem._id}-react`] ? 'locked' : 'granted'}`}
                       onClick={() => handleCourseAccessChange(userItem._id, 'react', !courseAccess[`${userItem._id}-react`])}
                     >
                       {courseAccess[`${userItem._id}-react`] ? '✕ Lock' : '✓ Grant'}
