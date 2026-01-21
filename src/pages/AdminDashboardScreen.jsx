@@ -49,9 +49,9 @@ const AdminDashboardScreen = () => {
       // Load course access state from users data
       const access = {};
       approvedUsers.forEach(u => {
-        access[`${u._id}-html`] = u.htmlAccess || false;
-        access[`${u._id}-js`] = u.jsAccess || false;
-        access[`${u._id}-react`] = u.reactAccess || false;
+        access[`${u._id}-html`] = u.htmlAccess ;
+        access[`${u._id}-js`] = u.jsAccess;
+        access[`${u._id}-react`] = u.reactAccess;
       });
       setCourseAccess(access);
 
@@ -154,9 +154,9 @@ const handleDeleteUser = async (userId) => {
           // Update course access from latest data
           const access = {};
           approvedUsers.forEach(u => {
-            access[`${u._id}-html`] = u.htmlAccess || false;
-            access[`${u._id}-js`] = u.jsAccess || false;
-            access[`${u._id}-react`] = u.reactAccess || false;
+            access[`${u._id}-html`] = u.htmlAccess;
+            access[`${u._id}-js`] = u.jsAccess;
+            access[`${u._id}-react`] = u.reactAccess;
           });
           setCourseAccess(access);
         } catch (refreshErr) {

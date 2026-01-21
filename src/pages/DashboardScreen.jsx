@@ -18,53 +18,60 @@ const DashboardScreen = () => {
 
   const { user } = useAuth();
   const [courseAccess, setCourseAccess] = useState({
-    htmlAccess: false,
-    jsAccess: false,
-    reactAccess: false
+    html: false,
+    js: false,
+    react: false
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUserCourseAccess = async () => {
-      try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        };
-        
-        // Fetch the current user's data to get their course access permissions
-        const { data } = await axios.get(API_URL, config);
-        
-        setCourseAccess({
-          htmlAccess: data.htmlAccess || false,
-          jsAccess: data.jsAccess || false,
-          reactAccess: data.reactAccess || false
-        });
-      } catch (err) {
-        console.error('Error fetching course access:', err);
-        // Default all to locked if fetch fails
-        setCourseAccess({
-          htmlAccess: false,
-          jsAccess: false,
-          reactAccess: false
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchUserCourseAccess = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      
+      // Fetch the current user's data to get their course access permissions
+      const { data } = await axios.get(API_URL, config);
+      
+      setCourseAccess({
+        html: data.html || false,
+        js: data.js || false,
+        react: data.react || false
+      });
+    } catch (err) {
+      console.error('Error fetching course access:', err);
+      // Default all to locked if fetch fails
+      setCourseAccess({
+        html: false,
+        js: false,
+        react: false
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     if (user && user.token) {
       fetchUserCourseAccess();
+      
+      // Poll for updates every 5 seconds to check if admin granted access
+      const interval = setInterval(() => {
+        fetchUserCourseAccess();
+      }, 5000);
+      
+      return () => clearInterval(interval);
     }
   }, [user]);
 
   // Map stage to access permission
   const getAccessStatus = (stage) => {
     const accessMap = {
-      'Beginner': courseAccess.htmlAccess,
-      'Intermediate': courseAccess.jsAccess,
-      'Advanced': courseAccess.reactAccess
+      'Beginner': courseAccess.html,
+      'Intermediate': courseAccess.js,
+      'Advanced': courseAccess.react
     };
     return accessMap[stage] || false;
   };
