@@ -16,7 +16,10 @@ const capitalizeUser = (u) => {
     ...u,
     firstName: capitalizeFirst(u.firstName),
     lastName: capitalizeFirst(u.lastName),
-    // leave username/email as returned, or add username: capitalizeFirst(u.username) if desired
+    // Course access flags from backend
+    htmlAccess: u.htmlAccess || false,
+    jsAccess: u.jsAccess || false,
+    reactAccess: u.reactAccess || false,
   };
 };
 
