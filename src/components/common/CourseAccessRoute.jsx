@@ -49,7 +49,7 @@ const CourseAccessRoute = ({ courseType }) => {
   }
 
   // If user doesn't have access to the course, redirect to catalog
-  return <Navigate to="/catalog" state={{ from: location, reason: 'course_locked' }} replace />;
+  return <Navigate to="/no-access" state={{ from: location, reason: 'course_locked' }} replace />;
 };
 
 export default CourseAccessRoute;

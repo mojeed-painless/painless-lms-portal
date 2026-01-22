@@ -13,6 +13,7 @@ import CourseCatalogScreen from './pages/CourseCatalogScreen';
 import CoursePlayerScreen from './pages/CoursePlayerScreen';
 import RoleBasedDashboard from './components/common/RoleBasedDashboard';
 import NotFoundScreen from './pages/NotFoundScreen';
+import NoAccess from './pages/NoAccess';
 
 import CourseContentScreen from './pages/CourseContentScreen';
 import AssignmentScreen from './pages/AssignmentScreen';
@@ -180,6 +181,7 @@ function App() {
           </Route>
           
           <Route path="*" element={<NotFoundScreen />} />
+          <Route path="/no-access" element={<NoAccess />} />
 
 
 
