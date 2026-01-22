@@ -97,9 +97,9 @@ export const topics = [
         subjects: [
             {name: 'JavaScript Introduction', path: '/js-intro'},
             {name: 'Linking Javascript', path: '/js-linking'},
-            // {name: 'Alert, Console & Comment', path: ''},
-            // {name: 'STATEMENTS', path: ''},
-            // {name: 'VARIABLES', path: ''},
+            {name: 'Alert, Console & Comment', path: '/js-alert'},
+            {name: 'Statements', path: '/js-satements'},
+            {name: 'Variables', path: '/js-variables'},
             // {name: 'NAMING VARIABLES', path: ''},
             // {name: 'CONSTANT', path: ''},
             // {name: 'DATA TYPES', path: ''},

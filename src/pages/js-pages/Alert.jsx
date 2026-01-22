@@ -16,15 +16,15 @@ export default function Alert() {
                 <div className="course-content__container">
                     
                         <VideoBox 
-                            title=''
-                            code=''
+                            title='Alert, Console & Comment'
+                            code='E_xJ_M7TW10?si=SthaLAQ_XW8VxK_K'
                         />
                 </div>
             </section>
 
             <PrevNextBtn 
-                prevPath="" 
-                nextPath=""
+                prevPath="/js-linking" 
+                nextPath="/js-satements"
             />
         </section>
     );

@@ -49,13 +49,13 @@ const DashboardScreen = () => {
         // Fetch all users to get current user's updated data
         const { data: allUsers } = await axios.get(API_URL, config);
         
-        console.log('Poll response:', allUsers);
+        // console.log('Poll response:', allUsers);
         
         if (Array.isArray(allUsers)) {
           // Find current user in the list
           const currentUserData = allUsers.find(u => u._id === user._id);
           
-          console.log('Current user data found:', currentUserData);
+          // console.log('Current user data found:', currentUserData);
           
           if (currentUserData) {
             const newAccess = {
@@ -68,7 +68,7 @@ const DashboardScreen = () => {
           }
         }
       } catch (err) {
-        console.error('Polling error:', err.response?.status, err.message);
+        // console.error('Polling error:', err.response?.status, err.message);
       }
     };
 

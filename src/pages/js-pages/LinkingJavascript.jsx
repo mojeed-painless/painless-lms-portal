@@ -24,7 +24,7 @@ export default function LinkingJavascript() {
 
             <PrevNextBtn 
                 prevPath="/js-intro" 
-                nextPath=""
+                nextPath="/js-alert"
             />
         </section>
     );
