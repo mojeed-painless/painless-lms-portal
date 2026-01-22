@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import CompletionButton from './CompletionButton';
 import '../../assets/styles/prev-next-btn.css'
 
 // const navInfo = [
@@ -21,6 +22,8 @@ export default function PrevNextBtn({ prevPath, nextPath }) {
                     <i><FaArrowLeftLong /></i>
                     <span>previous</span>
                    </Link>
+
+                   <CompletionButton />
 
                    <Link to={nextPath} className='navigator'>
                     <span>next</span>

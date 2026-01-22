@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useProgress } from '../context/ProgressContext';
 import { Link } from 'react-router-dom';
-import { statsData, learningPath} from "../data.js";
+import { statsData, learningPath, topics } from "../data.js";
 import '../assets/styles/dashboard.css';
 import profileImage from '../assets/profile-image.jpg';
 import {
@@ -17,6 +18,7 @@ const API_URL = `${API_BASE}/api/users/admin/all`;
 const DashboardScreen = () => {
 
   const { user } = useAuth();
+  const { getCompletedCount, getCompletionPercentage } = useProgress();
   const [courseAccess, setCourseAccess] = useState({
     htmlAccess: user?.htmlAccess || false,
     jsAccess: user?.jsAccess || false,
@@ -89,6 +91,12 @@ const DashboardScreen = () => {
     return accessMap[stage] || false;
   };
 
+  const totalLessons = 
+    topics[0].subjects.length + 
+    topics[1].subjects.length + 
+    topics[2].subjects.length + 
+    topics[3].subjects.length 
+
   return (
 
         <section className="dashboard-content">
@@ -107,17 +115,30 @@ const DashboardScreen = () => {
           </div>
 
           <div className="dashboard__stats">
-            {statsData.map(({title, figure, description, Icon}) => (
-              <div key={title} className="stats__box">
-                <div>
-                  <p>{title}</p>
-                  <h1>{figure}</h1>
-                  <small>{description}</small>
+            {statsData.map(({title, figure, description, Icon}) => {
+              // Replace the figure with actual completion data
+              let displayFigure = figure;
+              let displayDescription = description;
+              
+              if (title === 'Lessons Completed') {
+                const completed = getCompletedCount();
+                const percentage = getCompletionPercentage(totalLessons);
+                displayFigure = `${completed}/${totalLessons}`;
+                displayDescription = `${percentage}% completed`;
+              }
+              
+              return (
+                <div key={title} className="stats__box">
+                  <div>
+                    <p>{title}</p>
+                    <h1>{displayFigure}</h1>
+                    <small>{displayDescription}</small>
+                  </div>
+                  
+                  <span><Icon/></span>
                 </div>
-                
-                <span><Icon/></span>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
 

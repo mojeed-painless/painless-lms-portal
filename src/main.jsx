@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext';
+import { ProgressProvider } from './context/ProgressContext';
 
   const setVh = () => {
   const height = window.visualViewport?.height ?? window.innerHeight;
@@ -21,7 +22,9 @@ import { AuthProvider } from './context/AuthContext';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-      <App />
+      <ProgressProvider>
+        <App />
+      </ProgressProvider>
     </AuthProvider>
   </StrictMode>,
 )

@@ -146,6 +146,51 @@ header {
     max-height: 100rem;
 }
 
+/* Completed Subject Styling */
+.body a.completed-subject {
+    background: rgba(72, 187, 120, 0.1);
+    /* border-left: 3px solid #48bb78; */
+}
+
+.body a.completed-subject div {
+    opacity: 0.95;
+}
+
+.body a.completed-subject div i {
+    color: #48bb78;
+}
+
+.body a.completed-subject div p {
+    color: #a8e6c1;
+    font-weight: 500;
+}
+
+.completion-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #48bb78;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    animation: badgeAppear 0.4s ease;
+}
+
+@keyframes badgeAppear {
+    0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
 
 
 

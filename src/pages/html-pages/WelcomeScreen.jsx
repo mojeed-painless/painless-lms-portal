@@ -1,17 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useProgress } from '../../context/ProgressContext';
 import '../../assets/styles/welcome-content.css';
 import { topics } from '../../data.js';
 import welcomImg from '../../assets/welcome-img.png';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GiNotebook } from "react-icons/gi";
+import { Check } from 'lucide-react';
 
 
 
 export default function WelcomeScreen() {
 
     const { user } = useAuth();
+    const { isLessonComplete } = useProgress();
     
     const [ isSelected, setIsSelected ] = useState('')
     
@@ -51,14 +54,17 @@ export default function WelcomeScreen() {
                         </div>
 
                         <div className={`body hide ${(isSelected === topic.section) ? 'active' : ''}`} >
-                            {topic.subjects.map((subject) => (
-                                <Link key={subject.path} to={subject.path}>
+                            {topic.subjects.map((subject) => {
+                              const isCompleted = isLessonComplete(subject.path);
+                              return (
+                                <Link key={subject.path} to={subject.path} className={isCompleted ? 'completed-subject' : ''}>
                                     <div>
-                                        <i><GiNotebook /></i>
+                                        {isCompleted ? <span className='completion-badge'><Check size={16} /></span> : <i><GiNotebook /></i>}
                                         <p>{subject.name}</p>
                                     </div>
                                 </Link>
-                            ))}
+                              );
+                            })}
                         </div>
                     </div>
                 ))}

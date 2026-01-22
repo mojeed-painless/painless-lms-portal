@@ -38,9 +38,9 @@
 
 .stats__box {
     /* background: rgba(32, 4, 61, 0.2); */
-    background: #7925d3;
+    background: radial-gradient(#280a48, #20043d);
     border-radius: 1.2rem;
-    padding: 1rem;
+    padding: 1rem 1.3rem;
     display: flex;
     justify-content: space-between;
     box-shadow: 0 1.3rem 2rem -1.5rem rgba(0,0,0,0.4);

@@ -11,7 +11,7 @@ A new `CourseAccessRoute` component has been created to protect course-specific 
    - **How it works**:
      - Checks if the corresponding access field is `true` in the user object
      - If access is granted: renders the page
-     - If access is denied: redirects to `/catalog` (with a reason state for UI feedback)
+     - If access is denied: redirects to `/no-access page` (with a reason state for UI feedback)
 
 ### 2. **Updated AuthContext**
    - **Location**: `src/context/AuthContext.jsx`
@@ -21,9 +21,9 @@ A new `CourseAccessRoute` component has been created to protect course-specific 
      {
        user: {
          id: "123",
-         firstName: "John",
-         lastName: "Doe",
-         email: "john@example.com",
+         firstName: "Tunde",
+         lastName: "Olatunji",
+         email: "tunji@example.com",
          role: "student",
          isApproved: true,
          htmlAccess: true,      // HTML, CSS, and JavaScript content
@@ -60,7 +60,7 @@ A new `CourseAccessRoute` component has been created to protect course-specific 
 4. **Route checks access**: `CourseAccessRoute` verifies `user.htmlAccess === true`
 5. **Result**:
    - ✅ **If `htmlAccess` is true**: Page loads normally
-   - ❌ **If `htmlAccess` is false**: User is redirected to `/catalog`
+   - ❌ **If `htmlAccess` is false**: User is redirected to `/no-access`
 
 ### Admin Control Flow
 - Admins manage course access from the **Admin Dashboard** (AdminDashboardScreen.jsx)
@@ -138,12 +138,12 @@ To test the feature:
 1. **Test User 1** - Full HTML access:
    - Admin grants: `htmlAccess: true`
    - User can access all HTML, CSS, and JS content
-   - User gets redirected from `/catalog` if trying to access React content
+   - User gets redirected from `/no-access` if trying to access React content
 
 2. **Test User 2** - No HTML access:
    - Admin denies: `htmlAccess: false`
    - User tries to access `/js-alert`
-   - User is redirected to `/catalog` with `reason: 'course_locked'`
+   - User is redirected to `/no-access` with `reason: 'course_locked'`
 
 3. **Test Access Toggle**:
    - Admin grants HTML access
@@ -151,7 +151,7 @@ To test the feature:
    - Page should load (no need to re-login for existing access grants)
    - Admin revokes access
    - User tries to access another HTML/CSS/JS page
-   - User is redirected to `/catalog`
+   - User is redirected to `/no-access`
 
 ## Flow Diagram
 
