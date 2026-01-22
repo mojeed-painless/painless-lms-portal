@@ -36,9 +36,10 @@ const DashboardScreen = () => {
     }
   }, [user?.htmlAccess, user?.jsAccess, user?.reactAccess]);
 
-  // Poll for access updates every 3 seconds
+  // Poll for access updates every 3 seconds (only for admins)
   useEffect(() => {
-    if (!user || !user.token) return;
+    // Only poll if user is admin - regular students don't need this polling
+    if (!user || !user.token || user.role !== 'admin') return;
 
     const pollAccessUpdates = async () => {
       try {
@@ -48,7 +49,7 @@ const DashboardScreen = () => {
           },
         };
         
-        // Fetch all users to get current user's updated data
+        // Fetch all users to get current user's updated data (admin only)
         const { data: allUsers } = await axios.get(API_URL, config);
         
         // console.log('Poll response:', allUsers);
@@ -79,7 +80,7 @@ const DashboardScreen = () => {
     const interval = setInterval(pollAccessUpdates, 3000);
     
     return () => clearInterval(interval);
-  }, [user?.token, user?._id]);
+  }, [user?.token, user?._id, user?.role]);
 
   // Map stage to access permission
   const getAccessStatus = (stage) => {

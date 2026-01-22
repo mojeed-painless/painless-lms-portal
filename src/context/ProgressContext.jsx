@@ -70,15 +70,15 @@ export const ProgressProvider = ({ children }) => {
 
   // Mark a lesson as complete and sync with backend
   const markLessonComplete = async (lessonPath) => {
-    // Optimistic update - update UI immediately
-    setCompletedLessons(prev => {
-      if (!prev.includes(lessonPath)) {
-        return [...prev, lessonPath];
-      }
-      return prev;
-    });
+    // Create updated array immediately
+    const updatedLessons = completedLessons.includes(lessonPath) 
+      ? completedLessons 
+      : [...completedLessons, lessonPath];
 
-    // Sync with backend
+    // Update UI immediately (optimistic update)
+    setCompletedLessons(updatedLessons);
+
+    // Sync with backend using the updated array
     if (!user?._id || !user?.token) {
       console.warn('Cannot sync progress: user not authenticated');
       return;
@@ -93,7 +93,7 @@ export const ProgressProvider = ({ children }) => {
 
       await axios.put(
         `${API_URL}/progress`,
-        { completedLessons: completedLessons },
+        { completedLessons: updatedLessons },
         config
       );
     } catch (err) {
