@@ -13,22 +13,31 @@ export const useProgress = () => {
 
 export const ProgressProvider = ({ children }) => {
   const { user } = useAuth();
-  const [completedLessons, setCompletedLessons] = useState(() => {
-    // Load from localStorage as initial state
-    const saved = localStorage.getItem(`progress_${user?._id}`);
-    return saved ? JSON.parse(saved) : [];
-  });
+  // Initialize as empty - will load after user is loaded
+  const [completedLessons, setCompletedLessons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch progress from backend when user logs in
+  // Load progress when user is available
   useEffect(() => {
     if (!user?._id) {
       setIsLoading(false);
       return;
     }
 
-    const fetchProgress = async () => {
+    const loadProgress = async () => {
       try {
+        // First, try to load from localStorage with the correct user ID
+        const saved = localStorage.getItem(`progress_${user._id}`);
+        if (saved) {
+          setCompletedLessons(JSON.parse(saved));
+        }
+
+        // Then fetch from backend to ensure sync across devices
+        if (!user?.token) {
+          setIsLoading(false);
+          return;
+        }
+
         const config = {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -38,28 +47,23 @@ export const ProgressProvider = ({ children }) => {
         const { data } = await axios.get(`${API_URL}/progress`, config);
         const serverProgress = data.completedLessons || [];
         
-        // Use server data if available, otherwise keep localStorage data
+        // Use server data and update localStorage
         setCompletedLessons(serverProgress);
-        // Update localStorage with server data
         localStorage.setItem(`progress_${user._id}`, JSON.stringify(serverProgress));
       } catch (err) {
         console.warn('Could not fetch progress from server:', err.message);
-        // Fall back to localStorage if server fails
-        const saved = localStorage.getItem(`progress_${user._id}`);
-        if (saved) {
-          setCompletedLessons(JSON.parse(saved));
-        }
+        // If server fails, keep localStorage data (already loaded above)
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProgress();
+    loadProgress();
   }, [user?._id, user?.token]);
 
-  // Save to localStorage whenever completedLessons changes
+  // Save to localStorage whenever completedLessons changes (only if user is loaded)
   useEffect(() => {
-    if (user?._id && !isLoading) {
+    if (user?._id && !isLoading && completedLessons.length > 0) {
       localStorage.setItem(`progress_${user._id}`, JSON.stringify(completedLessons));
     }
   }, [completedLessons, user?._id, isLoading]);
