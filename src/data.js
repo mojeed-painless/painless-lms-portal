@@ -134,8 +134,8 @@ import {
 export const statsData = [
     {
         title: 'Lessons Completed',
-        figure: '44/74',
-        description: '60% completed',
+        figure: '0/74',
+        description: '0% completed',
         Icon: BadgeCheck,
     },
     {
@@ -167,7 +167,7 @@ export const learningPath = [
         stage: 'Beginner',
         title: 'HTML, CSS & Basic JavaScript',
         description: 'Master the foundational technologies of web development',
-        module: '4/5 modules complete',
+        module: '0/5 modules complete',
         link: '/welcome',
     },
     {
