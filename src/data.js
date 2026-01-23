@@ -51,6 +51,50 @@ export const homeFeatures = [
     },
 ]
 
+export const homeStats = [
+    {
+        figure: '100+',
+        label: 'Certified Learners',
+    },
+    {
+        figure: '70+',
+        label: 'Learning Contents',
+    },  
+    {
+        figure: '1M+',
+        label: 'Quizzes Taken',
+    },
+    {
+        figure: '4.9',
+        label: 'Average Rating',
+    },
+]
+
+
+
+export const homeTestimonials = [
+    {
+        name: 'Jane Doe',
+        feedback: 'Painless Code Academy transformed my coding skills. The interactive projects and mentor feedback made learning enjoyable and effective!',
+        rating: 5,
+    },
+    {
+        name: 'John Smith',
+        feedback: 'The flexible learning schedule allowed me to balance my studies with work. Highly recommend Painless Code Academy to anyone looking to master frontend development!',
+        rating: 4.5,
+    },
+    {
+        name: 'Emily Johnson',
+        feedback: 'The gamified progress system kept me motivated throughout the course. Earning badges and climbing the leaderboard was a fun way to track my learning journey.',
+        rating: 5,
+    },
+    {
+        name: 'Michael Brown',
+        feedback: 'Earning a certificate from Painless Code Academy boosted my confidence and helped me land my first frontend developer job. The course content was top-notch!',
+        rating: 4.8,
+    },
+];
+
 
 // WELCOME SCREEN DATA
 export const topics = [

@@ -2,7 +2,8 @@ import React from 'react';
 import '../assets/styles/home.css';
 import pcalogo from '../assets/pcalogo.png';
 import { Link } from 'react-router-dom';
-import { homeFeatures } from '../data.js';
+import { homeFeatures, homeStats, homeTestimonials } from '../data.js';
+import TestimonialCard from '../components/common/TestimonialCard';
 import {
     MoveRight,
     CircleCheckBig,
@@ -63,7 +64,7 @@ const HomeScreen = () => {
           {homeFeatures.map(({Icon, title, description}) => (
             <div key={title} className="home__feat-card">
               <div className="home__feat-icon">
-                <Icon size={24} />
+                <Icon size={30} />
               </div>
               <h3>{title}</h3>
               <p>{description}</p>
@@ -75,11 +76,23 @@ const HomeScreen = () => {
     </section>
 
       
-      {/* <section className="stats-bar">
-        <div className="stat-item"><h3>10K+</h3><p>Active Students</p></div>
-        <div className="stat-item"><h3>50+</h3><p>Courses</p></div>
-        <div className="stat-item"><h3>1M+</h3><p>Quizzes Taken</p></div>
-        <div className="stat-item"><h3>4.9</h3><p>Average Rating</p></div>
+      <section className="home__stats-bar">
+        {homeStats.map(({figure, label}) => (
+          <div className="home__stat-item">
+            <h3>{figure}</h3>
+            <p>{label}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* <section className="home__testimonial">
+        <div className="home__testimonial-content">
+          <h2>What Our Students Say</h2>
+          
+          <div className="home__testimonial-cards">
+            <TestimonialCard testimonials={homeTestimonials} />
+          </div>
+        </div>
       </section> */}
     </div>
   );
