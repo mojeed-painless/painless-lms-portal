@@ -94,6 +94,10 @@ const HomeScreen = () => {
           </div>
         </div>
       </section>
+
+      <footer className="home__footer">
+        <p>&copy; {new Date().getFullYear()} Painless Code Academy.</p>
+      </footer>
     </div>
   );
 };

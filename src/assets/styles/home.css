@@ -11,7 +11,7 @@
   background: radial-gradient(#280a48, #20043d);
   color: var(--text-white);
   min-height: 100dvh;
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
   /* overflow-x: hidden; */
 }
 
@@ -343,7 +343,11 @@ section.home__stats-bar {
 
 
 
-
+.home__footer {
+    padding: 1rem 0;
+    border-top: 1px solid rgba(225, 225, 225, 0.2);
+    background: transparent;
+}
 
 
 
