@@ -61,7 +61,7 @@ export const homeStats = [
         label: 'Learning Contents',
     },  
     {
-        figure: '1M+',
+        figure: '50+',
         label: 'Quizzes Taken',
     },
     {
