@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../assets/styles/testimonial-card.css';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import profileImage from '../../assets/profile-image.jpg'
 
 const TestimonialCard = ({ testimonials }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -12,7 +13,7 @@ const TestimonialCard = ({ testimonials }) => {
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000); // Change slide every 5 seconds
+    }, 10000); // Change slide every 5 seconds
 
     return () => clearInterval(interval);
   }, [autoPlay, testimonials.length]);
@@ -54,9 +55,6 @@ const TestimonialCard = ({ testimonials }) => {
                   color={i < Math.floor(current.rating) ? '#ffd700' : '#666'}
                 />
               ))}
-              {current.rating % 1 !== 0 && (
-                <span className="half-star">½</span>
-              )}
             </div>
 
             {/* Feedback Text */}
@@ -65,8 +63,9 @@ const TestimonialCard = ({ testimonials }) => {
             {/* Author Info */}
             <div className="testimonial-author">
               <div className="author-avatar">
-                {current.name.charAt(0)}
+                <img src={profileImage} alt={current.name} />
               </div>
+
               <div className="author-info">
                 <h4>{current.name}</h4>
                 <p className="rating-text">{current.rating} out of 5</p>
@@ -82,7 +81,7 @@ const TestimonialCard = ({ testimonials }) => {
       {/* Navigation Buttons */}
       <div className="testimonial-nav">
         <button
-          className="nav-btn prev-btn"
+          className="navs-btn prev-btn"
           onClick={goToPrev}
           aria-label="Previous testimonial"
         >
@@ -90,7 +89,7 @@ const TestimonialCard = ({ testimonials }) => {
         </button>
 
         <button
-          className="nav-btn next-btn"
+          className="navs-btn next-btn"
           onClick={goToNext}
           aria-label="Next testimonial"
         >
@@ -108,11 +107,6 @@ const TestimonialCard = ({ testimonials }) => {
             aria-label={`Go to testimonial ${index + 1}`}
           ></button>
         ))}
-      </div>
-
-      {/* Counter */}
-      <div className="testimonial-counter">
-        {currentIndex + 1} / {testimonials.length}
       </div>
     </div>
   );

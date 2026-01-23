@@ -85,7 +85,7 @@ const HomeScreen = () => {
         ))}
       </section>
 
-      {/* <section className="home__testimonial">
+      <section className="home__testimonial">
         <div className="home__testimonial-content">
           <h2>What Our Students Say</h2>
           
@@ -93,7 +93,7 @@ const HomeScreen = () => {
             <TestimonialCard testimonials={homeTestimonials} />
           </div>
         </div>
-      </section> */}
+      </section>
     </div>
   );
 };

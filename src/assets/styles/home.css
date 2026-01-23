@@ -332,7 +332,16 @@ section.home__stats-bar {
     border-top: 1px solid rgba(225, 225, 225, 0.2);
     padding: 4rem 6rem;
     text-align: center;
+    min-height: 100dvh;
 }
+
+.home__testimonial-content h2 {
+    margin-bottom: 2rem;
+}
+
+
+
+
 
 
 
@@ -380,5 +389,11 @@ section.home__stats-bar {
 
     .home__stat-item h3 {
         margin-bottom: 0.1rem;
+    }
+
+
+
+    .home__testimonial {
+        padding: 4rem 1rem;
     }
 }

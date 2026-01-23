@@ -74,23 +74,23 @@ export const homeStats = [
 
 export const homeTestimonials = [
     {
-        name: 'Jane Doe',
-        feedback: 'Painless Code Academy transformed my coding skills. The interactive projects and mentor feedback made learning enjoyable and effective!',
+        name: 'Ibrahim Adekunle',
+        feedback: 'Although I had heard that I can code using my smart phone but I never imagined It could be this simple for a newbie. Everything was well organized right from the awareness to the course itself. One thing is to know what to teach others, another thing is to know how to teach them well, as in PAINLESS IS FULLY LOADED, he delivered to us a PRICELESS value.',
         rating: 5,
     },
     {
-        name: 'John Smith',
-        feedback: 'The flexible learning schedule allowed me to balance my studies with work. Highly recommend Painless Code Academy to anyone looking to master frontend development!',
-        rating: 4.5,
+        name: 'Awofeso Damilare',
+        feedback: "The training was indeed one of a kind and I'm glad to be a part of it. I have been able to learn so much within a short time. You make coding so simple to learn. The live classes were also on point as you constantly dished out knowledge.",
+        rating: 4.9,
     },
     {
-        name: 'Emily Johnson',
-        feedback: 'The gamified progress system kept me motivated throughout the course. Earning badges and climbing the leaderboard was a fun way to track my learning journey.',
+        name: 'Triple Ade',
+        feedback: "My gratitude goes to the founder of Painless CODE Academy for the great knowledge he passed on to us. I am saying this confidently to people's outside their who intends to learn about CODING, with Painless Code Academy you gat nothing to worried about. It was so fun and interactive throughout of the course.",
         rating: 5,
     },
     {
-        name: 'Michael Brown',
-        feedback: 'Earning a certificate from Painless Code Academy boosted my confidence and helped me land my first frontend developer job. The course content was top-notch!',
+        name: 'Ahmad',
+        feedback: 'After I attended the first two classes I realized I would have had a great loss if I had missed that opportunity, I learnt new things that I can boldly say I can code... EVERYTHING WAS MADE EASY!',
         rating: 4.8,
     },
 ];
