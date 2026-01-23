@@ -96,7 +96,7 @@ const DashboardScreen = () => {
     topics[0].subjects.length + 
     topics[1].subjects.length + 
     topics[2].subjects.length + 
-    topics[3].subjects.length 
+    topics[3].subjects.length + 3
 
   return (
 

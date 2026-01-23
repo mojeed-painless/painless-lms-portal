@@ -29,7 +29,7 @@ export default function Variables() {
 
             <PrevNextBtn 
                 prevPath="/js-satements" 
-                nextPath=""
+                nextPath="/js-naming-variables"
             />
         </section>
     );

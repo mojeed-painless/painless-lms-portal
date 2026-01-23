@@ -1,0 +1,89 @@
+:root {
+  --bg-dark: #0a0b10;
+  --card-dark: #151821;
+  --neon-cyan: #00f2ff;
+  --neon-purple: #9d00ff;
+  --text-white: #ffffff;
+  --text-dim: #a0a0a0;
+}
+
+.home__container {
+  background: radial-gradient(#280a48, #20043d);
+  color: var(--text-white);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.home__navbar {
+    padding-inline: 6rem;
+}
+
+.home__nav-auth {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.home__nav-auth button {
+    background: none;
+    border: 0;
+    outline: 0;
+    color: var(--text-white);
+    cursor: pointer;
+}
+
+
+.hero {
+  padding: 180px 5% 100px;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.hero-content { flex: 1; }
+.hero-content h1 { font-size: 3.5rem; line-height: 1.1; margin: 1.5rem 0; }
+.text-gradient {
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.trust-badge { color: var(--neon-purple); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
+.hero-content p { color: var(--text-dim); font-size: 1.1rem; max-width: 500px; line-height: 1.6; }
+
+.hero-btns { display: flex; gap: 1rem; margin: 2rem 0; }
+.btn-primary { background: var(--neon-cyan); border: none; padding: 1rem 2rem; border-radius: 50px; font-weight: 700; cursor: pointer; }
+.btn-outline { border: 1px solid var(--neon-cyan); background: transparent; color: white; padding: 0.8rem 1.5rem; border-radius: 50px; cursor: pointer; }
+
+/* Features Section */
+.features { padding: 80px 5%; text-align: center; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+
+.feat-card {
+  background: var(--card-dark);
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: 0.3s;
+}
+
+.feat-card:hover { border-color: var(--neon-cyan); transform: translateY(-10px); }
+.feat-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  justify-content: space-around;
+  background: var(--card-dark);
+  padding: 3rem;
+  margin: 50px 5%;
+  border-radius: 20px;
+  text-align: center;
+}
+
+/* Responsive Logic */
+@media (max-width: 968px) {
+  .hero { flex-direction: column; text-align: center; padding-top: 120px; }
+  .nav-links { display: none; } /* Hide for mobile burger menu logic later */
+  .hero-btns { justify-content: center; }
+  .hero-content h1 { font-size: 2.5rem; }
+}

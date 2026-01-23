@@ -7,10 +7,9 @@ import './App.css'
 // import DashboardScreen from './pages/DashboardScreen';
 
 import MainLayout from './pages/MainLayout';
+import HomeScreen from './pages/HomeScreen';
 import LoginScreen from './pages/LoginScreen'; 
 import RegisterScreen from './pages/RegisterScreen';
-import CourseCatalogScreen from './pages/CourseCatalogScreen';
-import CoursePlayerScreen from './pages/CoursePlayerScreen';
 import RoleBasedDashboard from './components/common/RoleBasedDashboard';
 import NotFoundScreen from './pages/NotFoundScreen';
 import NoAccess from './pages/NoAccess';
@@ -82,6 +81,10 @@ import LinkingJavascript from './pages/js-pages/LinkingJavascript';
 import Alert from './pages/js-pages/Alert';
 import Statements from './pages/js-pages/Statements';
 import Variables from './pages/js-pages/Variables';
+import NamingVariables from './pages/js-pages/NamingVariables';
+import Constant from './pages/js-pages/Constant';
+import DataTypes from './pages/js-pages/DataTypes';
+
 import LoadingAnimation from './components/common/LoadingAnimation';
 
 
@@ -93,6 +96,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Routes>
+          {/* <Route path="/home" element={<HomeScreen />} /> */}
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterScreen />} />
           
@@ -101,8 +105,6 @@ function App() {
 
             <Route element={<MainLayout />}>
               <Route index element={<RoleBasedDashboard />} />
-              <Route path="/catalog" element={<CourseCatalogScreen />} />
-              <Route path="/course/:courseId" element={<CoursePlayerScreen />} />
               <Route path="/content" element={<CourseContentScreen />} />
               <Route path="/assignments" element={<AssignmentScreen />} />
               <Route path="/quizzes" element={<QuizScreen />} />
@@ -174,6 +176,9 @@ function App() {
                 <Route path="/js-alert" element={<Alert />} />
                 <Route path="/js-satements" element={<Statements />} />
                 <Route path="/js-variables" element={<Variables />} />
+                <Route path="/js-naming-variables" element={<NamingVariables />} />
+                <Route path="/js-constant" element={<Constant />} />
+                <Route path="/js-data-types" element={<DataTypes />} />
               </Route>
             </Route>
 
