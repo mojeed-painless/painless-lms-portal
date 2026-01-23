@@ -167,14 +167,13 @@
   height: 30px;
   border-radius: 50%;
   border: 2px solid rgba(0, 242, 255, 0.5);
-  background: rgba(157, 0, 255, 0.1);
   color: #00f2ff;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 }
 
 .navs-btn:hover {

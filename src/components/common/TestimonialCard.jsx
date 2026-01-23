@@ -87,11 +87,10 @@ const TestimonialCard = ({ testimonials }) => {
         >
           <ChevronLeft size={24} />
         </button>
-
         <button
-          className="navs-btn next-btn"
+          className="navs-btn prev-btn"
           onClick={goToNext}
-          aria-label="Next testimonial"
+          aria-label="Previous testimonial"
         >
           <ChevronRight size={24} />
         </button>
