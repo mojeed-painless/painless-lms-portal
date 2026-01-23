@@ -1,6 +1,13 @@
 import React from 'react';
 import '../assets/styles/home.css';
 import pcalogo from '../assets/pcalogo.png';
+import { Link } from 'react-router-dom';
+import { homeFeatures } from '../data.js';
+import {
+    MoveRight,
+    CircleCheckBig,
+    Star,
+} from 'lucide-react'
 
 const HomeScreen = () => {
   return (
@@ -11,58 +18,66 @@ const HomeScreen = () => {
         </div>
 
         <div className="home__nav-auth">
-          <button>Sign In</button>
-          <button>Get Started</button>
+          <Link to='/login'>Sign in</Link>
+          <Link to='/register' className='home__btn'>Get Started</Link>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="hero">
-        <div className="hero-content">
-          <span className="trust-badge">Trusted by 1,000+ developers</span>
-          <h1>Master Frontend <br/>Development <span className="text-gradient">The Modern Way</span></h1>
-          <p>From HTML basics to React mastery—learn through interactive projects, daily quizzes, and code reviews with mentor feedback.</p>
-          <div className="hero-btns">
-            <button className="btn-primary">Start Learning Free &gt;</button>
-            <button className="btn-secondary">Sign In</button>
-          </div>
-          <div className="hero-features">
-            <span>✓ No credit card required</span>
-            <span>✓ Free for everyone</span>
-          </div>
-        </div>
+    <section className="home__hero">        
         
-      </header>
-
-      {/* Features Section */}
-      <section className="features">
-        <h2>Why Choose DevLearn?</h2>
-        <div className="features-grid">
-          <div className="feat-card">
-            <div className="feat-icon">{"</>"}</div>
-            <h3>Hands-on coding</h3>
-            <p>Practice with real-world scenarios and get instant feedback.</p>
-          </div>
-          <div className="feat-card">
-            <div className="feat-icon">⭐</div>
-            <h3>Gamified Learning</h3>
-            <p>Earn points, badges, and climb the leaderboard.</p>
-          </div>
-          <div className={/*  */ "feat-card"}>
-            <div className="feat-icon">🏆</div>
-            <h3>Community & Support</h3>
-            <p>Compete with others and get expert help.</p>
-          </div>
+        <div className="back-circle">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-      </section>
 
-      {/* Stats Section */}
-      <section className="stats-bar">
+        <div className="home__hero-content">
+            <span className="home__trust-badge">
+                <i><Star size={18}/></i>
+                Trusted by 500+ students
+            </span>
+
+            <h1>Master Frontend <br/>Development <span className="text-gradient">The Modern Way</span></h1>
+          
+            <p>From HTML basics to React mastery — learn through interactive projects, daily quizzes, and code reviews with mentor feedback.</p>
+          
+            <Link to='/register'>
+                Start Learning
+                <span><MoveRight size={20} /></span>
+            </Link>
+          
+            <div className="home__hero-features">
+                <span><i><CircleCheckBig size={18}/></i> Free introductory content</span>
+                <span><i><CircleCheckBig size={18}/></i> Flexible learning schedule</span>
+            </div>
+        </div>
+    </section>
+
+      
+    {/* <section className="home__features">
+        <h2>Why Choose DevLearn?</h2>
+
+        <div className="home__features-grid">
+          {homeFeatures.map(({Icon, title, description}) => (
+            <div key={title} className="home__feat-card">
+              <div className="home__feat-icon">
+                <Icon size={24} />
+              </div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </div>
+          ))}
+        </div>
+    </section> */}
+
+      
+      {/* <section className="stats-bar">
         <div className="stat-item"><h3>10K+</h3><p>Active Students</p></div>
         <div className="stat-item"><h3>50+</h3><p>Courses</p></div>
         <div className="stat-item"><h3>1M+</h3><p>Quizzes Taken</p></div>
         <div className="stat-item"><h3>4.9</h3><p>Average Rating</p></div>
-      </section>
+      </section> */}
     </div>
   );
 };

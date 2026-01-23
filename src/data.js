@@ -6,6 +6,21 @@ import { CgTranscript } from "react-icons/cg";
 
 import { FaDoorOpen, FaCode, FaPaintbrush  } from "react-icons/fa6";
 import { LuBrainCircuit } from "react-icons/lu";
+import {
+    Award,
+    BadgeCheck,
+    NotepadText,
+    Sparkles,
+    Atom,
+    PenTool,
+    CodeXml,
+    UsersRound,
+    UserRoundCheck,
+    History,
+    BookOpenText,
+    Trophy,
+    FileBadge,
+} from 'lucide-react';
 
 // SIDEBAR DATA
 export const listTexts = [
@@ -16,6 +31,24 @@ export const listTexts = [
   { id: 5, text: 'Grades', icon: IoPodiumOutline, to: '/grades' },
   { id: 6, text: 'Transcript', icon: CgTranscript, to: '/transcript' },
   { id: 7, text: 'Settings', icon: IoSettingsOutline, to: '/settings' },
+]
+
+export const homeFeatures = [
+    {
+        Icon: CodeXml,
+        title: 'Interactive Learning',
+        description: 'Practice with real-world scenarios and get instant feedback.',
+    },
+    {
+        Icon: Trophy,
+        title: 'Gamified Progress',
+        description: 'Compete with others to earn points, badges, and climb the leaderboard.',
+    },
+    {
+        Icon: FileBadge,
+        title: 'Certification',
+        description: 'Earn certificate as a proof of participation and competent',
+    },
 ]
 
 
@@ -116,19 +149,7 @@ export const topics = [
 
 
 
-import {
-    Award,
-    BadgeCheck,
-    NotepadText,
-    Sparkles,
-    Atom,
-    PenTool,
-    CodeXml,
-    UsersRound,
-    UserRoundCheck,
-    History,
-    BookOpenText,
-} from 'lucide-react';
+
 
 // DASHBOARD STATS
 export const statsData = [
