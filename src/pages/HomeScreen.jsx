@@ -55,8 +55,9 @@ const HomeScreen = () => {
     </section>
 
       
-    {/* <section className="home__features">
-        <h2>Why Choose DevLearn?</h2>
+    <section className="home__features">
+      <div className="home__features-content">
+        <h2>Why Choose Painless Code Academy?</h2>
 
         <div className="home__features-grid">
           {homeFeatures.map(({Icon, title, description}) => (
@@ -69,7 +70,9 @@ const HomeScreen = () => {
             </div>
           ))}
         </div>
-    </section> */}
+      </div>
+        
+    </section>
 
       
       {/* <section className="stats-bar">
