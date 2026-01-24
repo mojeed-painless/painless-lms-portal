@@ -32,9 +32,9 @@ export default function TranscriptScreen() {
 
       {/* Stats Grid */}
       <div className="transcript__stats-grid">
-        <StatCard icon={<BadgeCheck size= {150} />} percentage={82} label="Overall Average" sub="Across all assessments" borderColor="#3b82f6" />
-        <StatCard icon={<NotepadText size= {150} />} percentage={89} label="Assignment Average" sub="2 assignments graded" borderColor="#60a5fa" />
-        <StatCard icon={<Sparkles size={150} />} percentage={75} label="Quiz Average" sub="3 quizzes taken" borderColor="#22d3ee" />
+        <StatCard icon={<BadgeCheck size= {150} />} percentage={0} label="Overall Average" sub="Across all assessments" borderColor="#3b82f6" />
+        <StatCard icon={<NotepadText size= {150} />} percentage={0} label="Assignment Average" sub="0 assignments graded" borderColor="#60a5fa" />
+        <StatCard icon={<Sparkles size={150} />} percentage={0} label="Quiz Average" sub="0 quizzes taken" borderColor="#22d3ee" />
       </div>
 
 
@@ -47,10 +47,10 @@ export default function TranscriptScreen() {
         </h2>
 
         <div className="transcript__milestones-content">
-          <ListRow icon={<CodeXml size={20}/>} title="HTML Fundamentals" score={95} />
-          <ListRow icon={<Paintbrush size={20}/>} title="CSS Basics"  score={88} />
-          <ListRow icon={<PenTool size={20}/>} title="CSS Layout" score={42} />
-          <ListRow icon={<BrainCircuit size={20}/>} title="Javascript Basics" score={72} />
+          <ListRow icon={<CodeXml size={20}/>} title="HTML Fundamentals" score={0} />
+          <ListRow icon={<Paintbrush size={20}/>} title="CSS Basics"  score={0} />
+          <ListRow icon={<PenTool size={20}/>} title="CSS Layout" score={0} />
+          <ListRow icon={<BrainCircuit size={20}/>} title="Javascript Basics" score={0} />
         </div>
       </section>
 
@@ -83,7 +83,7 @@ const ListRow = ({ icon, title, score}) => (
       <p>{title}</p>
     </div>
 
-    <h3 className="score-main" style={{ color: score < 50 ? '#ef4444' : '#22d3ee' }}>{score}%</h3>
+    <h3 className="score-main" style={{ color: '#22d3ee' }}>{score}%</h3>
   </div>
 
   );
