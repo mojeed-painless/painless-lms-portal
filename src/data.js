@@ -180,12 +180,12 @@ export const topics = [
             {name: 'Naming Variables', path: '/js-naming-variables'},
             {name: 'Constant', path: '/js-constant'},
             {name: 'Data Types', path: '/js-data-types'},
-            // {name: 'STRINGS', path: ''},
-            // {name: 'NUMBERS', path: ''},
-            // {name: 'BIGINT', path: ''},
-            // {name: 'BOOLEAN', path: ''},
-            // {name: 'NULL, UNDEFINED', path: ''},
-            // {name: 'TYPEOF', path: ''},
+            {name: 'Strings', path: '/js-strings'},
+            {name: 'Numbers', path: '/js-numbers'},
+            {name: 'BigInt', path: '/js-bigInt'},
+            {name: 'Boolean', path: '/js-boolean'},
+            {name: 'Null & Undefined', path: '/js-null'},
+            {name: 'TypeOf', path: '/js-typeOf'},
         ]
     },
 ]

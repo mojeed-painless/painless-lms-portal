@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 import CourseAccessRoute from './components/common/CourseAccessRoute';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import './App.css'
 
 // import DashboardScreen from './pages/DashboardScreen';
@@ -84,6 +85,12 @@ import Variables from './pages/js-pages/Variables';
 import NamingVariables from './pages/js-pages/NamingVariables';
 import Constant from './pages/js-pages/Constant';
 import DataTypes from './pages/js-pages/DataTypes';
+import Strings from './pages/js-pages/Strings';
+import Numbers from './pages/js-pages/Numbers';
+import BigInt from './pages/js-pages/BigInt';
+import Boolean from './pages/js-pages/Boolean';
+import Null from './pages/js-pages/Null';
+import TypeOf from './pages/js-pages/TypeOf';
 
 import LoadingAnimation from './components/common/LoadingAnimation';
 
@@ -93,6 +100,7 @@ import LoadingAnimation from './components/common/LoadingAnimation';
 function App() {
 
   return (
+    <ErrorBoundary>
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Routes>
@@ -179,6 +187,12 @@ function App() {
                 <Route path="/js-naming-variables" element={<NamingVariables />} />
                 <Route path="/js-constant" element={<Constant />} />
                 <Route path="/js-data-types" element={<DataTypes />} />
+                <Route path="/js-strings" element={<Strings />} />
+                <Route path="/js-numbers" element={<Numbers />} />
+                <Route path="/js-bigInt" element={<BigInt />} />
+                <Route path="/js-boolean" element={<Boolean />} />
+                <Route path="/js-null" element={<Null />} />
+                <Route path="/js-typeOf" element={<TypeOf />} />
               </Route>
             </Route>
 
@@ -270,6 +284,7 @@ function App() {
         
       </div>
     </Router>
+    </ErrorBoundary>
   )
 }
 

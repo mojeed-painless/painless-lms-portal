@@ -24,7 +24,7 @@ export default function DataTypes() {
 
             <PrevNextBtn 
                 prevPath="/js-constant" 
-                nextPath=""
+                nextPath="/js-strings"
             />
         </section>
     );
