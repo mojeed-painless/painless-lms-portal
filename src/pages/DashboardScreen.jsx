@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useProgress } from '../context/ProgressContext';
+import { useAssignments } from '../hooks/useAssignments';
 import { Link } from 'react-router-dom';
 import { statsData, learningPath, topics } from "../data.js";
 import '../assets/styles/dashboard.css';
@@ -18,12 +19,30 @@ const API_URL = `${API_BASE}/api/users/admin/all`;
 const DashboardScreen = () => {
 
   const { user } = useAuth();
+  const token = user?.token;
   const { getCompletedCount, getCompletionPercentage } = useProgress();
+  const { 
+    pending, 
+    submitted, 
+    graded, 
+    fetchPendingAssignments,
+    fetchSubmittedAssignments,
+    fetchGradedAssignments
+  } = useAssignments(token);
   const [courseAccess, setCourseAccess] = useState({
     htmlAccess: user?.htmlAccess || false,
     jsAccess: user?.jsAccess || false,
     reactAccess: user?.reactAccess || false
   });
+
+  // Fetch assignments on component mount
+  useEffect(() => {
+    if (token) {
+      fetchPendingAssignments();
+      fetchSubmittedAssignments();
+      fetchGradedAssignments();
+    }
+  }, [token, fetchPendingAssignments, fetchSubmittedAssignments, fetchGradedAssignments]);
 
   useEffect(() => {
     // Initial setup from user object
@@ -126,6 +145,13 @@ const DashboardScreen = () => {
                 const percentage = getCompletionPercentage(totalLessons);
                 displayFigure = `${completed}/${totalLessons}`;
                 displayDescription = `${percentage}% completed`;
+              }
+
+              if (title === 'Assignments Done') {
+                const done = submitted.length + graded.length;
+                const pendingCount = pending.length;
+                displayFigure = `${done}`;
+                displayDescription = `${pendingCount} pending assignment${pendingCount !== 1 ? 's' : ''}`;
               }
               
               return (

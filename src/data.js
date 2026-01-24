@@ -1,11 +1,8 @@
 import { FiHome } from "react-icons/fi";
 import { MdOutlineMenuBook, MdOutlineAssignment } from "react-icons/md";
-import { LuSparkles } from "react-icons/lu";
+import { LuSparkles, LuBrainCircuit } from "react-icons/lu";
 import { IoPodiumOutline, IoSettingsOutline } from "react-icons/io5";
-import { CgTranscript } from "react-icons/cg";
-
-import { FaDoorOpen, FaCode, FaPaintbrush  } from "react-icons/fa6";
-import { LuBrainCircuit } from "react-icons/lu";
+import { FaDoorOpen, FaCode, FaPaintbrush, FaRegFileLines } from "react-icons/fa6";
 import {
     Award,
     BadgeCheck,
@@ -20,6 +17,7 @@ import {
     BookOpenText,
     Trophy,
     FileBadge,
+    BrainCircuit,
 } from 'lucide-react';
 
 // SIDEBAR DATA
@@ -28,8 +26,8 @@ export const listTexts = [
   { id: 2, text: 'Course Contents', icon: MdOutlineMenuBook, to: '/welcome' },
   { id: 3, text: 'Assignments', icon: MdOutlineAssignment, to: '/assignments' },
   { id: 4, text: 'Quizzes', icon: LuSparkles, to: '/quizzes' },
-  { id: 5, text: 'Grades', icon: IoPodiumOutline, to: '/grades' },
-  { id: 6, text: 'Transcript', icon: CgTranscript, to: '/transcript' },
+  { id: 5, text: 'Leaderboard', icon: IoPodiumOutline, to: '/grades' },
+  { id: 6, text: 'Transcript', icon: FaRegFileLines, to: '/transcript' },
   { id: 7, text: 'Settings', icon: IoSettingsOutline, to: '/settings' },
 ]
 
@@ -211,8 +209,8 @@ export const statsData = [
     },
     {
         title: 'Assignments Done',
-        figure: '0',
-        description: 'submit pending Assignment',
+        figure: '5',
+        description: 'submit (2) pending Assignment',
         Icon: NotepadText,
     },
     {
@@ -236,7 +234,7 @@ export const learningPath = [
         link: '/welcome',
     },
     {
-        Icon: PenTool,
+        Icon: BrainCircuit,
         stage: 'Intermediate',
         title: 'Advanced JavaScript',
         description: 'Deep dive into modern JavaScript concepts',
