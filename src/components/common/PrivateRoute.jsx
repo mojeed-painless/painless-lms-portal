@@ -35,7 +35,7 @@ const PrivateRoute = () => {
 
   // If not authenticated, redirect to login, preserving the current path
   // so the user can be redirected back after successful login.
-  return <Navigate to="/login" state={{ from: location }} replace />;
+  return <Navigate to="/home" state={{ from: location }} replace />;
 };
 
 export default PrivateRoute;
