@@ -4,10 +4,22 @@ export const useAssignments = (token) => {
   const [pending, setPending] = useState([]);
   const [submitted, setSubmitted] = useState([]);
   const [graded, setGraded] = useState([]);
+  const [allAssignments, setAllAssignments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
+  // Helper function to convert courseType to courseId
+  const getCourseId = (courseType) => {
+    const courseMap = {
+      'html': 'html',
+      'css': 'css',
+      'js': 'javascript',
+      'react': 'react',
+    };
+    return courseMap[courseType] || courseType;
+  };
 
   const handleError = (err) => {
     const message = err.response?.data?.message || err.message;
@@ -255,8 +267,6 @@ export const useAssignments = (token) => {
   );
 
   // ADMIN ASSIGNMENT MANAGEMENT
-  const [allAssignments, setAllAssignments] = useState([]);
-
   const fetchAllAssignments = useCallback(async () => {
     if (!token) return;
     setLoading(true);
@@ -303,7 +313,7 @@ export const useAssignments = (token) => {
             title,
             description,
             dueDate,
-            courseType,
+            courseId: getCourseId(courseType),
           }),
         });
 
@@ -350,7 +360,7 @@ export const useAssignments = (token) => {
             title,
             description,
             dueDate,
-            courseType,
+            courseId: getCourseId(courseType),
           }),
         });
 
