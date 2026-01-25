@@ -253,6 +253,8 @@
 
     .transcript__header-title h1 {
         font-size: 1.6rem;
+        width: fit-content;
+        margin-inline:auto;
     }
 
 
