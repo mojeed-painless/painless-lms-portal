@@ -175,7 +175,7 @@ const formatTime = (num) => String(num).padStart(2, '0');
             <div className="quiz__leader">
               <div className="quiz__leader-header">
                   <h4><span><Trophy size={20}/></span>Today's Top 3</h4>
-                  <small className="quiz__date">20.10.2026</small>
+                  <small className="quiz__date">20.10.2025</small>
               </div>
 
               <button>View Leaderboard</button>
@@ -184,28 +184,28 @@ const formatTime = (num) => String(num).padStart(2, '0');
                   <div className="quiz__leader-item">
                     <span className="quiz__leader-rank"><TbHexagonNumber2Filled/></span>
                     <div className="quiz__leader-info">
-                      <h5>John Ebuka</h5>
-                      <small>Score: 3/3</small>
+                      <h5>Student 1</h5>
+                      <small>Score: 0/0</small>
                     </div>
-                    <small className="quiz__time"><span><TimerReset size={15}/></span> 20s</small>
+                    <small className="quiz__time"><span><TimerReset size={15}/></span> 0s</small>
                   </div>
 
                   <div className="quiz__leader-item">
                     <span className="quiz__leader-rank"><TbHexagonNumber1Filled/></span>
                     <div className="quiz__leader-info">
-                      <h5>Adamu Sulaiman</h5>
-                      <small>Score: 3/3</small>
+                      <h5>Student 2</h5>
+                      <small>Score: 0/0</small>
                     </div>
-                    <small className="quiz__time"><span><TimerReset size={15} /></span> 14s</small>
+                    <small className="quiz__time"><span><TimerReset size={15} /></span> 0s</small>
                   </div>
 
                   <div className="quiz__leader-item">
                     <span className="quiz__leader-rank"><TbHexagonNumber3Filled/></span>
                     <div className="quiz__leader-info">
-                      <h5>Fatima Abiodun</h5>
-                      <small>Score: 3/3</small>
+                      <h5>Student 3</h5>
+                      <small>Score: 0/0</small>
                     </div>
-                    <small className="quiz__time"><span><TimerReset size={15}/></span> 24s</small>
+                    <small className="quiz__time"><span><TimerReset size={15}/></span> 0s</small>
                   </div>
               </div>
             </div>
