@@ -17,7 +17,7 @@ export default function BooleanConversion() {
                     
                         <VideoBox 
                             title='Boolean Conversion'
-                            code=''
+                            code='fuMQUb5rec4?si=bxYXonvxxIEOS4Wo'
                         />
                 </div>
             </section>

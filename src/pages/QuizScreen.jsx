@@ -37,7 +37,7 @@ function handleActiveButton(title) {
         
       //   <div className="daily-quiz__container">
       //     <div className="quiz__countdown">
-      //       <h2> <span><Siren/></span> Next Quiz In:</h2>
+      //       <h2> <span><Siren/></span> Next Daily Quiz In:</h2>
 
       //       <div className="quiz__timer">
       //         <div className="quiz__time-box">
