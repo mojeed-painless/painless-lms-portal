@@ -2,11 +2,15 @@ import UnderDevelopment from "../components/common/UnderDevelopment";
 import { useState, useEffect } from 'react';
 import '../assets/styles/quiz.css';
 import { TbPointFilled } from "react-icons/tb";
+import { TbHexagonNumber1Filled, TbHexagonNumber2Filled, TbHexagonNumber3Filled } from "react-icons/tb";
 import {
   Sparkles,
   WandSparkles,
   Sparkle,
   Siren,
+  Trophy,
+  TimerReset,
+  BadgeInfo,
 } from 'lucide-react';
 
 
@@ -147,7 +151,7 @@ const formatTime = (num) => String(num).padStart(2, '0');
               </>
             ) : (
               <>
-                <h2><span className="siren-blink live-text">LIVE</span> Daily Quiz is on now!</h2>
+                <h2><span className="siren-blink live-text">LIVE</span> Quiz is on now!</h2>
 
                 <div className="quiz__timer">
                   <div className="quiz__time-box live-time-box">
@@ -161,10 +165,62 @@ const formatTime = (num) => String(num).padStart(2, '0');
                 </div>
 
                 <button className="quiz__start-btn" onClick={handleOpenQuiz}>
-                  Start Quiz Now
+                  Start Quiz
                 </button>
               </>
             )}
+          </div>
+
+          <div className="quiz__article">
+            <div className="quiz__leader">
+              <div className="quiz__leader-header">
+                  <h4><span><Trophy size={20}/></span>Today's Top 3</h4>
+                  <small className="quiz__date">20.10.2026</small>
+              </div>
+
+              <button>View Leaderboard</button>
+
+              <div className="quiz__leader-list">
+                  <div className="quiz__leader-item">
+                    <span className="quiz__leader-rank"><TbHexagonNumber2Filled/></span>
+                    <div className="quiz__leader-info">
+                      <h5>John Ebuka</h5>
+                      <small>Score: 3/3</small>
+                    </div>
+                    <small className="quiz__time"><span><TimerReset size={15}/></span> 20s</small>
+                  </div>
+
+                  <div className="quiz__leader-item">
+                    <span className="quiz__leader-rank"><TbHexagonNumber1Filled/></span>
+                    <div className="quiz__leader-info">
+                      <h5>Adamu Sulaiman</h5>
+                      <small>Score: 3/3</small>
+                    </div>
+                    <small className="quiz__time"><span><TimerReset size={15} /></span> 14s</small>
+                  </div>
+
+                  <div className="quiz__leader-item">
+                    <span className="quiz__leader-rank"><TbHexagonNumber3Filled/></span>
+                    <div className="quiz__leader-info">
+                      <h5>Fatima Abiodun</h5>
+                      <small>Score: 3/3</small>
+                    </div>
+                    <small className="quiz__time"><span><TimerReset size={15}/></span> 24s</small>
+                  </div>
+              </div>
+            </div>
+
+            <div className="quiz__instruction">
+              <h4><span><BadgeInfo/></span>How it works</h4>
+              <ol>
+                <li>The Daily Quiz goes live every day at 8pm and lasts for 2 minutes.</li>
+                <li>When the quiz is live, click on the "Start Quiz" button to begin.</li>
+                <li>Click the submit button as fast as possible.</li>
+                <li>Your score will be based on the number of correct answers and the time taken.</li>
+                <li>Check the leaderboard to see how you rank against other participants.</li>
+                <li>Points are awarded to the top scorers daily!</li>
+              </ol>
+            </div>
           </div>
         </div>}
 

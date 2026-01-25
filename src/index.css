@@ -22,6 +22,9 @@ img {
     object-fit: cover;
 }
 
+button {
+    font-family: "Quicksand", sans-serif;
+}
 /* --- Key frames --- */
 @keyframes pulsy {
   0% {
