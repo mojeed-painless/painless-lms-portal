@@ -3,12 +3,12 @@ import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 
-export default function Alert() {
+export default function StringConversion() {
 
     return (
         <section className="course-content">
             <div className="course-content__header">
-                <h1>Alert, Console & Comment</h1>
+                <h1>String Conversion</h1>
                 <p>Javascript</p>
             </div>
 
@@ -16,15 +16,15 @@ export default function Alert() {
                 <div className="course-content__container">
                     
                         <VideoBox 
-                            title='Alert, Console & Comment'
-                            code='E_xJ_M7TW10?si=SthaLAQ_XW8VxK_K'
+                            title='String Conversion'
+                            code='h41KBQeYZv0?si=b1x3ZpPb8h8E0aLK'
                         />
                 </div>
             </section>
 
             <PrevNextBtn 
-                prevPath="/js-linking" 
-                nextPath="/js-statements"
+                prevPath="/js-browser-user-interaction" 
+                nextPath="/js-number-conversion"
             />
         </section>
     );

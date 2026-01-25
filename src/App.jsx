@@ -91,6 +91,10 @@ import BigInt from './pages/js-pages/BigInt';
 import Boolean from './pages/js-pages/Boolean';
 import Null from './pages/js-pages/Null';
 import TypeOf from './pages/js-pages/TypeOf';
+import BrowserUserInteraction from './pages/js-pages/BrowserUserInteraction';
+import StringConversion from './pages/js-pages/StringConversion';
+import NumberConversion from './pages/js-pages/NumberConversion';
+import BooleanConversion from './pages/js-pages/BooleanConversion';
 
 import LoadingAnimation from './components/common/LoadingAnimation';
 
@@ -182,7 +186,7 @@ function App() {
                 <Route path="/js-intro" element={<JavascriptIntro />} />
                 <Route path="/js-linking" element={<LinkingJavascript />} />
                 <Route path="/js-alert" element={<Alert />} />
-                <Route path="/js-satements" element={<Statements />} />
+                <Route path="/js-statements" element={<Statements />} />
                 <Route path="/js-variables" element={<Variables />} />
                 <Route path="/js-naming-variables" element={<NamingVariables />} />
                 <Route path="/js-constant" element={<Constant />} />
@@ -193,6 +197,10 @@ function App() {
                 <Route path="/js-boolean" element={<Boolean />} />
                 <Route path="/js-null" element={<Null />} />
                 <Route path="/js-typeOf" element={<TypeOf />} />
+                <Route path="/js-browser-user-interaction" element={<BrowserUserInteraction />} />
+                <Route path="/js-string-conversion" element={<StringConversion />} />
+                <Route path="/js-number-conversion" element={<NumberConversion />} />
+                <Route path="/js-boolean-conversion" element={<BooleanConversion />} />
               </Route>
             </Route>
 

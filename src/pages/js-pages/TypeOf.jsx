@@ -24,7 +24,7 @@ export default function TypeOf() {
 
             <PrevNextBtn 
                 prevPath="/js-null" 
-                nextPath=""
+                nextPath="/js-browser-user-interaction"
             />
         </section>
     );

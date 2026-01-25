@@ -173,7 +173,7 @@ export const topics = [
             {name: 'JavaScript Introduction', path: '/js-intro'},
             {name: 'Linking Javascript', path: '/js-linking'},
             {name: 'Alert, Console & Comment', path: '/js-alert'},
-            {name: 'Statements', path: '/js-satements'},
+            {name: 'Statements', path: '/js-statements'},
             {name: 'Variables', path: '/js-variables'},
             {name: 'Naming Variables', path: '/js-naming-variables'},
             {name: 'Constant', path: '/js-constant'},
@@ -184,6 +184,10 @@ export const topics = [
             {name: 'Boolean', path: '/js-boolean'},
             {name: 'Null & Undefined', path: '/js-null'},
             {name: 'TypeOf', path: '/js-typeOf'},
+            {name: 'BrowserUserInteraction', path: '/js-browser-user-interaction'},
+            {name: 'StringConversion', path: '/js-string-conversion'},
+            {name: 'NumberConversion', path: '/js-number-conversion'},
+            {name: 'BooleanConversion', path: '/js-boolean-conversion'},
         ]
     },
 ]

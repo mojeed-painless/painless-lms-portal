@@ -227,7 +227,7 @@ const AssignmentScreen = () => {
                 </span>
                 Pending Assignments
               </h3>
-              <span className="count-badge orange">{pending.length} assignments</span>
+              <span className="count-badge orange">{pending.length} {`assignment${pending.length <= 1 ? '' : 's'}`}</span>
             </div>
             <div className="table-responsive">
               <table className="assignment__table">
@@ -297,7 +297,7 @@ const AssignmentScreen = () => {
                 </span>
                 Submitted Assignments
               </h3>
-              <span className="count-badge blue">{submitted.length} assignments</span>
+              <span className="count-badge blue">{submitted.length} {`assignment${submitted.length <= 1 ? '' : 's'}`}</span>
             </div>
             <div className="table-responsive">
               <table className="assignment__table">
@@ -359,7 +359,7 @@ const AssignmentScreen = () => {
                 </span>
                 Graded Assignments
               </h3>
-              <span className="count-badge green">{graded.length} assignments</span>
+              <span className="count-badge green">{graded.length} {`assignment${graded.length <= 1 ? '' : 's'}`}</span>
             </div>
             <div className="table-responsive">
               <table className="assignment__table">

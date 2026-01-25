@@ -72,7 +72,7 @@
 
 .transcript__stat-card {
   background: radial-gradient(#280a48, #20043d);
-  padding: 2rem;
+  padding: 2rem 1.7rem;
   border-radius: 1.2rem;
   display: flex;
   justify-content: space-between;

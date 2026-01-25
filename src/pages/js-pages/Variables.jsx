@@ -28,7 +28,7 @@ export default function Variables() {
             </section>
 
             <PrevNextBtn 
-                prevPath="/js-satements" 
+                prevPath="/js-statements" 
                 nextPath="/js-naming-variables"
             />
         </section>

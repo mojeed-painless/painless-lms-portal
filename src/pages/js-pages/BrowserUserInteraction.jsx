@@ -3,12 +3,12 @@ import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 
-export default function Alert() {
+export default function BrowserUserInteraction() {
 
     return (
         <section className="course-content">
             <div className="course-content__header">
-                <h1>Alert, Console & Comment</h1>
+                <h1>Browser-User Interaction</h1>
                 <p>Javascript</p>
             </div>
 
@@ -16,15 +16,15 @@ export default function Alert() {
                 <div className="course-content__container">
                     
                         <VideoBox 
-                            title='Alert, Console & Comment'
-                            code='E_xJ_M7TW10?si=SthaLAQ_XW8VxK_K'
+                            title='Browser-User Interaction'
+                            code='PmbLj3ZV_pY?si=DOBRfMjGpfNyrzkP'
                         />
                 </div>
             </section>
 
             <PrevNextBtn 
-                prevPath="/js-linking" 
-                nextPath="/js-statements"
+                prevPath="/js-typeOf" 
+                nextPath="/js-string-conversion"
             />
         </section>
     );
