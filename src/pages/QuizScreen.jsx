@@ -2,7 +2,7 @@ import UnderDevelopment from "../components/common/UnderDevelopment";
 import { useState, useEffect, useCallback } from 'react';
 import '../assets/styles/quiz.css';
 import { useAuth } from '../context/AuthContext';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS, API_BASE_URL } from '../config/api';
 import { TbPointFilled } from "react-icons/tb";
 import { TbHexagonNumber1Filled, TbHexagonNumber2Filled, TbHexagonNumber3Filled } from "react-icons/tb";
 import {
@@ -68,10 +68,27 @@ export default function QuizScreen() {
   // Track if we're still initializing
   const [isInitialized, setIsInitialized] = useState(false);
 
+  // Helper to resolve a real user id (Mongo ObjectId) to send to backend
+  const resolveUserId = async () => {
+    if (user?._id || user?.id) return user._id || user.id;
+    // Try to fetch authoritative profile from backend
+    try {
+      const resp = await fetch(`${API_BASE_URL}/api/users/me`, { credentials: 'include' });
+      if (resp.ok) {
+        const data = await resp.json();
+        return data._id || data.id || null;
+      }
+    } catch (err) {
+      // ignore
+    }
+    return null;
+  };
+
   // ===== LOCALSTORAGE EFFECTS =====
   // Load questions from backend on mount (primary source) - only if authenticated
   useEffect(() => {
-    if (!user?.id) {
+
+    if (!user?.id && !user?._id) {
       // User not logged in yet, just load from localStorage
       const storageKey = `quiz_questions_${today}`;
       const savedQuestions = localStorage.getItem(storageKey);
@@ -91,15 +108,21 @@ export default function QuizScreen() {
     const loadQuestionsFromBackend = async () => {
       try {
         const todayDate = new Date().toISOString().split('T')[0];
-        const headers = {
-          'X-User-ID': user.id,
-        };
-        
-        console.log('Loading questions with user ID:', user.id);
+        // resolve best available user id
+        const resolvedId = await resolveUserId();
+        const headers = {};
+        if (resolvedId) {
+          headers['X-User-ID'] = resolvedId;
+          console.log('Loading questions with user ID:', resolvedId);
+        } else {
+          console.log('No resolved user id; attempting unauthenticated fetch');
+        }
+
         const response = await fetch(`${API_ENDPOINTS.QUIZ.GET_QUESTIONS}?date=${todayDate}`, {
-          headers
+          headers,
+          credentials: 'include'
         });
-        
+
         if (response.ok) {
           const questions = await response.json();
           console.log('Loaded questions from backend:', questions);
@@ -112,8 +135,8 @@ export default function QuizScreen() {
         // Backend not available
       }
       
-      // Backend unavailable - show message but still load from localStorage
-      setBackendMessage('⚠️ Backend unavailable. Using local storage. Questions will sync once backend is online.');
+      // Backend unavailable or unauthenticated - show message but still load from localStorage
+      setBackendMessage('⚠️ Backend unavailable or unauthenticated. Using local storage. Questions will sync once backend is online or you log in.');
       
       // Fallback: Load from localStorage
       const storageKey = `quiz_questions_${today}`;
@@ -206,15 +229,19 @@ export default function QuizScreen() {
         const headers = {
           'Content-Type': 'application/json',
         };
-        
-        // Add user ID if available
-        if (user?.id) {
-          headers['X-User-ID'] = user.id;
+
+        // Resolve authoritative user id if possible
+        try {
+          const resolved = await resolveUserId();
+          if (resolved) headers['X-User-ID'] = resolved;
+        } catch (err) {
+          // ignore
         }
-        
+
         const response = await fetch(API_ENDPOINTS.QUIZ.ADD_QUESTION, {
           method: 'POST',
           headers,
+          credentials: 'include',
           body: JSON.stringify({
             question: formData.question,
             image: formData.imagePreview,
@@ -228,7 +255,7 @@ export default function QuizScreen() {
             date: today,
           }),
         });
-        
+
         if (!response.ok) {
           console.error('Failed to save question to backend');
         }
@@ -333,18 +360,27 @@ export default function QuizScreen() {
     });
   }, []);
 
-  const handleFinishQuiz = useCallback(() => {
+  const handleFinishQuiz = useCallback(async () => {
     if (!quizStartTime) return;
 
     const endTime = new Date();
     const timeTaken = Math.round((endTime - quizStartTime) / 1000); // in seconds
     const score = calculateScore();
 
+    // Resolve authoritative student id if possible
+    let studentId = user?.id;
+    try {
+      const resolved = await resolveUserId();
+      if (resolved) studentId = resolved;
+    } catch (err) {
+      // ignore
+    }
+
     // Create quiz submission
     const quizSubmission = {
       id: Date.now(),
       date: today,
-      studentId: user?.id,
+      studentId: studentId,
       studentName: user?.name,
       correctAnswers: score.correctAnswers,
       totalQuestions: score.totalQuestions,
@@ -374,7 +410,7 @@ export default function QuizScreen() {
     // 1. Save student's answers and score
     // 2. Calculate ranking at end of 2-minute window
     // 3. Award points based on ranking
-  }, [quizStartTime, calculateScore, updateLeaderboard, quizResponses, user?.id, user?.name, today]);
+  }, [quizStartTime, calculateScore, updateLeaderboard, quizResponses, user?.id, user?.name, today, resolveUserId]);
 
   const calculatePointsForRank = (rank, correctAnswers) => {
     const bonusPoints = {
