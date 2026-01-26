@@ -456,12 +456,12 @@ export default function QuizScreen() {
       const currentMinutes = now.getMinutes();
 
       // Check if it's between 8:30am (08:30) and 8:32am (08:32)
-      const isInLiveWindow = currentHours === 14 && currentMinutes >= 35 && currentMinutes < 37;
+      const isInLiveWindow = currentHours === 15 && currentMinutes >= 50 && currentMinutes < 52;
       
       if (isInLiveWindow) {
         setIsLiveQuiz(true);
         const quizEndTime = new Date(now);
-        quizEndTime.setHours(14, 37, 0, 0); // 8:32 AM
+        quizEndTime.setHours(15, 52, 0, 0); // 8:32 AM
         
         const difference = quizEndTime - now;
         
@@ -479,7 +479,7 @@ export default function QuizScreen() {
       } else {
         setIsLiveQuiz(false);
         const targetTime = new Date(now);
-        targetTime.setHours(14, 35, 0, 0); // 8am (08:00)
+        targetTime.setHours(15, 50, 0, 0); // 8am (08:00)
 
         // If it's already past 8am, set target to tomorrow's 8am
         if (now > targetTime) {
