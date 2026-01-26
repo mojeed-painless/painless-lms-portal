@@ -67,6 +67,9 @@ export default function QuizScreen() {
   
   // Track if we're still initializing
   const [isInitialized, setIsInitialized] = useState(false);
+  
+  // Track if user has already attempted today's quiz (one attempt per day)
+  const [hasAttemptedToday, setHasAttemptedToday] = useState(false);
 
   // Helper to resolve a real user id (Mongo ObjectId) to send to backend
   const resolveUserId = async () => {
@@ -166,6 +169,14 @@ export default function QuizScreen() {
     const storageKey = `quiz_questions_${today}`;
     localStorage.setItem(storageKey, JSON.stringify(todaysQuestions));
   }, [todaysQuestions, today, isInitialized]);
+
+  // Load and check if user has already attempted today's quiz
+  useEffect(() => {
+    const attemptKey = `quiz_attempted_${today}`;
+    const hasAttempted = localStorage.getItem(attemptKey) === 'true';
+    setHasAttemptedToday(hasAttempted);
+    console.log('Quiz attempt status for today:', hasAttempted);
+  }, [today]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -295,6 +306,11 @@ export default function QuizScreen() {
 
   // ===== QUIZ SESSION HANDLERS =====
   const handleStartQuiz = () => {
+    if (hasAttemptedToday) {
+      alert('You have already completed today\'s quiz. Come back tomorrow for a new one!');
+      return;
+    }
+    
     if (todaysQuestions.length === 0) {
       alert('No questions available for today\'s quiz yet. Check back later!');
       return;
@@ -395,6 +411,11 @@ export default function QuizScreen() {
     // Simulate leaderboard update (backend should calculate this)
     updateLeaderboard(quizSubmission);
 
+    // Mark that user has completed today's quiz (one attempt per day)
+    const attemptKey = `quiz_attempted_${today}`;
+    localStorage.setItem(attemptKey, 'true');
+    setHasAttemptedToday(true);
+
     // End quiz session
     setQuizStarted(false);
     setCurrentQuestionIndex(0);
@@ -435,12 +456,12 @@ export default function QuizScreen() {
       const currentMinutes = now.getMinutes();
 
       // Check if it's between 8:30am (08:30) and 8:32am (08:32)
-      const isInLiveWindow = currentHours === 9 && currentMinutes >= 30 && currentMinutes < 32;
+      const isInLiveWindow = currentHours === 14 && currentMinutes >= 35 && currentMinutes < 37;
       
       if (isInLiveWindow) {
         setIsLiveQuiz(true);
         const quizEndTime = new Date(now);
-        quizEndTime.setHours(9, 32, 0, 0); // 8:32 AM
+        quizEndTime.setHours(14, 37, 0, 0); // 8:32 AM
         
         const difference = quizEndTime - now;
         
@@ -458,7 +479,7 @@ export default function QuizScreen() {
       } else {
         setIsLiveQuiz(false);
         const targetTime = new Date(now);
-        targetTime.setHours(9, 32, 0, 0); // 8am (08:00)
+        targetTime.setHours(14, 35, 0, 0); // 8am (08:00)
 
         // If it's already past 8am, set target to tomorrow's 8am
         if (now > targetTime) {
@@ -718,12 +739,27 @@ export default function QuizScreen() {
                   </div>
                 </div>
 
-                <button 
-                  className="quiz__start-btn" 
-                  onClick={handleStartQuiz}
-                >
-                  Start Quiz
-                </button>
+                {hasAttemptedToday ? (
+                  <div style={{
+                    padding: '16px',
+                    backgroundColor: '#e8f5e9',
+                    color: '#2e7d32',
+                    borderRadius: '8px',
+                    textAlign: 'center',
+                    marginTop: '20px',
+                    border: '2px solid #4caf50'
+                  }}>
+                    <p style={{ margin: '0', fontSize: '16px', fontWeight: '600' }}>✓ Quiz Completed</p>
+                    <p style={{ margin: '8px 0 0 0', fontSize: '14px' }}>You've already completed today's quiz. Come back tomorrow for a new one!</p>
+                  </div>
+                ) : (
+                  <button 
+                    className="quiz__start-btn" 
+                    onClick={handleStartQuiz}
+                  >
+                    Start Quiz
+                  </button>
+                )}
               </>
             )}
           </div>
