@@ -78,9 +78,22 @@ export default function QuizScreen() {
   // Track if user has already attempted today's quiz (one attempt per day)
   const [hasAttemptedToday, setHasAttemptedToday] = useState(false);
 
-  // Fetch quiz settings from backend
+  // Fetch quiz settings from backend or localStorage
   useEffect(() => {
-    const fetchQuizSettings = async () => {
+    const loadQuizSettings = async () => {
+      // First try to load from localStorage (real-time)
+      const localReleaseTime = localStorage.getItem('quizReleaseTime');
+      const localDuration = localStorage.getItem('quizReleaseDuration');
+      
+      if (localReleaseTime && localDuration) {
+        setQuizSettings({
+          releaseTime: localReleaseTime,
+          duration: parseInt(localDuration)
+        });
+        console.log('Quiz settings loaded from localStorage');
+      }
+      
+      // Then try to fetch from backend as backup
       try {
         const response = await fetch(`${API_BASE_URL}/api/quizzes/settings`, {
           credentials: 'include'
@@ -93,18 +106,32 @@ export default function QuizScreen() {
             duration: data.duration || 15
           });
           console.log('Quiz settings loaded from backend:', data);
-        } else {
-          console.warn('Could not fetch quiz settings, using defaults');
         }
       } catch (err) {
-        console.warn('Error fetching quiz settings:', err.message);
-        // Use defaults if backend is not available yet
+        console.warn('Could not fetch quiz settings from backend:', err.message);
       } finally {
         setLoadingSettings(false);
       }
     };
 
-    fetchQuizSettings();
+    loadQuizSettings();
+
+    // Listen for storage changes (from admin dashboard in other tab)
+    const handleStorageChange = () => {
+      const updatedReleaseTime = localStorage.getItem('quizReleaseTime');
+      const updatedDuration = localStorage.getItem('quizReleaseDuration');
+      
+      if (updatedReleaseTime && updatedDuration) {
+        setQuizSettings({
+          releaseTime: updatedReleaseTime,
+          duration: parseInt(updatedDuration)
+        });
+        console.log('Quiz settings updated from storage event');
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   // Helper to resolve a real user id (Mongo ObjectId) to send to backend
