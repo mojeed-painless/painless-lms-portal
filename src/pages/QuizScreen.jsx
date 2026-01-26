@@ -495,21 +495,55 @@ export default function QuizScreen() {
   };
 
   // ===== COUNTDOWN TIMERS =====
-  // 1. Countdown to 8pm
-  // 2. Countdown during quiz session (2 minutes)
+  // 1. Countdown to configurable quiz release time
+  // 2. Countdown during quiz session
   useEffect(() => {
     const calculateTimeLeft = () => {
+      // Get quiz release time from localStorage (set by admin)
+      const releaseTimeStr = localStorage.getItem('quizReleaseTime') || '16:15'; // Default: 4:15 PM
+      const durationMinutes = parseInt(localStorage.getItem('quizReleaseDuration') || '15'); // Default: 15 minutes
+      
+      // Parse time string (HH:MM format)
+      const [releaseHours, releaseMinutes] = releaseTimeStr.split(':').map(Number);
+      
       const now = new Date();
       const currentHours = now.getHours();
       const currentMinutes = now.getMinutes();
 
-      // Check if it's between 8:30am (08:30) and 8:32am (08:32)
-      const isInLiveWindow = currentHours === 16 && currentMinutes >= 15 && currentMinutes < 30;
+      // Calculate quiz end time (release time + duration)
+      const quizStartHours = releaseHours;
+      const quizStartMinutes = releaseMinutes;
+      let quizEndHours = releaseHours;
+      let quizEndMinutes = releaseMinutes + durationMinutes;
+      
+      // Handle minutes overflow
+      if (quizEndMinutes >= 60) {
+        quizEndHours += Math.floor(quizEndMinutes / 60);
+        quizEndMinutes = quizEndMinutes % 60;
+      }
+      // Handle hours overflow
+      if (quizEndHours >= 24) {
+        quizEndHours = quizEndHours % 24;
+      }
+
+      // Check if current time is within quiz window
+      const currentTimeInMinutes = currentHours * 60 + currentMinutes;
+      const quizStartInMinutes = quizStartHours * 60 + quizStartMinutes;
+      const quizEndInMinutes = quizEndHours * 60 + quizEndMinutes;
+      
+      const isInLiveWindow = quizEndInMinutes > quizStartInMinutes 
+        ? (currentTimeInMinutes >= quizStartInMinutes && currentTimeInMinutes < quizEndInMinutes)
+        : (currentTimeInMinutes >= quizStartInMinutes || currentTimeInMinutes < quizEndInMinutes);
       
       if (isInLiveWindow) {
         setIsLiveQuiz(true);
         const quizEndTime = new Date(now);
-        quizEndTime.setHours(16, 30, 0, 0); // 8:32 AM
+        quizEndTime.setHours(quizEndHours, quizEndMinutes, 0, 0);
+        
+        // If end time has already passed today, it means it wrapped to tomorrow
+        if (quizEndTime < now && quizEndInMinutes < quizStartInMinutes) {
+          quizEndTime.setDate(quizEndTime.getDate() + 1);
+        }
         
         const difference = quizEndTime - now;
         
@@ -527,9 +561,9 @@ export default function QuizScreen() {
       } else {
         setIsLiveQuiz(false);
         const targetTime = new Date(now);
-        targetTime.setHours(16, 15, 0, 0); // 8am (08:00)
+        targetTime.setHours(releaseHours, releaseMinutes, 0, 0);
 
-        // If it's already past 8am, set target to tomorrow's 8am
+        // If it's already past the release time, set target to tomorrow's release time
         if (now > targetTime) {
           targetTime.setDate(targetTime.getDate() + 1);
         }
@@ -859,9 +893,9 @@ export default function QuizScreen() {
           <div className="quiz__instruction">
             <h4><span><BadgeInfo/></span>How it works</h4>
             <ol>
-              <li>The Daily Quiz goes live every day at 8pm and lasts for 2 minutes.</li>
+              <li>The Daily Quiz goes live every day at {localStorage.getItem('quizReleaseTime') || '16:15'} and lasts for {localStorage.getItem('quizReleaseDuration') || '15'} minutes.</li>
               <li>When the quiz is live, click on the "Start Quiz" button to begin.</li>
-              <li>Answer all questions before the 2-minute timer expires.</li>
+              <li>Answer all questions before the timer expires.</li>
               <li>Your score is based on correct answers and submission time.</li>
               <li>Top 3 performers get bonus points (5/3/1 pts).</li>
               <li>Check the leaderboard to see your ranking!</li>
@@ -970,7 +1004,7 @@ export default function QuizScreen() {
           <div className="admin-form__header">
             <h2><Plus size={28} /> Add New Daily Quiz Question</h2>
             <p style={{ color: '#666', fontSize: '14px', marginTop: '8px' }}>
-              Questions added here will be available for today's quiz at 8pm ({todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} added so far)
+              Questions added here will be available for today's quiz at {localStorage.getItem('quizReleaseTime') || '16:15'} ({todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} added so far)
             </p>
           </div>
 
