@@ -62,6 +62,46 @@ export default function QuizScreen() {
   
   // Today's date for tracking
   const [today] = useState(new Date().toISOString().split('T')[0]);
+  
+  // Track if we're still initializing
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // ===== LOCALSTORAGE EFFECTS =====
+  // Load questions from localStorage on mount (only once)
+  useEffect(() => {
+    const todayDate = new Date().toISOString().split('T')[0];
+    const storageKey = `quiz_questions_${todayDate}`;
+    console.log('Loading from localStorage key:', storageKey);
+    const savedQuestions = localStorage.getItem(storageKey);
+    console.log('Saved questions from storage:', savedQuestions);
+    if (savedQuestions) {
+      try {
+        const parsed = JSON.parse(savedQuestions);
+        console.log('Parsed questions:', parsed);
+        setTodaysQuestions(parsed);
+      } catch (error) {
+        console.error('Error loading questions from localStorage:', error);
+      }
+    }
+    // Mark that we're done initializing AFTER loading
+    setIsInitialized(true);
+  }, []); // Empty dependency array - runs only on mount
+
+  // Save questions to localStorage whenever they change (but only after initialization)
+  useEffect(() => {
+    // Skip saving during initialization
+    if (!isInitialized) {
+      console.log('Skipping save - still initializing');
+      return;
+    }
+    
+    const storageKey = `quiz_questions_${today}`;
+    const toStore = JSON.stringify(todaysQuestions);
+    console.log('Saving to localStorage key:', storageKey);
+    console.log('Questions to save:', todaysQuestions);
+    console.log('Stringified:', toStore);
+    localStorage.setItem(storageKey, toStore);
+  }, [todaysQuestions, today, isInitialized]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -138,6 +178,12 @@ export default function QuizScreen() {
     // TODO: Send to backend API
     // API Call: POST /api/quizzes/daily/add-question
     // Backend should store question with today's date
+  };
+
+  const handleDeleteQuestion = (questionId) => {
+    if (window.confirm('Are you sure you want to delete this question?')) {
+      setTodaysQuestions(prev => prev.filter(q => q.id !== questionId));
+    }
   };
 
   // ===== QUIZ SESSION HANDLERS =====
@@ -842,10 +888,35 @@ export default function QuizScreen() {
                   marginBottom: '8px',
                   backgroundColor: 'white',
                   borderLeft: '4px solid #4CAF50',
-                  borderRadius: '4px'
+                  borderRadius: '4px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start'
                 }}>
-                  <p><strong>Q{index + 1}:</strong> {q.question}</p>
-                  <small style={{ color: '#666' }}>Correct Answer: {q.correctAnswer}</small>
+                  <div style={{ flex: 1 }}>
+                    <p><strong>Q{index + 1}:</strong> {q.question}</p>
+                    <small style={{ color: '#666' }}>Correct Answer: {q.correctAnswer}</small>
+                  </div>
+                  <button 
+                    type="button"
+                    onClick={() => handleDeleteQuestion(q.id)}
+                    style={{
+                      padding: '6px 12px',
+                      marginLeft: '12px',
+                      backgroundColor: '#ff4444',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '12px',
+                      whiteSpace: 'nowrap',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <X size={14} /> Delete
+                  </button>
                 </div>
               ))}
             </div>
