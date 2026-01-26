@@ -9,5 +9,7 @@ export const API_ENDPOINTS = {
     GET_QUESTIONS: `${API_BASE_URL}/api/quizzes/daily/questions`,
     CHECK_ATTEMPT: `${API_BASE_URL}/api/quizzes/daily/check-attempt`,
     SUBMIT_QUIZ: `${API_BASE_URL}/api/quizzes/daily/submit`,
+    GET_SETTINGS: `${API_BASE_URL}/api/quizzes/settings`,
+    UPDATE_SETTINGS: `${API_BASE_URL}/api/quizzes/settings`,
   }
 };

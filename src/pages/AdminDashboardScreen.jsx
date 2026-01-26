@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import '../assets/styles/admin.css'; 
 import { adminStats } from '../data.js';
+import { API_ENDPOINTS, API_BASE_URL } from '../config/api';
 import {
     History,
     UserRoundCheck,
@@ -21,15 +22,10 @@ const AdminDashboardScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [courseAccess, setCourseAccess] = useState({});
-    const [quizReleaseTime, setQuizReleaseTime] = useState(() => {
-        const stored = localStorage.getItem('quizReleaseTime');
-        return stored || '16:15'; // Default: 4:15 PM (16:15 in 24-hour format)
-    });
-    const [quizReleaseDuration, setQuizReleaseDuration] = useState(() => {
-        const stored = localStorage.getItem('quizReleaseDuration');
-        return stored ? parseInt(stored) : 15; // Default: 15 minutes
-    });
+    const [quizReleaseTime, setQuizReleaseTime] = useState('16:15'); // Default: 4:15 PM
+    const [quizReleaseDuration, setQuizReleaseDuration] = useState(15); // Default: 15 minutes
     const [saveTimeMessage, setSaveTimeMessage] = useState('');
+    const [loadingSettings, setLoadingSettings] = useState(true);
 
     const config = {
         headers: {
@@ -99,6 +95,7 @@ const AdminDashboardScreen = () => {
    useEffect(() => {
     if (user && user.role === 'admin') {
       fetchUsers();
+      fetchQuizSettings();
     }
   }, [user]);
 
@@ -124,11 +121,61 @@ const handleDeleteUser = async (userId) => {
     }
   };
 
-  const handleSaveQuizReleaseTime = () => {
-    localStorage.setItem('quizReleaseTime', quizReleaseTime);
-    localStorage.setItem('quizReleaseDuration', quizReleaseDuration.toString());
-    setSaveTimeMessage('Quiz release time updated successfully!');
-    setTimeout(() => setSaveTimeMessage(''), 3000);
+  const handleSaveQuizReleaseTime = async () => {
+    setLoadingSettings(true);
+    try {
+      const response = await axios.put(
+        API_ENDPOINTS.QUIZ.UPDATE_SETTINGS,
+        {
+          releaseTime: quizReleaseTime,
+          duration: quizReleaseDuration
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      
+      setSaveTimeMessage('Quiz settings updated successfully!');
+      setTimeout(() => setSaveTimeMessage(''), 3000);
+      console.log('Quiz settings saved:', response.data);
+    } catch (err) {
+      console.error('Error saving quiz settings:', err);
+      setError(err.response?.data?.message || 'Failed to save quiz settings.');
+      setSaveTimeMessage('Error saving settings. Try again.');
+      setTimeout(() => setSaveTimeMessage(''), 3000);
+    } finally {
+      setLoadingSettings(false);
+    }
+  };
+
+  // Fetch quiz settings from backend
+  const fetchQuizSettings = async () => {
+    try {
+      const response = await axios.get(
+        API_ENDPOINTS.QUIZ.GET_SETTINGS,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      
+      if (response.data) {
+        setQuizReleaseTime(response.data.releaseTime || '16:15');
+        setQuizReleaseDuration(response.data.duration || 15);
+        console.log('Quiz settings loaded from backend:', response.data);
+      }
+    } catch (err) {
+      console.warn('Could not fetch quiz settings from backend, using defaults:', err.message);
+      // Fall back to defaults if backend endpoint doesn't exist yet
+      setQuizReleaseTime('16:15');
+      setQuizReleaseDuration(15);
+    } finally {
+      setLoadingSettings(false);
+    }
   };
 
   const handleCourseAccessChange = async (userId, courseName, isChecked) => {

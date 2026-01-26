@@ -38,6 +38,13 @@ export default function QuizScreen() {
   // Leaderboard for today
   const [todaysLeaderboard, setTodaysLeaderboard] = useState([]);
   
+  // Quiz Settings from Backend
+  const [quizSettings, setQuizSettings] = useState({
+    releaseTime: '16:15', // Default: 4:15 PM
+    duration: 15 // Default: 15 minutes
+  });
+  const [loadingSettings, setLoadingSettings] = useState(true);
+  
   // Previous quizzes history
   const [quizHistory, setQuizHistory] = useState([]);
   
@@ -70,6 +77,35 @@ export default function QuizScreen() {
   
   // Track if user has already attempted today's quiz (one attempt per day)
   const [hasAttemptedToday, setHasAttemptedToday] = useState(false);
+
+  // Fetch quiz settings from backend
+  useEffect(() => {
+    const fetchQuizSettings = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/quizzes/settings`, {
+          credentials: 'include'
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setQuizSettings({
+            releaseTime: data.releaseTime || '16:15',
+            duration: data.duration || 15
+          });
+          console.log('Quiz settings loaded from backend:', data);
+        } else {
+          console.warn('Could not fetch quiz settings, using defaults');
+        }
+      } catch (err) {
+        console.warn('Error fetching quiz settings:', err.message);
+        // Use defaults if backend is not available yet
+      } finally {
+        setLoadingSettings(false);
+      }
+    };
+
+    fetchQuizSettings();
+  }, []);
 
   // Helper to resolve a real user id (Mongo ObjectId) to send to backend
   const resolveUserId = async () => {
@@ -499,9 +535,9 @@ export default function QuizScreen() {
   // 2. Countdown during quiz session
   useEffect(() => {
     const calculateTimeLeft = () => {
-      // Get quiz release time from localStorage (set by admin)
-      const releaseTimeStr = localStorage.getItem('quizReleaseTime') || '16:15'; // Default: 4:15 PM
-      const durationMinutes = parseInt(localStorage.getItem('quizReleaseDuration') || '15'); // Default: 15 minutes
+      // Get quiz settings from backend/state
+      const releaseTimeStr = quizSettings.releaseTime || '16:15'; // Default: 4:15 PM
+      const durationMinutes = quizSettings.duration || 15; // Default: 15 minutes
       
       // Parse time string (HH:MM format)
       const [releaseHours, releaseMinutes] = releaseTimeStr.split(':').map(Number);
@@ -585,7 +621,7 @@ export default function QuizScreen() {
     calculateTimeLeft();
     const timer = setInterval(calculateTimeLeft, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [quizSettings]);
 
   // Quiz session countdown (2 minutes)
   useEffect(() => {
@@ -893,7 +929,7 @@ export default function QuizScreen() {
           <div className="quiz__instruction">
             <h4><span><BadgeInfo/></span>How it works</h4>
             <ol>
-              <li>The Daily Quiz goes live every day at {localStorage.getItem('quizReleaseTime') || '16:15'} and lasts for {localStorage.getItem('quizReleaseDuration') || '15'} minutes.</li>
+              <li>The Daily Quiz goes live every day at {quizSettings.releaseTime} and lasts for {quizSettings.duration} minutes.</li>
               <li>When the quiz is live, click on the "Start Quiz" button to begin.</li>
               <li>Answer all questions before the timer expires.</li>
               <li>Your score is based on correct answers and submission time.</li>
@@ -1004,7 +1040,7 @@ export default function QuizScreen() {
           <div className="admin-form__header">
             <h2><Plus size={28} /> Add New Daily Quiz Question</h2>
             <p style={{ color: '#666', fontSize: '14px', marginTop: '8px' }}>
-              Questions added here will be available for today's quiz at {localStorage.getItem('quizReleaseTime') || '16:15'} ({todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} added so far)
+              Questions added here will be available for today's quiz at {quizSettings.releaseTime} ({todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} added so far)
             </p>
           </div>
 
