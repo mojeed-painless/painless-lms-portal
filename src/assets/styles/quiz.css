@@ -182,7 +182,7 @@
 .scoring__rule span {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.1rem;
 }
 
 .scoring__rule i {
@@ -915,7 +915,8 @@ h2 span.live-text {
 
   .scoring__rule {
     width: 100%;
-    text-align: center
+    text-align: center;
+    padding-left: 0.5rem
   }
 
   .scoring__rule div {
