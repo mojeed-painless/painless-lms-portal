@@ -170,13 +170,45 @@ export default function QuizScreen() {
     localStorage.setItem(storageKey, JSON.stringify(todaysQuestions));
   }, [todaysQuestions, today, isInitialized]);
 
-  // Load and check if user has already attempted today's quiz
+  // Load and check if user has already attempted today's quiz from backend
   useEffect(() => {
-    const attemptKey = `quiz_attempted_${today}`;
-    const hasAttempted = localStorage.getItem(attemptKey) === 'true';
-    setHasAttemptedToday(hasAttempted);
-    console.log('Quiz attempt status for today:', hasAttempted);
-  }, [today]);
+    const checkAttemptStatus = async () => {
+      // Only check if user is logged in
+      if (!user?.id && !user?._id) {
+        // Not logged in yet, skip
+        setIsInitialized(true);
+        return;
+      }
+
+      try {
+        const userId = user._id || user.id;
+        const response = await fetch(
+          `${API_BASE_URL}/api/quizzes/daily/check-attempt?userId=${userId}&date=${today}`,
+          { credentials: 'include' }
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          setHasAttemptedToday(data.hasAttempted || false);
+          console.log('Quiz attempt status from backend:', data.hasAttempted);
+        } else {
+          // If backend endpoint doesn't exist yet, fall back to localStorage
+          const attemptKey = `quiz_attempted_${today}`;
+          const hasAttempted = localStorage.getItem(attemptKey) === 'true';
+          setHasAttemptedToday(hasAttempted);
+          console.log('Using localStorage for quiz attempt status:', hasAttempted);
+        }
+      } catch (error) {
+        // If backend call fails, try localStorage as fallback
+        console.warn('Failed to check attempt status from backend:', error);
+        const attemptKey = `quiz_attempted_${today}`;
+        const hasAttempted = localStorage.getItem(attemptKey) === 'true';
+        setHasAttemptedToday(hasAttempted);
+      }
+    };
+
+    checkAttemptStatus();
+  }, [user, today]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -411,9 +443,32 @@ export default function QuizScreen() {
     // Simulate leaderboard update (backend should calculate this)
     updateLeaderboard(quizSubmission);
 
-    // Mark that user has completed today's quiz (one attempt per day)
-    const attemptKey = `quiz_attempted_${today}`;
-    localStorage.setItem(attemptKey, 'true');
+    // Mark that user has completed today's quiz (one attempt per day) - on backend
+    try {
+      const submitResponse = await fetch(`${API_BASE_URL}/api/quizzes/daily/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(quizSubmission)
+      });
+      
+      if (submitResponse.ok) {
+        const submitData = await submitResponse.json();
+        console.log('Quiz submitted to backend successfully:', submitData);
+        setBackendMessage(submitData.message || 'Quiz submitted successfully!');
+      } else {
+        console.warn('Backend quiz submission failed, using localStorage fallback');
+        // Fallback: save to localStorage
+        const attemptKey = `quiz_attempted_${today}`;
+        localStorage.setItem(attemptKey, 'true');
+      }
+    } catch (error) {
+      console.error('Error submitting quiz to backend:', error);
+      // Fallback: save to localStorage
+      const attemptKey = `quiz_attempted_${today}`;
+      localStorage.setItem(attemptKey, 'true');
+    }
+    
     setHasAttemptedToday(true);
 
     // End quiz session
@@ -424,13 +479,6 @@ export default function QuizScreen() {
     // Show success message
     setSuccessMessage(`Quiz completed! You scored ${score.correctAnswers}/${score.totalQuestions}. Time taken: ${Math.floor(timeTaken / 60)}m ${timeTaken % 60}s`);
     setTimeout(() => setSuccessMessage(''), 5000);
-
-    // TODO: Send to backend API
-    // API Call: POST /api/quizzes/daily/submit
-    // Backend should:
-    // 1. Save student's answers and score
-    // 2. Calculate ranking at end of 2-minute window
-    // 3. Award points based on ranking
   }, [quizStartTime, calculateScore, updateLeaderboard, quizResponses, user?.id, user?.name, today, resolveUserId]);
 
   const calculatePointsForRank = (rank, correctAnswers) => {
@@ -456,12 +504,12 @@ export default function QuizScreen() {
       const currentMinutes = now.getMinutes();
 
       // Check if it's between 8:30am (08:30) and 8:32am (08:32)
-      const isInLiveWindow = currentHours === 15 && currentMinutes >= 50 && currentMinutes < 52;
+      const isInLiveWindow = currentHours === 16 && currentMinutes >= 15 && currentMinutes < 30;
       
       if (isInLiveWindow) {
         setIsLiveQuiz(true);
         const quizEndTime = new Date(now);
-        quizEndTime.setHours(15, 52, 0, 0); // 8:32 AM
+        quizEndTime.setHours(16, 30, 0, 0); // 8:32 AM
         
         const difference = quizEndTime - now;
         
@@ -479,7 +527,7 @@ export default function QuizScreen() {
       } else {
         setIsLiveQuiz(false);
         const targetTime = new Date(now);
-        targetTime.setHours(15, 50, 0, 0); // 8am (08:00)
+        targetTime.setHours(16, 15, 0, 0); // 8am (08:00)
 
         // If it's already past 8am, set target to tomorrow's 8am
         if (now > targetTime) {

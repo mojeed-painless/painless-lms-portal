@@ -107,6 +107,15 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('userInfo');
+    
+    // Clear quiz-related localStorage to prevent cross-user contamination
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+      if (key.startsWith('quiz_')) {
+        localStorage.removeItem(key);
+      }
+    });
+    
     setUser(null);
     // You might also want to redirect the user here
   };
