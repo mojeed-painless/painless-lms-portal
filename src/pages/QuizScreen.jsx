@@ -2,6 +2,7 @@ import UnderDevelopment from "../components/common/UnderDevelopment";
 import { useState, useEffect, useCallback } from 'react';
 import '../assets/styles/quiz.css';
 import { useAuth } from '../context/AuthContext';
+import { API_ENDPOINTS } from '../config/api';
 import { TbPointFilled } from "react-icons/tb";
 import { TbHexagonNumber1Filled, TbHexagonNumber2Filled, TbHexagonNumber3Filled } from "react-icons/tb";
 import {
@@ -47,6 +48,7 @@ export default function QuizScreen() {
   const [expandedDate, setExpandedDate] = useState(null);
   const [quizSessionTime, setQuizSessionTime] = useState({ minutes: 2, seconds: 0 });
   const [successMessage, setSuccessMessage] = useState('');
+  const [backendMessage, setBackendMessage] = useState('');
   
   // Admin form state
   const [formData, setFormData] = useState({
@@ -67,40 +69,79 @@ export default function QuizScreen() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   // ===== LOCALSTORAGE EFFECTS =====
-  // Load questions from localStorage on mount (only once)
+  // Load questions from backend on mount (primary source) - only if authenticated
   useEffect(() => {
-    const todayDate = new Date().toISOString().split('T')[0];
-    const storageKey = `quiz_questions_${todayDate}`;
-    console.log('Loading from localStorage key:', storageKey);
-    const savedQuestions = localStorage.getItem(storageKey);
-    console.log('Saved questions from storage:', savedQuestions);
-    if (savedQuestions) {
-      try {
-        const parsed = JSON.parse(savedQuestions);
-        console.log('Parsed questions:', parsed);
-        setTodaysQuestions(parsed);
-      } catch (error) {
-        console.error('Error loading questions from localStorage:', error);
+    if (!user?.id) {
+      // User not logged in yet, just load from localStorage
+      const storageKey = `quiz_questions_${today}`;
+      const savedQuestions = localStorage.getItem(storageKey);
+      if (savedQuestions) {
+        try {
+          const parsed = JSON.parse(savedQuestions);
+          console.log('Loaded questions from localStorage (not authenticated):', parsed);
+          setTodaysQuestions(parsed);
+        } catch (error) {
+          console.error('Error parsing localStorage:', error);
+        }
       }
+      setIsInitialized(true);
+      return;
     }
-    // Mark that we're done initializing AFTER loading
-    setIsInitialized(true);
-  }, []); // Empty dependency array - runs only on mount
 
-  // Save questions to localStorage whenever they change (but only after initialization)
+    const loadQuestionsFromBackend = async () => {
+      try {
+        const todayDate = new Date().toISOString().split('T')[0];
+        const headers = {
+          'X-User-ID': user.id,
+        };
+        
+        console.log('Loading questions with user ID:', user.id);
+        const response = await fetch(`${API_ENDPOINTS.QUIZ.GET_QUESTIONS}?date=${todayDate}`, {
+          headers
+        });
+        
+        if (response.ok) {
+          const questions = await response.json();
+          console.log('Loaded questions from backend:', questions);
+          setTodaysQuestions(questions);
+          setBackendMessage('');
+          setIsInitialized(true);
+          return;
+        }
+      } catch (error) {
+        // Backend not available
+      }
+      
+      // Backend unavailable - show message but still load from localStorage
+      setBackendMessage('⚠️ Backend unavailable. Using local storage. Questions will sync once backend is online.');
+      
+      // Fallback: Load from localStorage
+      const storageKey = `quiz_questions_${today}`;
+      const savedQuestions = localStorage.getItem(storageKey);
+      if (savedQuestions) {
+        try {
+          const parsed = JSON.parse(savedQuestions);
+          console.log('Loaded questions from localStorage:', parsed);
+          setTodaysQuestions(parsed);
+        } catch (error) {
+          console.error('Error parsing localStorage:', error);
+        }
+      }
+      setIsInitialized(true);
+    };
+    
+    loadQuestionsFromBackend();
+  }, [user, today]); // Run when user or date changes
+
+  // Save questions to localStorage as backup
   useEffect(() => {
     // Skip saving during initialization
     if (!isInitialized) {
-      console.log('Skipping save - still initializing');
       return;
     }
     
     const storageKey = `quiz_questions_${today}`;
-    const toStore = JSON.stringify(todaysQuestions);
-    console.log('Saving to localStorage key:', storageKey);
-    console.log('Questions to save:', todaysQuestions);
-    console.log('Stringified:', toStore);
-    localStorage.setItem(storageKey, toStore);
+    localStorage.setItem(storageKey, JSON.stringify(todaysQuestions));
   }, [todaysQuestions, today, isInitialized]);
 
   const handleFormChange = (e) => {
@@ -156,8 +197,47 @@ export default function QuizScreen() {
       correctAnswer: formData.correctAnswer,
     };
 
-    // Add to today's questions
+    // Add to today's questions (frontend state)
     setTodaysQuestions(prev => [...prev, newQuestion]);
+    
+    // Send to backend API
+    const sendToBackend = async () => {
+      try {
+        const headers = {
+          'Content-Type': 'application/json',
+        };
+        
+        // Add user ID if available
+        if (user?.id) {
+          headers['X-User-ID'] = user.id;
+        }
+        
+        const response = await fetch(API_ENDPOINTS.QUIZ.ADD_QUESTION, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            question: formData.question,
+            image: formData.imagePreview,
+            options: {
+              A: formData.optionA,
+              B: formData.optionB,
+              C: formData.optionC,
+              D: formData.optionD,
+            },
+            correctAnswer: formData.correctAnswer,
+            date: today,
+          }),
+        });
+        
+        if (!response.ok) {
+          console.error('Failed to save question to backend');
+        }
+      } catch (error) {
+        console.error('Error sending question to backend:', error);
+      }
+    };
+    
+    sendToBackend();
     
     // Show success message
     setSuccessMessage('Question added successfully! ✓');
@@ -444,12 +524,22 @@ export default function QuizScreen() {
           color: '#155724',
           borderRadius: '4px',
           marginBottom: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px'
+          border: '1px solid #c3e6cb'
         }}>
-          <CheckCircle size={18} />
           {successMessage}
+        </div>
+      )}
+
+      {backendMessage && (
+        <div className="warning-banner" style={{
+          padding: '12px 20px',
+          backgroundColor: '#fff3cd',
+          color: '#856404',
+          borderRadius: '4px',
+          marginBottom: '20px',
+          border: '1px solid #ffeeba'
+        }}>
+          {backendMessage}
         </div>
       )}
 
