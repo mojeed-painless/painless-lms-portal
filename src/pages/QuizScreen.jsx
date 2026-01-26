@@ -77,23 +77,9 @@ export default function QuizScreen() {
   
   // Track if user has already attempted today's quiz (one attempt per day)
   const [hasAttemptedToday, setHasAttemptedToday] = useState(false);
-
-  // Fetch quiz settings from backend or localStorage
+  // Fetch quiz settings from backend (primary source for cross-device sync)
   useEffect(() => {
     const loadQuizSettings = async () => {
-      // First try to load from localStorage (real-time)
-      const localReleaseTime = localStorage.getItem('quizReleaseTime');
-      const localDuration = localStorage.getItem('quizReleaseDuration');
-      
-      if (localReleaseTime && localDuration) {
-        setQuizSettings({
-          releaseTime: localReleaseTime,
-          duration: parseInt(localDuration)
-        });
-        console.log('Quiz settings loaded from localStorage');
-      }
-      
-      // Then try to fetch from backend as backup
       try {
         const response = await fetch(`${API_BASE_URL}/api/quizzes/settings`, {
           credentials: 'include'
@@ -105,18 +91,43 @@ export default function QuizScreen() {
             releaseTime: data.releaseTime || '16:15',
             duration: data.duration || 15
           });
+          // Also save to localStorage for offline support
+          localStorage.setItem('quizReleaseTime', data.releaseTime || '16:15');
+          localStorage.setItem('quizReleaseDuration', (data.duration || 15).toString());
           console.log('Quiz settings loaded from backend:', data);
+        } else {
+          // Fallback to localStorage if backend fails
+          const localReleaseTime = localStorage.getItem('quizReleaseTime') || '16:15';
+          const localDuration = localStorage.getItem('quizReleaseDuration') || '15';
+          setQuizSettings({
+            releaseTime: localReleaseTime,
+            duration: parseInt(localDuration)
+          });
+          console.log('Backend unavailable, using localStorage:', { localReleaseTime, localDuration });
         }
       } catch (err) {
-        console.warn('Could not fetch quiz settings from backend:', err.message);
+        console.warn('Could not fetch quiz settings from backend, using localStorage:', err.message);
+        // Fallback to localStorage if backend is unreachable
+        const localReleaseTime = localStorage.getItem('quizReleaseTime') || '16:15';
+        const localDuration = localStorage.getItem('quizReleaseDuration') || '15';
+        setQuizSettings({
+          releaseTime: localReleaseTime,
+          duration: parseInt(localDuration)
+        });
       } finally {
         setLoadingSettings(false);
       }
     };
 
+    // Load settings on mount
     loadQuizSettings();
 
-    // Listen for storage changes (from admin dashboard in other tab)
+    // Poll backend every 30 seconds to sync across devices
+    const pollInterval = setInterval(() => {
+      loadQuizSettings();
+    }, 30000);
+
+    // Listen for storage changes (from admin dashboard in same tab)
     const handleStorageChange = () => {
       const updatedReleaseTime = localStorage.getItem('quizReleaseTime');
       const updatedDuration = localStorage.getItem('quizReleaseDuration');
@@ -131,7 +142,10 @@ export default function QuizScreen() {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(pollInterval);
+    };
   }, []);
 
   // Helper to resolve a real user id (Mongo ObjectId) to send to backend
