@@ -405,7 +405,7 @@ const handleDeleteUser = async (userId) => {
             </thead>
             <tbody>
               {allUsers.map(userItem => (
-                <tr key={userItem.id}>
+                <tr key={userItem._id}>
                   <td>
                     <div className="table-user">
                       <div className="user-avatar small">MS</div>

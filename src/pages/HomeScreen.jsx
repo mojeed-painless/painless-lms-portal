@@ -77,8 +77,8 @@ const HomeScreen = () => {
 
       
       <section className="home__stats-bar">
-        {homeStats.map(({figure, label}) => (
-          <div className="home__stat-item">
+        {homeStats.map(({figure, label}, index) => (
+          <div key={`stat-${index}-${figure}`} className="home__stat-item">
             <h3>{figure}</h3>
             <p>{label}</p>
           </div>
