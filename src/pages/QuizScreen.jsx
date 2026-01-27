@@ -38,12 +38,13 @@ export default function QuizScreen() {
   // Leaderboard for today
   const [todaysLeaderboard, setTodaysLeaderboard] = useState([]);
   
-  // Quiz Settings from Backend
-  const [quizSettings, setQuizSettings] = useState({
-    releaseTime: '16:15', // Default: 4:15 PM
-    duration: 15 // Default: 15 minutes
+  // Quiz Window Status from Backend (contains timeToStart and timeRemaining)
+  const [windowStatus, setWindowStatus] = useState({
+    windowStart: null,
+    windowEnd: null,
+    timeToStart: 0,
+    timeRemaining: 0
   });
-  const [loadingSettings, setLoadingSettings] = useState(true);
   
   // Previous quizzes history
   const [quizHistory, setQuizHistory] = useState([]);
@@ -77,75 +78,38 @@ export default function QuizScreen() {
   
   // Track if user has already attempted today's quiz (one attempt per day)
   const [hasAttemptedToday, setHasAttemptedToday] = useState(false);
-  // Fetch quiz settings from backend (primary source for cross-device sync)
+  // Fetch quiz window status from backend (handles all countdown calculations server-side)
   useEffect(() => {
-    const loadQuizSettings = async () => {
+    const fetchWindowStatus = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/quizzes/settings`, {
+        const response = await fetch(`${API_BASE_URL}/api/quizzes/daily/window-status`, {
           credentials: 'include'
         });
         
         if (response.ok) {
           const data = await response.json();
-          setQuizSettings({
-            releaseTime: data.releaseTime || '16:15',
-            duration: data.duration || 15
+          setWindowStatus({
+            windowStart: data.windowStart,
+            windowEnd: data.windowEnd,
+            timeToStart: data.timeToStart || 0,
+            timeRemaining: data.timeRemaining || 0
           });
-          // Also save to localStorage for offline support
-          localStorage.setItem('quizReleaseTime', data.releaseTime || '16:15');
-          localStorage.setItem('quizReleaseDuration', (data.duration || 15).toString());
-          console.log('Quiz settings loaded from backend:', data);
-        } else {
-          // Fallback to localStorage if backend fails
-          const localReleaseTime = localStorage.getItem('quizReleaseTime') || '16:15';
-          const localDuration = localStorage.getItem('quizReleaseDuration') || '15';
-          setQuizSettings({
-            releaseTime: localReleaseTime,
-            duration: parseInt(localDuration)
-          });
-          console.log('Backend unavailable, using localStorage:', { localReleaseTime, localDuration });
+          setIsLiveQuiz(data.timeToStart <= 0 && data.timeRemaining > 0);
+          console.log('Window status loaded from backend:', data);
         }
       } catch (err) {
-        console.warn('Could not fetch quiz settings from backend, using localStorage:', err.message);
-        // Fallback to localStorage if backend is unreachable
-        const localReleaseTime = localStorage.getItem('quizReleaseTime') || '16:15';
-        const localDuration = localStorage.getItem('quizReleaseDuration') || '15';
-        setQuizSettings({
-          releaseTime: localReleaseTime,
-          duration: parseInt(localDuration)
-        });
-      } finally {
-        setLoadingSettings(false);
+        console.warn('Could not fetch window status from backend:', err.message);
       }
     };
 
-    // Load settings on mount
-    loadQuizSettings();
+    // Load window status on mount
+    fetchWindowStatus();
 
-    // Poll backend every 30 seconds to sync across devices
-    const pollInterval = setInterval(() => {
-      loadQuizSettings();
-    }, 30000);
+    // Refresh window status every 5 minutes to sync across devices
+    // (Local countdown handles updates every second)
+    const pollInterval = setInterval(fetchWindowStatus, 5 * 60 * 1000);
 
-    // Listen for storage changes (from admin dashboard in same tab)
-    const handleStorageChange = () => {
-      const updatedReleaseTime = localStorage.getItem('quizReleaseTime');
-      const updatedDuration = localStorage.getItem('quizReleaseDuration');
-      
-      if (updatedReleaseTime && updatedDuration) {
-        setQuizSettings({
-          releaseTime: updatedReleaseTime,
-          duration: parseInt(updatedDuration)
-        });
-        console.log('Quiz settings updated from storage event');
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      clearInterval(pollInterval);
-    };
+    return () => clearInterval(pollInterval);
   }, []);
 
   // Helper to resolve a real user id (Mongo ObjectId) to send to backend
@@ -571,98 +535,80 @@ export default function QuizScreen() {
     setExpandedDate(expandedDate === dateIndex ? null : dateIndex);
   };
 
-  // ===== COUNTDOWN TIMERS =====
-  // 1. Countdown to configurable quiz release time
-  // 2. Countdown during quiz session
+  // ===== COUNTDOWN TIMER =====
+  // Decrement countdown every second based on backend-calculated times
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      // Get quiz settings from backend/state
-      const releaseTimeStr = quizSettings.releaseTime || '16:15'; // Default: 4:15 PM
-      const durationMinutes = quizSettings.duration || 15; // Default: 15 minutes
-      
-      // Parse time string (HH:MM format)
-      const [releaseHours, releaseMinutes] = releaseTimeStr.split(':').map(Number);
-      
-      const now = new Date();
-      const currentHours = now.getHours();
-      const currentMinutes = now.getMinutes();
+    // Only start countdown if we have valid initial values from backend
+    if (windowStatus.timeToStart === undefined || windowStatus.timeRemaining === undefined) {
+      return;
+    }
 
-      // Calculate quiz end time (release time + duration)
-      const quizStartHours = releaseHours;
-      const quizStartMinutes = releaseMinutes;
-      let quizEndHours = releaseHours;
-      let quizEndMinutes = releaseMinutes + durationMinutes;
-      
-      // Handle minutes overflow
-      if (quizEndMinutes >= 60) {
-        quizEndHours += Math.floor(quizEndMinutes / 60);
-        quizEndMinutes = quizEndMinutes % 60;
-      }
-      // Handle hours overflow
-      if (quizEndHours >= 24) {
-        quizEndHours = quizEndHours % 24;
-      }
-
-      // Check if current time is within quiz window
-      const currentTimeInMinutes = currentHours * 60 + currentMinutes;
-      const quizStartInMinutes = quizStartHours * 60 + quizStartMinutes;
-      const quizEndInMinutes = quizEndHours * 60 + quizEndMinutes;
-      
-      const isInLiveWindow = quizEndInMinutes > quizStartInMinutes 
-        ? (currentTimeInMinutes >= quizStartInMinutes && currentTimeInMinutes < quizEndInMinutes)
-        : (currentTimeInMinutes >= quizStartInMinutes || currentTimeInMinutes < quizEndInMinutes);
-      
-      if (isInLiveWindow) {
-        setIsLiveQuiz(true);
-        const quizEndTime = new Date(now);
-        quizEndTime.setHours(quizEndHours, quizEndMinutes, 0, 0);
+    const countdown = setInterval(() => {
+      setWindowStatus(prev => {
+        let newTimeToStart = prev.timeToStart - 1;
+        let newTimeRemaining = prev.timeRemaining - 1;
         
-        // If end time has already passed today, it means it wrapped to tomorrow
-        if (quizEndTime < now && quizEndInMinutes < quizStartInMinutes) {
-          quizEndTime.setDate(quizEndTime.getDate() + 1);
+        // If quiz should have started, refresh from backend
+        if (newTimeToStart <= 0 && prev.timeToStart > 0) {
+          console.log('Quiz window started, refreshing status from backend');
+          fetch(`${API_BASE_URL}/api/quizzes/daily/window-status`, {
+            credentials: 'include'
+          })
+          .then(res => res.ok && res.json())
+          .then(data => {
+            setWindowStatus({
+              windowStart: data.windowStart,
+              windowEnd: data.windowEnd,
+              timeToStart: data.timeToStart || 0,
+              timeRemaining: data.timeRemaining || 0
+            });
+            setIsLiveQuiz(data.timeToStart <= 0 && data.timeRemaining > 0);
+          })
+          .catch(err => console.warn('Failed to refresh window status:', err.message));
         }
         
-        const difference = quizEndTime - now;
-        
-        if (difference > 0) {
-          setTimeLeft({
-            hours: 0,
-            minutes: Math.floor((difference / (1000 * 60)) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-          });
-        } else {
-          // Quiz time ended
-          setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-          setIsLiveQuiz(false);
-        }
-      } else {
-        setIsLiveQuiz(false);
-        const targetTime = new Date(now);
-        targetTime.setHours(releaseHours, releaseMinutes, 0, 0);
-
-        // If it's already past the release time, set target to tomorrow's release time
-        if (now > targetTime) {
-          targetTime.setDate(targetTime.getDate() + 1);
+        // If quiz should have ended, refresh from backend to get next quiz window
+        if (newTimeRemaining <= 0 && prev.timeRemaining > 0) {
+          console.log('Quiz window ended, refreshing for next quiz window');
+          fetch(`${API_BASE_URL}/api/quizzes/daily/window-status`, {
+            credentials: 'include'
+          })
+          .then(res => res.ok && res.json())
+          .then(data => {
+            setWindowStatus({
+              windowStart: data.windowStart,
+              windowEnd: data.windowEnd,
+              timeToStart: data.timeToStart || 0,
+              timeRemaining: data.timeRemaining || 0
+            });
+            setIsLiveQuiz(data.timeToStart <= 0 && data.timeRemaining > 0);
+          })
+          .catch(err => console.warn('Failed to refresh window status:', err.message));
         }
 
-        const difference = targetTime - now;
+        // Convert seconds to display format
+        let displaySeconds = newTimeToStart > 0 ? newTimeToStart : newTimeRemaining;
+        if (displaySeconds < 0) displaySeconds = 0;
 
-        if (difference > 0) {
-          setTimeLeft({
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / (1000 * 60)) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-          });
-        } else {
-          setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-        }
-      }
-    };
+        setTimeLeft({
+          hours: Math.floor(displaySeconds / 3600),
+          minutes: Math.floor((displaySeconds % 3600) / 60),
+          seconds: displaySeconds % 60,
+        });
 
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
-    return () => clearInterval(timer);
-  }, [quizSettings]);
+        // Update quiz status
+        setIsLiveQuiz(newTimeToStart <= 0 && newTimeRemaining > 0);
+
+        return {
+          ...prev,
+          timeToStart: newTimeToStart,
+          timeRemaining: newTimeRemaining
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(countdown);
+  }, []);
 
   // Quiz session countdown (2 minutes)
   useEffect(() => {
@@ -700,6 +646,15 @@ export default function QuizScreen() {
   }, [isLiveQuiz, handleFinishQuiz, quizStarted]);
 
   const formatTime = (num) => String(num).padStart(2, '0');
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="quiz__container">
@@ -970,7 +925,7 @@ export default function QuizScreen() {
           <div className="quiz__instruction">
             <h4><span><BadgeInfo/></span>How it works</h4>
             <ol>
-              <li>The Daily Quiz goes live every day at {quizSettings.releaseTime} and lasts for {quizSettings.duration} minutes.</li>
+              <li>The Daily Quiz window is set by administrators. Check the countdown timer below for timing.</li>
               <li>When the quiz is live, click on the "Start Quiz" button to begin.</li>
               <li>Answer all questions before the timer expires.</li>
               <li>Your score is based on correct answers and submission time.</li>
@@ -1081,7 +1036,7 @@ export default function QuizScreen() {
           <div className="admin-form__header">
             <h2><Plus size={28} /> Add New Daily Quiz Question</h2>
             <p style={{ color: '#666', fontSize: '14px', marginTop: '8px' }}>
-              Questions added here will be available for today's quiz at {quizSettings.releaseTime} ({todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} added so far)
+              Questions added here will be available for today's quiz window ({todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} added so far)
             </p>
           </div>
 

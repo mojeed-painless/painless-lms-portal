@@ -11,5 +11,6 @@ export const API_ENDPOINTS = {
     SUBMIT_QUIZ: `${API_BASE_URL}/api/quizzes/daily/submit`,
     GET_SETTINGS: `${API_BASE_URL}/api/quizzes/settings`,
     UPDATE_SETTINGS: `${API_BASE_URL}/api/quizzes/settings`,
+    WINDOW_STATUS: `${API_BASE_URL}/api/quizzes/daily/window-status`,
   }
 };
