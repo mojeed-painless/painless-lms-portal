@@ -1,5 +1,5 @@
-import UnderDevelopment from "../components/common/UnderDevelopment";
-import { useState, useEffect, useCallback } from 'react';
+import TopicQuiz from '../components/common/TopicQuiz';
+import { useState, useEffect, useRef } from 'react';
 import '../assets/styles/quiz.css';
 import { useAuth } from '../context/AuthContext';
 import { API_ENDPOINTS, API_BASE_URL } from '../config/api';
@@ -23,754 +23,129 @@ import {
 
 
 export default function QuizScreen() {
+  
   const { user } = useAuth();
-  
-  // ===== QUIZ STATES =====
-  // Daily quiz questions for today
-  const [todaysQuestions, setTodaysQuestions] = useState([]);
-  
-  // Quiz session states
-  const [quizStarted, setQuizStarted] = useState(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [quizResponses, setQuizResponses] = useState({});
-  const [quizStartTime, setQuizStartTime] = useState(null);
-  
-  // Leaderboard for today
-  const [todaysLeaderboard, setTodaysLeaderboard] = useState([]);
-  
-  // Quiz Window Status from Backend (contains timeToStart and timeRemaining)
-  const [windowStatus, setWindowStatus] = useState({
-    windowStart: null,
-    windowEnd: null,
-    timeToStart: 0,
-    timeRemaining: 0
-  });
-  
-  // Previous quizzes history
-  const [quizHistory, setQuizHistory] = useState([]);
-  
-  // UI States
   const [isActive, setIsActive] = useState('daily quiz');
+  
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [isCorrect] = useState(true);
   const [timeLeft, setTimeLeft] = useState({ 
     beforeQuiz: { hours: 0, minutes: 0, seconds: 0 },
     duringQuiz: { minutes: 0, seconds: 0 }
   });
-  const [isLiveQuiz, setIsLiveQuiz] = useState(false);
-  const [expandedDate, setExpandedDate] = useState(null);
-  const [quizSessionTime, setQuizSessionTime] = useState({ minutes: 2, seconds: 0 });
-  const [successMessage, setSuccessMessage] = useState('');
-  const [backendMessage, setBackendMessage] = useState('');
-  
-  // Admin form state
-  const [formData, setFormData] = useState({
-    question: '',
-    image: null,
-    imagePreview: null,
-    optionA: '',
-    optionB: '',
-    optionC: '',
-    optionD: '',
-    correctAnswer: 'A',
-  });
-  
-  // Today's date for tracking
-  const [today] = useState(new Date().toISOString().split('T')[0]);
-  
-  // Track if we're still initializing
-  const [isInitialized, setIsInitialized] = useState(false);
-  
-  // Track if user has already attempted today's quiz (one attempt per day)
-  const [hasAttemptedToday, setHasAttemptedToday] = useState(false);
-  // Fetch quiz window status from backend (handles all countdown calculations server-side)
+  const timerCompletedRef = useRef(false);
+  const restTimerRef = useRef(null); // Track when rest period started
+  const targetDateRef = useRef(null); // Persistent next-target date
+
+  // ===== COUNTDOWN TIMER TO 8:30 PM =====
   useEffect(() => {
-    const fetchWindowStatus = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/quizzes/daily/window-status`, {
-          credentials: 'include'
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          // Backend returns: before__quiz.secondsUntilStart and during__quiz.secondsRemaining
-          setWindowStatus({
-            windowStart: data.windowStart,
-            windowEnd: data.windowEnd,
-            timeToStart: data.before__quiz.secondsUntilStart || 0,
-            timeRemaining: data.during__quiz.secondsRemaining || 0
-          });
-          // CRITICAL: Only show during__quiz if:
-          // 1. Backend confirms window is active (isQuizWindow: true)
-          // 2. There's actual time remaining (secondsRemaining > 0)
-          // 3. The countdown has naturally reached this point (timeToStart is 0) OR we're refreshing during active quiz
-          // This prevents showing during__quiz when admin changes time but actual time hasn't arrived yet
-          const timeToStartValue = data.before__quiz.secondsUntilStart || 0;
-          const shouldShowDuringQuiz = data.isQuizWindow && (data.during__quiz.secondsRemaining || 0) > 0 && timeToStartValue === 0;
-          setIsLiveQuiz(shouldShowDuringQuiz);
-          console.log('Window status loaded from backend:', data);
-          console.log('🔍 Validated quiz window display:', { isQuizWindow: data.isQuizWindow, timeRemaining: data.during__quiz.secondsRemaining, timeToStart: timeToStartValue, willShow: shouldShowDuringQuiz });
-        }
-      } catch (err) {
-        console.warn('Could not fetch window status from backend:', err.message);
-      }
-    };
-
-    // Load window status on mount
-    fetchWindowStatus();
-
-    // Refresh window status every 5 minutes to sync across devices
-    // (Local countdown handles updates every second)
-    const pollInterval = setInterval(fetchWindowStatus, 5 * 60 * 1000);
-
-    return () => clearInterval(pollInterval);
-  }, []);
-
-  // Fetch daily leaderboard (Top 3) from backend
-  const fetchLeaderboard = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/quizzes/daily/leaderboard`, {
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('📊 Leaderboard fetched from backend:', data);
-        setTodaysLeaderboard(data || []);
-      } else {
-        console.warn('Failed to fetch leaderboard from backend');
-      }
-    } catch (err) {
-      console.warn('Could not fetch leaderboard from backend:', err.message);
-    }
-  };
-
-  // Load leaderboard on mount and every 5 minutes
-  useEffect(() => {
-    // Load initial leaderboard
-    fetchLeaderboard();
-
-    // Refresh leaderboard every 5 minutes to sync across devices
-    const pollInterval = setInterval(fetchLeaderboard, 5 * 60 * 1000);
-
-    return () => clearInterval(pollInterval);
-  }, []);
-
-  // Helper to resolve a real user id (Mongo ObjectId) to send to backend
-  const resolveUserId = async () => {
-    if (user?._id || user?.id) return user._id || user.id;
-    // Try to fetch authoritative profile from backend
-    try {
-      const resp = await fetch(`${API_BASE_URL}/api/users/me`, { credentials: 'include' });
-      if (resp.ok) {
-        const data = await resp.json();
-        return data._id || data.id || null;
-      }
-    } catch (err) {
-      // ignore
-    }
-    return null;
-  };
-
-  // ===== LOCALSTORAGE EFFECTS =====
-  // Load questions from backend on mount (primary source) - only if authenticated
-  useEffect(() => {
-
-    if (!user?.id && !user?._id) {
-      // User not logged in yet, just load from localStorage
-      const storageKey = `quiz_questions_${today}`;
-      const savedQuestions = localStorage.getItem(storageKey);
-      if (savedQuestions) {
-        try {
-          const parsed = JSON.parse(savedQuestions);
-          console.log('Loaded questions from localStorage (not authenticated):', parsed);
-          setTodaysQuestions(parsed);
-        } catch (error) {
-          console.error('Error parsing localStorage:', error);
-        }
-      }
-      setIsInitialized(true);
-      return;
+    // initialize persistent target date to next occurrence of target hour
+    if (!targetDateRef.current) {
+      const nowInit = new Date();
+      const t = new Date(nowInit);
+      t.setHours(17, 31, 0, 0); // target hour: 16:32 local
+      if (t <= nowInit) t.setDate(t.getDate() + 1);
+      targetDateRef.current = t;
     }
 
-    const loadQuestionsFromBackend = async () => {
-      try {
-        const todayDate = new Date().toISOString().split('T')[0];
-        // resolve best available user id
-        const resolvedId = await resolveUserId();
-        const headers = {};
-        if (resolvedId) {
-          headers['X-User-ID'] = resolvedId;
-          console.log('Loading questions with user ID:', resolvedId);
-        } else {
-          console.log('No resolved user id; attempting unauthenticated fetch');
-        }
+    const updateCountdown = () => {
+      const now = new Date();
+      const target = new Date(targetDateRef.current);
 
-        const response = await fetch(`${API_ENDPOINTS.QUIZ.GET_QUESTIONS}?date=${todayDate}`, {
-          headers,
-          credentials: 'include'
-        });
-
-        if (response.ok) {
-          const questions = await response.json();
-          console.log('Loaded questions from backend:', questions);
-          setTodaysQuestions(questions);
-          setBackendMessage('');
-          setIsInitialized(true);
+      // If we're currently in the rest period, show zeros until rest ends
+      if (restTimerRef.current) {
+        const restElapsed = now - restTimerRef.current;
+        const restRemaining = 120000 - restElapsed; // 2 minutes
+        if (restRemaining > 0) {
+          setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 0, seconds: 0 } });
           return;
         }
-      } catch (error) {
-        // Backend not available
+        // rest over: clear it and proceed (targetDateRef already points to next day)
+        restTimerRef.current = null;
       }
-      
-      // Backend unavailable or unauthenticated - show message but still load from localStorage
-      setBackendMessage('⚠️ Backend unavailable or unauthenticated. Using local storage. Questions will sync once backend is online or you log in.');
-      
-      // Fallback: Load from localStorage
-      const storageKey = `quiz_questions_${today}`;
-      const savedQuestions = localStorage.getItem(storageKey);
-      if (savedQuestions) {
-        try {
-          const parsed = JSON.parse(savedQuestions);
-          console.log('Loaded questions from localStorage:', parsed);
-          setTodaysQuestions(parsed);
-        } catch (error) {
-          console.error('Error parsing localStorage:', error);
+
+      const diffMs = target - now;
+
+      // If we've reached the target, start live quiz (if eligible)
+      if (diffMs <= 0) {
+        if (!quizStarted && !timerCompletedRef.current && !restTimerRef.current) {
+          setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 2, seconds: 0 } });
+          setQuizStarted(true);
+        } else {
+          // show zeros until rest or next actions
+          setTimeLeft({ beforeQuiz: { hours: 0, minutes: 0, seconds: 0 }, duringQuiz: { minutes: 0, seconds: 0 } });
         }
-      }
-      setIsInitialized(true);
-    };
-    
-    loadQuestionsFromBackend();
-  }, [user, today]); // Run when user or date changes
-
-  // Save questions to localStorage as backup
-  useEffect(() => {
-    // Skip saving during initialization
-    if (!isInitialized) {
-      return;
-    }
-    
-    const storageKey = `quiz_questions_${today}`;
-    localStorage.setItem(storageKey, JSON.stringify(todaysQuestions));
-  }, [todaysQuestions, today, isInitialized]);
-
-  // Load and check if user has already attempted today's quiz from backend
-  useEffect(() => {
-    const checkAttemptStatus = async () => {
-      // Only check if user is logged in
-      if (!user?.id && !user?._id) {
-        // Not logged in yet, skip
-        setIsInitialized(true);
         return;
       }
 
-      try {
-        const userId = user._id || user.id;
-        const response = await fetch(
-          `${API_BASE_URL}/api/quizzes/daily/check-attempt?userId=${userId}&date=${today}`,
-          { credentials: 'include' }
-        );
-        
-        if (response.ok) {
-          const data = await response.json();
-          setHasAttemptedToday(data.hasAttempted || false);
-          console.log('Quiz attempt status from backend:', data.hasAttempted);
-        } else {
-          // If backend endpoint doesn't exist yet, fall back to localStorage
-          const attemptKey = `quiz_attempted_${today}`;
-          const hasAttempted = localStorage.getItem(attemptKey) === 'true';
-          setHasAttemptedToday(hasAttempted);
-          console.log('Using localStorage for quiz attempt status:', hasAttempted);
-        }
-      } catch (error) {
-        // If backend call fails, try localStorage as fallback
-        console.warn('Failed to check attempt status from backend:', error);
-        const attemptKey = `quiz_attempted_${today}`;
-        const hasAttempted = localStorage.getItem(attemptKey) === 'true';
-        setHasAttemptedToday(hasAttempted);
+      // If a new countdown cycle begins, reset the one-time timer flag
+      if (diffMs > 0 && timerCompletedRef.current) {
+        timerCompletedRef.current = false;
       }
+
+      const secondsRemaining = Math.max(0, Math.round(diffMs / 1000));
+      const hours = Math.floor(secondsRemaining / 3600);
+      const minutes = Math.floor((secondsRemaining % 3600) / 60);
+      const seconds = secondsRemaining % 60;
+
+      setTimeLeft({ beforeQuiz: { hours, minutes, seconds }, duringQuiz: { minutes: 0, seconds: 0 } });
     };
 
-    checkAttemptStatus();
-  }, [user, today]);
-
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData(prev => ({
-        ...prev,
-        image: file
-      }));
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData(prev => ({
-          ...prev,
-          imagePreview: reader.result
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // ===== QUIZ SUBMISSION HANDLERS =====
-  const handleSubmitQuestion = (e) => {
-    e.preventDefault();
-    
-    // Validate form
-    if (!formData.question || !formData.optionA || !formData.optionB || !formData.optionC || !formData.optionD) {
-      alert('Please fill in all required fields');
-      return;
-    }
-
-    // Create question object
-    const newQuestion = {
-      id: Date.now(),
-      date: today,
-      question: formData.question,
-      image: formData.imagePreview,
-      options: {
-        A: formData.optionA,
-        B: formData.optionB,
-        C: formData.optionC,
-        D: formData.optionD,
-      },
-      correctAnswer: formData.correctAnswer,
-    };
-
-    // Add to today's questions (frontend state)
-    setTodaysQuestions(prev => [...prev, newQuestion]);
-    
-    // Send to backend API
-    const sendToBackend = async () => {
-      try {
-        const headers = {
-          'Content-Type': 'application/json',
-        };
-
-        // Resolve authoritative user id if possible
-        try {
-          const resolved = await resolveUserId();
-          if (resolved) headers['X-User-ID'] = resolved;
-        } catch (err) {
-          // ignore
-        }
-
-        const response = await fetch(API_ENDPOINTS.QUIZ.ADD_QUESTION, {
-          method: 'POST',
-          headers,
-          credentials: 'include',
-          body: JSON.stringify({
-            question: formData.question,
-            image: formData.imagePreview,
-            options: {
-              A: formData.optionA,
-              B: formData.optionB,
-              C: formData.optionC,
-              D: formData.optionD,
-            },
-            correctAnswer: formData.correctAnswer,
-            date: today,
-          }),
-        });
-
-        if (!response.ok) {
-          console.error('Failed to save question to backend');
-        }
-      } catch (error) {
-        console.error('Error sending question to backend:', error);
-      }
-    };
-    
-    sendToBackend();
-    
-    // Show success message
-    setSuccessMessage('Question added successfully! ✓');
-    setTimeout(() => setSuccessMessage(''), 3000);
-
-    // Reset form
-    setFormData({
-      question: '',
-      image: null,
-      imagePreview: null,
-      optionA: '',
-      optionB: '',
-      optionC: '',
-      optionD: '',
-      correctAnswer: 'A',
-    });
-
-    // TODO: Send to backend API
-    // API Call: POST /api/quizzes/daily/add-question
-    // Backend should store question with today's date
-  };
-
-  const handleDeleteQuestion = (questionId) => {
-    if (window.confirm('Are you sure you want to delete this question?')) {
-      setTodaysQuestions(prev => prev.filter(q => q.id !== questionId));
-    }
-  };
-
-  // ===== QUIZ SESSION HANDLERS =====
-  const handleStartQuiz = () => {
-    if (hasAttemptedToday) {
-      alert('You have already completed today\'s quiz. Come back tomorrow for a new one!');
-      return;
-    }
-    
-    if (todaysQuestions.length === 0) {
-      alert('No questions available for today\'s quiz yet. Check back later!');
-      return;
-    }
-    
-    setQuizStarted(true);
-    setCurrentQuestionIndex(0);
-    setQuizResponses({});
-    setQuizStartTime(new Date());
-    // Use admin-configured duration (from windowStatus) or default to 2 minutes
-    const durationMinutes = windowStatus.duration || 2;
-    setQuizSessionTime({ minutes: durationMinutes, seconds: 0 });
-  };
-
-  const handleSelectOption = (optionKey) => {
-    setQuizResponses(prev => ({
-      ...prev,
-      [currentQuestionIndex]: optionKey
-    }));
-  };
-
-  const isLastQuestion = currentQuestionIndex === todaysQuestions.length - 1;
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < todaysQuestions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
-  };
-
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
-    }
-  };
-
-  const calculateScore = useCallback(() => {
-    let correctCount = 0;
-    
-    Object.keys(quizResponses).forEach(questionIndex => {
-      const question = todaysQuestions[parseInt(questionIndex)];
-      if (question && quizResponses[questionIndex] === question.correctAnswer) {
-        correctCount++;
-      }
-    });
-
-    return {
-      correctAnswers: correctCount,
-      totalQuestions: todaysQuestions.length,
-      percentage: Math.round((correctCount / todaysQuestions.length) * 100)
-    };
-  }, [quizResponses, todaysQuestions]);
-
-  const updateLeaderboard = useCallback((submission) => {
-    // This is a frontend simulation
-    // Backend should handle actual ranking after 2-minute window closes
-    setTodaysLeaderboard(prev => {
-      const updated = [submission, ...prev];
-      // Sort by score (desc) then by time taken (asc)
-      return updated.sort((a, b) => {
-        if (b.correctAnswers !== a.correctAnswers) {
-          return b.correctAnswers - a.correctAnswers;
-        }
-        return a.timeTaken - b.timeTaken;
-      }).slice(0, 3); // Keep top 3
-    });
-  }, []);
-
-  const handleFinishQuiz = useCallback(async () => {
-    if (!quizStartTime) return;
-
-    const endTime = new Date();
-    const timeTaken = Math.round((endTime - quizStartTime) / 1000); // in seconds
-    const score = calculateScore();
-
-    // Resolve authoritative student id if possible
-    let studentId = user?.id;
-    try {
-      const resolved = await resolveUserId();
-      if (resolved) studentId = resolved;
-    } catch (err) {
-      // ignore
-    }
-
-    // Create quiz submission with responses mapped to question IDs
-    // Convert from { questionIndex: answer } to { questionId: answer }
-    const responsesWithIds = {};
-    Object.entries(quizResponses).forEach(([qIndex, answer]) => {
-      const question = todaysQuestions[parseInt(qIndex)];
-      if (question) {
-        // Use question id if available (from backend), otherwise use index
-        const questionId = question.id || question._id || qIndex;
-        responsesWithIds[questionId] = answer;
-      }
-    });
-
-    // Get student name from various possible fields in user object
-    const studentName = user?.name || user?.fullName || user?.displayName || user?.username || 'Student';
-
-    const quizSubmission = {
-      date: today,
-      studentId: studentId,
-      studentName: studentName,
-      timeTaken: timeTaken,
-      submittedAt: endTime.toISOString(),
-      responses: responsesWithIds,
-      correctAnswers: score.correctAnswers,
-      totalQuestions: score.totalQuestions
-    };
-
-    // DEBUG: Log the exact payload being sent
-    console.log('📤 Quiz submission payload:', JSON.stringify(quizSubmission, null, 2));
-    console.log('📋 User object fields available:', { name: user?.name, fullName: user?.fullName, displayName: user?.displayName, username: user?.username });
-    console.log('📋 Questions structure:', todaysQuestions.map(q => ({ id: q.id, _id: q._id, question: q.question })));
-    console.log('📝 Responses mapping:', responsesWithIds);
-
-    // Save to quiz history (previous quizzes)
-    setQuizHistory(prev => [quizSubmission, ...prev]);
-
-    // Simulate leaderboard update (backend should calculate this)
-    updateLeaderboard(quizSubmission);
-
-    // Mark that user has completed today's quiz (one attempt per day) - on backend
-    try {
-      const submitResponse = await fetch(`${API_BASE_URL}/api/quizzes/daily/submit`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(quizSubmission)
-      });
-      
-      if (submitResponse.ok) {
-        const submitData = await submitResponse.json();
-        console.log('✅ Quiz submitted to backend successfully:', submitData);
-        setBackendMessage(submitData.message || 'Quiz submitted successfully!');
-      } else {
-        const errorData = await submitResponse.json().catch(() => ({ message: 'Unknown error' }));
-        console.error('❌ Backend quiz submission failed with status', submitResponse.status, ':', errorData);
-        console.warn('Backend quiz submission failed, using localStorage fallback');
-        // Fallback: save to localStorage
-        const attemptKey = `quiz_attempted_${today}`;
-        localStorage.setItem(attemptKey, 'true');
-      }
-    } catch (error) {
-      console.error('Error submitting quiz to backend:', error);
-      // Fallback: save to localStorage
-      const attemptKey = `quiz_attempted_${today}`;
-      localStorage.setItem(attemptKey, 'true');
-    }
-    
-    setHasAttemptedToday(true);
-
-    // End quiz session
-    setQuizStarted(false);
-    setCurrentQuestionIndex(0);
-    setQuizResponses({});
-    
-    // Show success message
-    setSuccessMessage(`Quiz completed! You scored ${score.correctAnswers}/${score.totalQuestions}. Time taken: ${Math.floor(timeTaken / 60)}m ${timeTaken % 60}s`);
-    setTimeout(() => setSuccessMessage(''), 5000);
-  }, [quizStartTime, calculateScore, updateLeaderboard, quizResponses, user?.id, user?.name, today, resolveUserId]);
-
-  const calculatePointsForRank = (rank, correctAnswers) => {
-    const bonusPoints = {
-      1: 5,
-      2: 3,
-      3: 1,
-    };
-    return (bonusPoints[rank] || 0) + correctAnswers;
-  };
-
-  const handleDateClick = (dateIndex) => {
-    setExpandedDate(expandedDate === dateIndex ? null : dateIndex);
-  };
-
-  // ===== COUNTDOWN TIMER =====
-  // Two completely separate countdowns:
-  // 1. before__quiz: Countdown to quiz start (timeToStart) - decrement every second
-  // 2. during__quiz: Countdown while quiz is live (timeRemaining) - comes from backend only
-  useEffect(() => {
-    if (windowStatus.timeToStart === undefined) {
-      return;
-    }
-
-    // Stop countdown if quiz is already live - during__quiz effect takes over
-    if (isLiveQuiz) {
-      return;
-    }
-
-    // Pause countdown during active quiz - let quizSessionTime control the session
-    if (quizStarted) {
-      return;
-    }
-
-    const countdown = setInterval(() => {
-      setWindowStatus(prev => {
-        const newTimeToStart = Math.max(0, prev.timeToStart - 1);
-        
-        // Update only the before__quiz display countdown
-        setTimeLeft(prevTimeLeft => ({
-          ...prevTimeLeft,
-          beforeQuiz: {
-            hours: Math.floor(newTimeToStart / 3600),
-            minutes: Math.floor((newTimeToStart % 3600) / 60),
-            seconds: newTimeToStart % 60,
-          }
-        }));
-
-        // When quiz window starts (timeToStart hits 0), refresh from backend
-        if (newTimeToStart === 0 && prev.timeToStart > 0) {
-          console.log('⏰ Quiz window is starting - fetching from backend');
-          fetch(`${API_BASE_URL}/api/quizzes/daily/window-status`, { credentials: 'include' })
-            .then(res => res.ok && res.json())
-            .then(data => {
-              console.log('📡 Backend window status:', data);
-              // DON'T update timeToStart - it would restart the countdown
-              // Only update timeRemaining for the during__quiz phase
-              setWindowStatus(prev => ({
-                ...prev,
-                windowStart: data.windowStart,
-                windowEnd: data.windowEnd,
-                timeRemaining: data.during__quiz.secondsRemaining || 0,
-                duration: data.duration
-              }));
-              // CRITICAL: Only show during__quiz if:
-              // 1. Backend confirms window is active (isQuizWindow: true)
-              // 2. There's actual time remaining (secondsRemaining > 0)
-              // We've already confirmed timeToStart hit 0 (that's why we're fetching), so don't check it again
-              const shouldShowDuringQuiz = data.isQuizWindow && (data.during__quiz.secondsRemaining || 0) > 0;
-              setIsLiveQuiz(shouldShowDuringQuiz);
-              console.log('🔍 Validated quiz window display:', { isQuizWindow: data.isQuizWindow, timeRemaining: data.during__quiz.secondsRemaining, willShow: shouldShowDuringQuiz });
-              
-              // Update during__quiz display with fresh backend data
-              setTimeLeft(prevTimeLeft => ({
-                ...prevTimeLeft,
-                duringQuiz: {
-                  minutes: Math.floor((data.during__quiz.secondsRemaining || 0) / 60),
-                  seconds: (data.during__quiz.secondsRemaining || 0) % 60,
-                }
-              }));
-            })
-            .catch(err => console.warn('Failed to refresh:', err.message));
-        }
-
-        return {
-          ...prev,
-          timeToStart: newTimeToStart
-          // DO NOT modify timeRemaining - it only comes from backend
-        };
-      });
-    }, 1000);
-
-    return () => clearInterval(countdown);
-  }, [quizStarted, isLiveQuiz]);
-
-  // DURING__QUIZ countdown - decrement timeRemaining from backend
-  // This is the countdown shown to users while the quiz window is active
-  useEffect(() => {
-    if (!isLiveQuiz) return;
-    if (quizStarted) return; // Pause during active quiz session
-
-    // Get initial timeRemaining for this effect
-    let currentTime = windowStatus.timeRemaining;
-    console.log('🎯 Starting during__quiz countdown with:', currentTime, 'seconds');
-
-    const duringQuizCountdown = setInterval(() => {
-      currentTime = Math.max(0, currentTime - 1);
-      console.log('⏱️ During quiz countdown:', currentTime);
-      
-      // Update display state
-      setTimeLeft(prevTimeLeft => ({
-        ...prevTimeLeft,
-        duringQuiz: {
-          minutes: Math.floor(currentTime / 60),
-          seconds: currentTime % 60,
-        }
-      }));
-
-      // When quiz window ends (timeRemaining hits 0), stop countdown and show before__quiz
-      if (currentTime === 0) {
-        console.log('⏰ Quiz window countdown finished - switching to before__quiz display');
-        // Just stop the countdown - don't fetch repeatedly
-        // The next 5-minute poll will update the backend status
-        setIsLiveQuiz(false);
-        setTimeLeft(prevTimeLeft => ({
-          ...prevTimeLeft,
-          duringQuiz: {
-            minutes: 0,
-            seconds: 0,
-          }
-        }));
-      }
-    }, 1000);
-
-    return () => clearInterval(duringQuizCountdown);
-  }, [isLiveQuiz, quizStarted]);
-
-  // Fetch updated leaderboard when quiz window closes (quiz duration expires)
-  useEffect(() => {
-    if (isLiveQuiz) return; // Only trigger when window closes (transitions from true to false)
-    
-    // Fetch fresh leaderboard rankings after quiz window ends
-    const delayedFetch = setTimeout(() => {
-      console.log('🏆 Quiz window closed - fetching updated leaderboard');
-      fetchLeaderboard();
-    }, 1000); // Small delay to ensure backend has processed final submissions
-
-    return () => clearTimeout(delayedFetch);
-  }, [isLiveQuiz]);
-
-  // Quiz session countdown (user-specific session timer, not window-based)
-  useEffect(() => {
-    if (!quizStarted) return;
-
-    const quizTimer = setInterval(() => {
-      setQuizSessionTime(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { minutes: prev.minutes - 1, seconds: 59 };
-        } else {
-          // Time's up - finish quiz automatically
-          return { minutes: 0, seconds: 0 };
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(quizTimer);
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timer);
   }, [quizStarted]);
 
-  // Handle quiz timeout (2-minute per-session countdown, not window-based)
+
+  // When the quiz starts, run a 2-minute during-quiz timer and then trigger rest
   useEffect(() => {
-    if (quizStarted && quizSessionTime.minutes === 0 && quizSessionTime.seconds === 0) {
-      handleFinishQuiz();
+    let interval = null;
+    if (quizStarted && !timerCompletedRef.current) {
+      let remaining = 120; // seconds
+
+      // initial UI update
+      setTimeout(() => {
+        const mins0 = Math.floor(remaining / 60);
+        const secs0 = remaining % 60;
+        setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: mins0, seconds: secs0 } }));
+      }, 0);
+
+      interval = setInterval(() => {
+        remaining -= 1;
+        const mins = Math.floor(Math.max(0, remaining) / 60);
+        const secs = Math.max(0, remaining) % 60;
+        setTimeLeft(prev => ({ ...prev, duringQuiz: { minutes: mins, seconds: secs } }));
+
+        if (remaining <= 0) {
+          clearInterval(interval);
+          timerCompletedRef.current = true; // mark that this cycle's live window completed
+          setQuizStarted(false); // close live window
+          // start rest period now
+          restTimerRef.current = Date.now();
+          // schedule next day's target immediately so countdown resumes after rest
+          if (targetDateRef.current) {
+            const next = new Date(targetDateRef.current);
+            next.setDate(next.getDate() + 1);
+            targetDateRef.current = next;
+          }
+        }
+      }, 1000);
     }
-  }, [quizSessionTime, quizStarted, handleFinishQuiz]);
 
-  const formatTime = (num) => String(num).padStart(2, '0');
-
-
-
-
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [quizStarted]);
 
 
 
 
+
+
+
+// const now = new Date();
+// const target = new Date(now);
+// console.log(target.setHours(17, 21, 0, 0))
 
 
   return (
@@ -805,77 +180,41 @@ export default function QuizScreen() {
         </div>
       </div>
 
-      {successMessage && (
-        <div className="success-banner" style={{
-          padding: '12px 20px',
-          backgroundColor: '#d4edda',
-          color: '#155724',
-          borderRadius: '4px',
-          marginBottom: '20px',
-          border: '1px solid #c3e6cb'
-        }}>
-          {successMessage}
-        </div>
-      )}
-
-      {backendMessage && (
-        <div className="warning-banner" style={{
-          padding: '12px 20px',
-          backgroundColor: '#fff3cd',
-          color: '#856404',
-          borderRadius: '4px',
-          marginBottom: '20px',
-          border: '1px solid #ffeeba'
-        }}>
-          {backendMessage}
-        </div>
-      )}
 
       {isActive === 'daily quiz' && 
       <div className="daily-quiz__container">
         
         {/* QUIZ READY (ACTIVE QUIZ SESSION) */}
-        {quizStarted && (
+        {/* {quizStarted && (
           <div className="quiz__ready">
             <div className="quiz-session__container">
               <div className="quiz-session__header">
                 <div className="quiz-session__question-number">
-                  <span>Question {currentQuestionIndex + 1} of {todaysQuestions.length}</span>
+                  <span>Question 1 of 5</span>
                 </div>
 
-                <div className="quiz-session__timer" style={{
-                  color: quizSessionTime.minutes === 0 && quizSessionTime.seconds <= 30 ? '#ff4444' : '#333'
-                }}>
+                <div className="quiz-session__timer">
                   <span><TimerReset /></span>
                   <span className="quiz-session__time">
-                    {formatTime(quizSessionTime.minutes)}:{formatTime(quizSessionTime.seconds)}
+                    <span>{String(timeLeft.duringQuiz.minutes).padStart(2, '0')}</span>:<span>{String(timeLeft.duringQuiz.seconds).padStart(2, '0')}</span>
                   </span>
                 </div>
               </div>
 
-              {todaysQuestions[currentQuestionIndex] && (
                 <>
-                  {todaysQuestions[currentQuestionIndex].image && (
                     <div className="quiz-session__image">
-                      <img src={todaysQuestions[currentQuestionIndex].image} alt="question" />
+                      <img src='' alt="question" />
                     </div>
-                  )}
 
                   <div className="quiz-session__question">
-                    <h3>{todaysQuestions[currentQuestionIndex].question}</h3>
+                    <h3>What is HTML</h3>
                   </div>
 
                   <div className="quiz-session__options">
-                    {Object.entries(todaysQuestions[currentQuestionIndex].options).map(([key, value]) => (
-                      <button 
-                        key={`option-${currentQuestionIndex}-${key}`}
-                        className={`quiz-option ${quizResponses[currentQuestionIndex] === key ? 'selected' : ''}`}
-                        onClick={() => handleSelectOption(key)}
-                      >
-                        <span className="option-circle">{key}</span>
-                        <span className="option-content">{value}</span>
-                      </button>
-                    ))}
+                    <button className={`quiz-option`}>
+                      <span className="option-circle">A</span>
+                      <span className="option-content">Skelenton</span>
+                    </button>
                   </div>
 
                   <div className="quiz-session__navigation" style={{
@@ -883,36 +222,19 @@ export default function QuizScreen() {
                     gap: '12px',
                     marginTop: '24px'
                   }}>
-                    <button 
-                      className="quiz-session__btn"
-                      onClick={handlePreviousQuestion}
-                      disabled={currentQuestionIndex === 0}
-                      style={{ opacity: currentQuestionIndex === 0 ? 0.5 : 1 }}
-                    >
+                    <button className="quiz-session__btn">
                       ← Previous
                     </button>
-                    
-                    {isLastQuestion ? (
-                      <button 
-                        className="quiz-session__submit-btn"
-                        onClick={handleFinishQuiz}
-                      >
-                        Finish Quiz <span><CheckCircle size={16} /></span>
-                      </button>
-                    ) : (
-                      <button 
-                        className="quiz-session__submit-btn"
-                        onClick={handleNextQuestion}
-                      >
+
+                      <button className="quiz-session__submit-btn" >
                         Next Question <span><MoveRight size={16} /></span>
                       </button>
-                    )}
                   </div>
                 </>
-              )}
+              
             </div>
           </div>
-        )}
+        )} */}
 
         {/* QUIZ COUNTDOWN AND CONTROLS */}
         {!quizStarted && (
@@ -923,21 +245,21 @@ export default function QuizScreen() {
               <div></div>
             </div>
 
-            {!isLiveQuiz ? (
+            
               <div className="before__quiz">
                 <h2> <span className="siren-blink"><Siren size={25}/></span> Next Daily Quiz In:</h2>
 
                 <div className="quiz__timer">
                   <div className="quiz__time-box">
-                    <span>{formatTime(timeLeft.beforeQuiz.hours)}</span>
+                    <span>{String(timeLeft.beforeQuiz.hours).padStart(2, '0')}</span>
                     <small>Hours</small>
                   </div>
                   <div className="quiz__time-box">
-                    <span>{formatTime(timeLeft.beforeQuiz.minutes)}</span>
+                    <span>{String(timeLeft.beforeQuiz.minutes).padStart(2, '0')}</span>
                     <small>Minutes</small>
                   </div>
                   <div className="quiz__time-box">
-                    <span>{formatTime(timeLeft.beforeQuiz.seconds)}</span>
+                    <span>{String(timeLeft.beforeQuiz.seconds).padStart(2, '0')}</span>
                     <small>Seconds</small>
                   </div>
                 </div>
@@ -952,47 +274,32 @@ export default function QuizScreen() {
                   </div>
                 </div>
               </div>
-            ) : (
+          </div>
+        )}
+
+        {quizStarted && (
+          <div className="quiz__countdown">
               <div className="during__quiz">
                 <h2><span className="siren-blink live-text">LIVE</span> Quiz is on now!</h2>
                 <p style={{ fontSize: '14px', color: '#666', marginTop: '8px' }}>
-                  {todaysQuestions.length} question{todaysQuestions.length !== 1 ? 's' : ''} available • Quiz window closes in:
+                  3 questions available • Quiz window closes in:
                 </p>
 
                 <div className="quiz__timer">
                   <div className="quiz__time-box live-time-box">
-                    <span>{formatTime(timeLeft.duringQuiz.minutes)}</span>
+                    <span>{String(timeLeft.duringQuiz.minutes).padStart(2, '0')}</span>
                     <small>Minutes</small>
                   </div>
                   <div className="quiz__time-box live-time-box">
-                    <span>{formatTime(timeLeft.duringQuiz.seconds)}</span>
+                    <span>{String(timeLeft.duringQuiz.seconds).padStart(2, '0')}</span>
                     <small>Seconds</small>
                   </div>
                 </div>
 
-                {hasAttemptedToday ? (
-                  <div style={{
-                    padding: '16px',
-                    backgroundColor: '#e8f5e9',
-                    color: '#2e7d32',
-                    borderRadius: '8px',
-                    textAlign: 'center',
-                    marginTop: '20px',
-                    border: '2px solid #4caf50'
-                  }}>
-                    <p style={{ margin: '0', fontSize: '16px', fontWeight: '600' }}>✓ Quiz Completed</p>
-                    <p style={{ margin: '8px 0 0 0', fontSize: '14px' }}>You've already completed today's quiz. Come back tomorrow for a new one!</p>
-                  </div>
-                ) : (
-                  <button 
-                    className="quiz__start-btn" 
-                    onClick={handleStartQuiz}
-                  >
+                  <button className="quiz__start-btn">
                     Start Quiz
                   </button>
-                )}
               </div>
-            )}
           </div>
         )}
 
@@ -1007,35 +314,35 @@ export default function QuizScreen() {
             <button>View Leaderboard</button>
 
             <div className="quiz__leader-list">
-              {todaysLeaderboard.length > 0 ? (
-                todaysLeaderboard.map((entry, index) => {
-                  const rank = index + 1;
-                  // Use backend-provided points if available, otherwise calculate locally
-                  const totalPoints = entry.totalPoints !== undefined ? entry.totalPoints : calculatePointsForRank(rank, entry.correctAnswers);
-                  const rankIcon = rank === 1 ? <TbHexagonNumber1Filled/> : rank === 2 ? <TbHexagonNumber2Filled/> : <TbHexagonNumber3Filled/>;
-                  const timeStr = entry.timeTaken ? `${Math.floor(entry.timeTaken / 60)}m ${entry.timeTaken % 60}s` : 'N/A';
+                  {/* const rankIcon = rank === 1 ? <TbHexagonNumber1Filled/> : rank === 2 ? <TbHexagonNumber2Filled/> : <TbHexagonNumber3Filled/>; */}
                   
-                  return (
-                    <div key={`leaderboard-${entry.studentId || index}`} className="quiz__leader-item">
-                      <span className="quiz__leader-rank">{rankIcon}</span>
+                 
+                    <div className="quiz__leader-item">
+                      <span className="quiz__leader-rank"><TbHexagonNumber1Filled/></span>
                       <div className="quiz__leader-info">
-                        <h5>{entry.studentName || entry.name || 'Student'}</h5>
-                        <small>Score: {entry.correctAnswers}/{entry.totalQuestions} • Points: {totalPoints}</small>
+                        <h5>Student 3</h5>
+                        <small>Score: 3/3</small>
                       </div>
-                      <small className="quiz__time"><span><TimerReset size={15}/></span> {timeStr}</small>
+                      <small className="quiz__time"><span><TimerReset size={15}/></span> 8:31</small>
                     </div>
-                  );
-                })
-              ) : (
-                <div style={{ 
-                  padding: '20px', 
-                  textAlign: 'center', 
-                  color: '#999',
-                  fontSize: '14px'
-                }}>
-                  No submissions yet. Be the first to complete the quiz!
-                </div>
-              )}
+
+                    <div className="quiz__leader-item">
+                      <span className="quiz__leader-rank"><TbHexagonNumber2Filled/></span>
+                      <div className="quiz__leader-info">
+                        <h5>Student 2</h5>
+                        <small>Score: 3/3</small>
+                      </div>
+                      <small className="quiz__time"><span><TimerReset size={15}/></span> 8:31</small>
+                    </div>
+
+                    <div className="quiz__leader-item">
+                      <span className="quiz__leader-rank"><TbHexagonNumber3Filled/></span>
+                      <div className="quiz__leader-info">
+                        <h5>Student 1</h5>
+                        <small>Score: 3/3</small>
+                      </div>
+                      <small className="quiz__time"><span><TimerReset size={15}/></span> 8:31</small>
+                    </div>
             </div>
           </div>
 
@@ -1058,98 +365,55 @@ export default function QuizScreen() {
           <h3><span><WandSparkles/></span>Previous Quizzes</h3>
           
           <div className="quiz__previous-dates">
-            {quizHistory.length > 0 ? (
-              quizHistory.map((submission, historyIndex) => (
-                <div 
-                  key={`history-${submission.submittedAt}-${historyIndex}`}
-                  className={`quiz__date-item ${expandedDate === historyIndex ? 'active' : ''}`}
-                >
-                  <button 
-                    className="quiz__date-btn" 
-                    onClick={() => handleDateClick(historyIndex)}
-                  >
+                <div className={`quiz__date-item`}>
+                  <button className="quiz__date-btn">
                     <span><CalendarDays/></span>
                     <span className="date-label">
-                      {new Date(submission.submittedAt).toLocaleDateString('en-US', { 
+                      {new Date().toLocaleDateString('en-US', { 
                         month: 'long', 
                         day: 'numeric', 
                         year: 'numeric' 
                       })}
                     </span>
                     <span className="quiz__score-badge">
-                      {submission.correctAnswers}/{submission.totalQuestions}
+                      3/3
                     </span>
                   </button>
 
-                  {expandedDate === historyIndex && (
                     <div className="quiz__date-content">
-                      {todaysQuestions.map((question, qIndex) => {
-                        const userAnswer = submission.responses[qIndex];
-                        const isCorrect = userAnswer === question.correctAnswer;
-                        
-                        return (
-                          <div key={question.id} className="quiz__question-item">
+                          <div className="quiz__question-item">
                             <div className="question-header">
-                              <h4><small>Question {qIndex + 1}:</small></h4>
+                              <h4><small>Question 1:</small></h4>
                               <span className={`status-badge ${isCorrect ? 'correct' : 'incorrect'}`}>
                                 {isCorrect ? '✓ Correct' : '✗ Incorrect'}
                               </span>
                             </div>
 
                             <div className="quiz-question">
-                              {question.question}
+                              What is HTML
                             </div>
 
-                            {question.image && (
                               <div style={{ margin: '12px 0' }}>
-                                <img src={question.image} alt="question" style={{ maxWidth: '100%', borderRadius: '4px' }} />
+                                <img src='' alt="question" style={{ maxWidth: '100%', borderRadius: '4px' }} />
                               </div>
-                            )}
 
                             <div className="answer-section">
-                              {Object.entries(question.options).map(([key, text]) => {
-                                const isUserAnswer = userAnswer === key;
-                                const isCorrectAnswer = key === question.correctAnswer;
-                                let className = 'option';
-                                
-                                if (isCorrectAnswer) className += ' correct-answer';
-                                if (isUserAnswer && !isCorrect) className += ' incorrect-answer';
-                                
-                                return (
-                                  <div key={key} className={className}>
-                                    <span className="option-letter">{key}</span>
-                                    <span className="option-text">{text}</span>
+                                  <div>
+                                    <span className="option-letter">A</span>
+                                    <span className="option-text">Skelenton</span>
                                   </div>
-                                );
-                              })}
                             </div>
                           </div>
-                        );
-                      })}
                     </div>
-                  )}
                 </div>
-              ))
-            ) : (
-              <div style={{ 
-                padding: '20px', 
-                textAlign: 'center', 
-                color: '#999',
-                fontSize: '14px'
-              }}>
-                No previous quizzes yet. Complete your first quiz!
-              </div>
-            )}
           </div>
         </div>
       </div>}
 
-      {isActive === 'topic quiz' && 
-      <div className="topic-quiz__container">
-        <UnderDevelopment section="Topic Quiz" />
-      </div>}
+      {/* {isActive === 'topic quiz' && 
+        <TopicQuiz/>} */}
 
-      {isActive === 'admin' && user?.role === 'admin' && (
+      {/* {isActive === 'admin' && user?.role === 'admin' && (
         <div className="admin-form__container">
           <div className="admin-form__header">
             <h2><Plus size={28} /> Add New Daily Quiz Question</h2>
@@ -1314,7 +578,7 @@ export default function QuizScreen() {
             </div>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 }

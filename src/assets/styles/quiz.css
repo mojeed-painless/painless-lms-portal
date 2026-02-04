@@ -361,21 +361,25 @@ h2 span.live-text {
   border-radius: 1rem 1rem 0 0;
 }
 
-.quiz__leader-item:nth-child(2) {
+.quiz__leader-item:first-child {
   position: relative;
   bottom: 1rem;
+}
+
+.quiz__leader-item:nth-child(2) {
+  order: -1;
 }
 
 .quiz__leader-rank {
   font-size: 3rem;
   font-weight: bold;
-  color: gold;
+  color: rgb(209, 211, 211);
   display: flex;
   margin-bottom: 1rem;
 }
 
 .quiz__leader-item:first-child .quiz__leader-rank {
-  color: rgb(209, 211, 211);
+  color: gold;
 }
 
 .quiz__leader-item:last-child .quiz__leader-rank {
@@ -954,9 +958,12 @@ h2 span.live-text {
     gap: 0.7rem;
   }
 
-  .quiz__leader-item:nth-child(2) {
+  .quiz__leader-item:first-child {
     position: unset;
-    order: -1;
+  }
+
+  .quiz__leader-item:nth-child(2) {
+    order: 0;
   }
 
   .quiz__leader-rank {

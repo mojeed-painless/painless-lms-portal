@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import TakeQuizButton from '../../components/common/TakeQuizButton';
 
 export default function Forms() {
 
@@ -111,6 +112,8 @@ export default function Forms() {
     />
                 </div>
             </section>
+
+            <TakeQuizButton topicId="html-form" />
 
             <PrevNextBtn 
                 prevPath="/html-block-element" 

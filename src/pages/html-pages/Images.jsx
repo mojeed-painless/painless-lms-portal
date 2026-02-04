@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import TakeQuizButton from '../../components/common/TakeQuizButton';
 
 export default function Images() {
 
@@ -99,6 +100,8 @@ export default function Images() {
 
                 </div>
             </section>
+
+            <TakeQuizButton topicId="html-image" />
 
             <PrevNextBtn 
                 prevPath="/html-table" 

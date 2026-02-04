@@ -43,10 +43,13 @@ const HomeScreen = () => {
           
             <p>From HTML basics to React mastery — learn through interactive projects, daily quizzes, and code reviews with mentor feedback.</p>
           
-            <Link to='/register'>
-                Start Learning
-                <span><MoveRight size={20} /></span>
-            </Link>
+            <div className="home__hero-btns">
+              <a href="https://wa.me/9124323167" target='_blank' className='contact-us'>Contact us</a>
+              <Link to='/register'>
+                  Start Learning
+                  <span><MoveRight size={20} /></span>
+              </Link>
+            </div>
           
             <div className="home__hero-features">
                 <span><i><CircleCheckBig size={18}/></i> Free introductory content</span>

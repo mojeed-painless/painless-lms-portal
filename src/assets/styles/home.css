@@ -184,13 +184,19 @@ a.home__btn:hover {
   -webkit-text-fill-color: transparent;
 }
 
-.home__hero-content a {
+.home__hero-btns {
+    display: flex;
+    gap: 0.6rem
+
+}
+
+.home__hero-btns a {
     margin: 2rem 0;
     padding: 0.4rem 1.5rem;
     border-radius: 0.5rem;
     font-size: 1.2rem;
     /* font-weight: 600; */
-    display: inline-flex;
+    display: flex;
     gap: 0.7rem;
     align-items: center;
     background: greenyellow;
@@ -198,11 +204,16 @@ a.home__btn:hover {
     transition: all 400ms ease;
 }
 
-.home__hero-content a:hover {
+.home__hero-btns a:hover {
     background: rgb(145, 223, 28);
 }
 
-.home__hero-content a span {
+.home__hero-btns a.contact-us {
+    background: rgb(2, 211, 72);
+    padding: 0.2rem 1.5rem;
+}
+
+.home__hero-btns a span {
     display: flex;
 }
 
@@ -381,6 +392,11 @@ section.home__stats-bar {
 
     .home__features-content {
         padding: 3rem 1rem;
+    }
+
+    .home__hero-btns a {
+        padding-inline: 1rem;
+        font-size: 1rem;
     }
 
 

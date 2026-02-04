@@ -2,6 +2,7 @@ import ExampleCode from '../../components/common/ExampleCode';
 import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
+import TakeQuizButton from '../../components/common/TakeQuizButton';
 
 export default function HTMLStyling() {
 
@@ -92,6 +93,8 @@ export default function HTMLStyling() {
 </div>
                 </div>
             </section>
+
+            <TakeQuizButton topicId="html-style" />
 
             <PrevNextBtn 
                 prevPath="/html-form" 
