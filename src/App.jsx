@@ -95,6 +95,10 @@ import BrowserUserInteraction from './pages/js-pages/BrowserUserInteraction';
 import StringConversion from './pages/js-pages/StringConversion';
 import NumberConversion from './pages/js-pages/NumberConversion';
 import BooleanConversion from './pages/js-pages/BooleanConversion';
+import BasicOperators from './pages/js-pages/BasicOperators';
+import MathsOperators from './pages/js-pages/MathsOperators';
+import StringConcatenation from './pages/js-pages/StringConcatenation';
+import UnaryConversion from './pages/js-pages/UnaryConversion';
 
 import LoadingAnimation from './components/common/LoadingAnimation';
 
@@ -201,6 +205,10 @@ function App() {
                 <Route path="/js-string-conversion" element={<StringConversion />} />
                 <Route path="/js-number-conversion" element={<NumberConversion />} />
                 <Route path="/js-boolean-conversion" element={<BooleanConversion />} />
+                <Route path='/js-basic-operators' element={<BasicOperators />} />
+                <Route path='/js-maths-operators' element={<MathsOperators />} />
+                <Route path='/js-string-concatenation' element={<StringConcatenation />} />
+                <Route path='/js-unary-conversion' element={<UnaryConversion />} />
               </Route>
             </Route>
 

@@ -3,12 +3,12 @@ import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 
-export default function BooleanConversion() {
+export default function StringConcatenation() {
 
     return (
         <section className="course-content">
             <div className="course-content__header">
-                <h1>Boolean Conversion</h1>
+                <h1>String Concatenation</h1>
                 <p>Javascript</p>
             </div>
 
@@ -16,15 +16,15 @@ export default function BooleanConversion() {
                 <div className="course-content__container">
                     
                         <VideoBox 
-                            title='Boolean Conversion'
-                            code='fuMQUb5rec4?si=bxYXonvxxIEOS4Wo'
+                            title='String Concatenation'
+                            code='GgYdGlB5j-Y?si=6yiVzu9NwySaVfhq'
                         />
                 </div>
             </section>
 
             <PrevNextBtn 
-                prevPath="/js-number-conversion" 
-                nextPath="/js-basic-operators"
+                prevPath="/js-maths-operators" 
+                nextPath="/js-unary-conversion"
             />
         </section>
     );

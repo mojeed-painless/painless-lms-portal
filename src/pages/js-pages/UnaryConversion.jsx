@@ -3,12 +3,12 @@ import '../../assets/styles/course-content.css';
 import PrevNextBtn from '../../components/common/PrevNextBtn';
 import VideoBox from '../../components/common/VideoBox';
 
-export default function BooleanConversion() {
+export default function UnaryConversion() {
 
     return (
         <section className="course-content">
             <div className="course-content__header">
-                <h1>Boolean Conversion</h1>
+                <h1>Unary Conversion</h1>
                 <p>Javascript</p>
             </div>
 
@@ -16,15 +16,15 @@ export default function BooleanConversion() {
                 <div className="course-content__container">
                     
                         <VideoBox 
-                            title='Boolean Conversion'
-                            code='fuMQUb5rec4?si=bxYXonvxxIEOS4Wo'
+                            title='Unary Conversion'
+                            code='ydrj1fjRe9g?si=jMSHfFe6Kgt1qFRX'
                         />
                 </div>
             </section>
 
             <PrevNextBtn 
-                prevPath="/js-number-conversion" 
-                nextPath="/js-basic-operators"
+                prevPath="/js-string-concatenation" 
+                nextPath=""
             />
         </section>
     );

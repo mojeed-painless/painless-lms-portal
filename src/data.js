@@ -184,10 +184,14 @@ export const topics = [
             {name: 'Boolean', path: '/js-boolean'},
             {name: 'Null & Undefined', path: '/js-null'},
             {name: 'TypeOf', path: '/js-typeOf'},
-            {name: 'BrowserUserInteraction', path: '/js-browser-user-interaction'},
-            {name: 'StringConversion', path: '/js-string-conversion'},
-            {name: 'NumberConversion', path: '/js-number-conversion'},
-            {name: 'BooleanConversion', path: '/js-boolean-conversion'},
+            {name: 'BrowserUser Interaction', path: '/js-browser-user-interaction'},
+            {name: 'String Conversion', path: '/js-string-conversion'},
+            {name: 'Number Conversion', path: '/js-number-conversion'},
+            {name: 'Boolean Conversion', path: '/js-boolean-conversion'},
+            {name: 'Basic Operators', path:         '/js-basic-operators'       },
+            {name: 'Maths Operators', path:         '/js-maths-operators'       },
+            {name: 'String Concatenation', path:    '/js-string-concatenation'  },
+            {name: 'Unary + Conversion', path:      '/js-unary-conversion'      },
         ]
     },
 ]
