@@ -152,32 +152,52 @@ export default function QuizScreen() {
     <div className="quiz__container">
       <div className="transcript__header">
         <div className="transcript__header-title">
-          <h1><span><Sparkles size={25}/></span> Quiz Center</h1>
+          <h1><span><Sparkles size={14}/></span> Quiz Center — quiz_center.exe</h1>
           <p className="transcript__header-subtitle">Challenge others to climb up the leaderboard</p>
         </div>
-        
-        <div className="quiz__nav-btn">
-          <button 
-            className={isActive === 'daily quiz' ? 'active-quiz' : ''} 
-            onClick={() => setIsActive('daily quiz')}
-          >
-            <WandSparkles size={18} /> Daily Quiz
-          </button>
-          <button 
-            className={isActive === 'topic quiz' ? 'active-quiz' : ''} 
-            onClick={() => setIsActive('topic quiz')}
-          >
-            <Sparkle size={18} /> Topic Quiz
-          </button>
-          {user?.role === 'admin' && (
-            <button 
-              className={isActive === 'admin' ? 'active-quiz' : ''} 
-              onClick={() => setIsActive('admin')}
-            >
-              <Plus size={18} /> Add Question
-            </button>
-          )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 6px' }}>
+          <button style={{
+            background: '#d4d0c8', color: '#000', border: 'none', fontSize: '10px',
+            fontFamily: 'Tahoma, sans-serif', padding: '2px 10px',
+            borderTop: '2px solid #fff', borderLeft: '2px solid #fff',
+            borderBottom: '2px solid #404040', borderRight: '2px solid #404040', cursor: 'pointer'
+          }}>_</button>
+          <button style={{
+            background: '#d4d0c8', color: '#000', border: 'none', fontSize: '10px',
+            fontFamily: 'Tahoma, sans-serif', padding: '2px 10px',
+            borderTop: '2px solid #fff', borderLeft: '2px solid #fff',
+            borderBottom: '2px solid #404040', borderRight: '2px solid #404040', cursor: 'pointer'
+          }}>□</button>
+          <button style={{
+            background: '#d4d0c8', color: '#000', border: 'none', fontSize: '10px',
+            fontFamily: 'Tahoma, sans-serif', padding: '2px 10px',
+            borderTop: '2px solid #fff', borderLeft: '2px solid #fff',
+            borderBottom: '2px solid #404040', borderRight: '2px solid #404040', cursor: 'pointer'
+          }}>✕</button>
         </div>
+      </div>
+
+      <div className="quiz__nav-btn">
+        <button 
+          className={isActive === 'daily quiz' ? 'active-quiz' : ''} 
+          onClick={() => setIsActive('daily quiz')}
+        >
+          <WandSparkles size={13} /> Daily Quiz
+        </button>
+        <button 
+          className={isActive === 'topic quiz' ? 'active-quiz' : ''} 
+          onClick={() => setIsActive('topic quiz')}
+        >
+          <Sparkle size={13} /> Topic Quiz
+        </button>
+        {user?.role === 'admin' && (
+          <button 
+            className={isActive === 'admin' ? 'active-quiz' : ''} 
+            onClick={() => setIsActive('admin')}
+          >
+            <Plus size={13} /> Add Question
+          </button>
+        )}
       </div>
 
 
@@ -247,7 +267,18 @@ export default function QuizScreen() {
 
             
               <div className="before__quiz">
-                <h2> <span className="siren-blink"><Siren size={25}/></span> Next Daily Quiz In:</h2>
+                <div className="win-titlebar">
+                  <div className="win-titlebar__left">
+                    <span className="siren-blink"><Siren size={13}/></span>
+                    Next Daily Quiz — countdown.exe
+                  </div>
+                  <div className="win-titlebar__controls">
+                    <button className="win-titlebar__btn" aria-label="Minimize">_</button>
+                    <button className="win-titlebar__btn" aria-label="Maximize">□</button>
+                    <button className="win-titlebar__btn win-titlebar__btn--close" aria-label="Close">✕</button>
+                  </div>
+                </div>
+                <h2> <span className="siren-blink"><Siren size={18}/></span> Next Daily Quiz In:</h2>
 
                 <div className="quiz__timer">
                   <div className="quiz__time-box">
@@ -280,8 +311,19 @@ export default function QuizScreen() {
         {quizStarted && (
           <div className="quiz__countdown">
               <div className="during__quiz">
+                <div className="win-titlebar">
+                  <div className="win-titlebar__left">
+                    <span className="siren-blink"><Siren size={13}/></span>
+                    ⚠ LIVE — quiz_session.exe
+                  </div>
+                  <div className="win-titlebar__controls">
+                    <button className="win-titlebar__btn" aria-label="Minimize">_</button>
+                    <button className="win-titlebar__btn" aria-label="Maximize">□</button>
+                    <button className="win-titlebar__btn win-titlebar__btn--close" aria-label="Close">✕</button>
+                  </div>
+                </div>
                 <h2><span className="siren-blink live-text">LIVE</span> Quiz is on now!</h2>
-                <p style={{ fontSize: '14px', color: '#666', marginTop: '8px' }}>
+                <p style={{ fontSize: '11px', color: '#000000', margin: '0.4rem 0.8rem' }}>
                   3 questions available • Quiz window closes in:
                 </p>
 
@@ -358,6 +400,14 @@ export default function QuizScreen() {
               <li>Check the leaderboard to see your ranking!</li>
             </ol>
           </div>
+        </div>
+
+        {/* WIN2000 STATUS BAR */}
+        <div className="win-statusbar">
+          <span className="win-statusbar__pane">Quiz Center — quiz_center.exe</span>
+          <span className="win-statusbar__pane" style={{ flex: '0 0 auto', minWidth: '100px' }}>
+            {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+          </span>
         </div>
 
         {/* PREVIOUS QUIZZES */}
