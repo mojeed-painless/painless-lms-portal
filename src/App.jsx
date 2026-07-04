@@ -99,6 +99,11 @@ import BasicOperators from './pages/js-pages/BasicOperators';
 import MathsOperators from './pages/js-pages/MathsOperators';
 import StringConcatenation from './pages/js-pages/StringConcatenation';
 import UnaryConversion from './pages/js-pages/UnaryConversion';
+import AssignmentOperator from './pages/js-pages/AssignmentOperator';
+import IncrementDecrement from './pages/js-pages/IncrementDecrement';
+import NumberComparison from './pages/js-pages/NumberComparison';
+import StringComparison from './pages/js-pages/StringComparison';
+import MixedComparison from './pages/js-pages/MixedComparison';
 
 import LoadingAnimation from './components/common/LoadingAnimation';
 
@@ -209,6 +214,11 @@ function App() {
                 <Route path='/js-maths-operators' element={<MathsOperators />} />
                 <Route path='/js-string-concatenation' element={<StringConcatenation />} />
                 <Route path='/js-unary-conversion' element={<UnaryConversion />} />
+                <Route path="/js-assignment-operator" element={<AssignmentOperator />} />
+                <Route path="/js-increment-decrement" element={<IncrementDecrement />} />
+                <Route path="/js-number-comparison" element={<NumberComparison />} />
+                <Route path="/js-string-comparison" element={<StringComparison />} />
+                <Route path="/js-mixed-comparison" element={<MixedComparison />} />
               </Route>
             </Route>
 

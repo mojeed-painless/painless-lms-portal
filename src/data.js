@@ -192,6 +192,11 @@ export const topics = [
             {name: 'Maths Operators', path:         '/js-maths-operators'       },
             {name: 'String Concatenation', path:    '/js-string-concatenation'  },
             {name: 'Unary + Conversion', path:      '/js-unary-conversion'      },
+            {name: 'Assignment Operator', path: '/js-assignment-operator'},
+            {name: 'Increment and Decrement', path: '/js-increment-decrement'},
+            {name: 'Number Comparison', path: '/js-number-comparison'},
+            {name: 'String Comparison', path: '/js-string-comparison'},
+            {name: 'Mixed Comparison', path: '/js-mixed-comparison'},
         ]
     },
 ]
